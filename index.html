@@ -36,7 +36,7 @@
             justify-content: center;
             flex-wrap: wrap;
             margin-bottom: 15px;
-            align-items: flex-end;
+            align-items: flex-start; /* Changed from flex-end to accommodate hidden inputs expanding */
         }
 
         .input-group {
@@ -69,8 +69,19 @@
             padding: 10px;
             border-radius: 5px;
             border: 1px dashed #e67e22;
+            margin-top: 5px;
         }
         .custom-dims.active { display: flex; }
+        
+        /* Input para medida de tira personalizada */
+        .custom-strip-input {
+            display: none;
+            margin-top: 5px;
+            background: #dff9fb;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px dashed #22a6b3;
+        }
 
         .btn-print {
             background-color: #e67e22;
@@ -211,28 +222,36 @@
                     <option value="custom29x49">Recorte (29cm x 49cm)</option>
                     <option value="custom">📏 PERSONALIZADO (Ingresar medidas)</option>
                 </select>
-            </div>
-
-            <!-- Inputs ocultos para personalizado -->
-            <div class="input-group custom-dims" id="customInputs">
-                <div style="flex:1">
-                    <label>ANCHO (cm):</label>
-                    <input type="number" id="customW" value="50" step="0.5" onchange="updateCustomSize()">
-                </div>
-                <div style="flex:1">
-                    <label>ALTO (cm):</label>
-                    <input type="number" id="customH" value="40" step="0.5" onchange="updateCustomSize()">
+                
+                <!-- Inputs ocultos para papel personalizado -->
+                <div class="custom-dims" id="customInputs">
+                    <div style="flex:1">
+                        <label>ANCHO (cm):</label>
+                        <input type="number" id="customW" value="50" step="0.5" onchange="updateCustomSize()">
+                    </div>
+                    <div style="flex:1">
+                        <label>ALTO (cm):</label>
+                        <input type="number" id="customH" value="40" step="0.5" onchange="updateCustomSize()">
+                    </div>
                 </div>
             </div>
 
             <div class="input-group">
-                <label>2. CONTENIDO:</label>
-                <select id="layoutSelect" onchange="renderSheet()">
+                <label>2. CONTENIDO / MEDIDAS:</label>
+                <select id="layoutSelect" onchange="handleLayoutChange()">
                     <option value="mix">MIXTO (Optimizado)</option>
                     <option value="10">SOLO 10 PIES (14")</option>
                     <option value="9">SOLO 9 PIES (12.5")</option>
                     <option value="8">SOLO 8 PIES (11")</option>
+                    <option value="custom_strip">📏 MEDIDA MANUAL...</option>
                 </select>
+                
+                <!-- Input oculto para medida de tira personalizada -->
+                <div class="custom-strip-input" id="customStripInput">
+                    <label style="font-size:11px; margin-bottom:2px;">DISTANCIA DIAMANTE-DIAMANTE (Pulgadas):</label>
+                    <input type="number" id="customStripLenVal" value="13.0" step="0.125" onchange="renderSheet()">
+                    <div style="font-size:10px; color:#555; margin-top:2px;">(Mide de centro a centro de los diamantes)</div>
+                </div>
             </div>
             
             <div class="input-group">
@@ -366,6 +385,19 @@
                 updateSystem();
             }
         }
+        
+        // --- LOGICA DE LAYOUT (CAMBIADA) ---
+        function handleLayoutChange() {
+            const val = document.getElementById('layoutSelect').value;
+            const customStripDiv = document.getElementById('customStripInput');
+            
+            if (val === 'custom_strip') {
+                customStripDiv.style.display = 'block';
+            } else {
+                customStripDiv.style.display = 'none';
+            }
+            renderSheet();
+        }
 
         function updateCustomSize() {
             const wCm = parseFloat(document.getElementById('customW').value) || 20;
@@ -394,7 +426,7 @@
 
             const msg = document.getElementById('statusMsg');
             let warn = "";
-            if (currentW < 14.5) warn = " ⚠️ ¡CUIDADO! Ancho insuficiente para tira de 10 pies (14\").";
+            if (currentW < 14.5) warn = " ⚠️ ¡CUIDADO! Ancho de papel podría ser insuficiente para tiras largas.";
             msg.innerText = `Papel: ${currentName} | Capacidad: ${maxCapacity} Tiras.${warn}`;
             msg.style.color = warn ? "#c0392b" : "#2c3e50";
 
@@ -408,13 +440,22 @@
         }
 
         // --- RENDERIZADO SVG ---
+        // Configuración por defecto
         const configs = {
             '10': { inches: 14.0, label: '10 Pies' },
             '9':  { inches: 12.5, label: '9 Pies' },
-            '8':  { inches: 11.0, label: '8 Pies' }
+            '8':  { inches: 11.0, label: '8 Pies' },
+            'custom_strip': { inches: 13.0, label: 'Personalizada' } // Placeholder
         };
 
         function getStripSVG(type) {
+            // Manejo de medida personalizada en tiempo real
+            if (type === 'custom_strip') {
+                const customVal = parseFloat(document.getElementById('customStripLenVal').value) || 13;
+                configs['custom_strip'].inches = customVal;
+                configs['custom_strip'].label = `Medida: ${customVal}"`;
+            }
+
             const conf = configs[type];
             const w = conf.inches;
             const h = STRIP_H_IN;
