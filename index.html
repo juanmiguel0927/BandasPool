@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador Universal </title>
+    <title>Generador Universal</title>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -16,18 +16,18 @@
             color: #ecf0f1;
         }
 
-        /* --- CONTROLES --- */
+        /* --- CONTROLES (Solo pantalla) --- */
         .controls {
             background: #fff;
             color: #333;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 12px;
             text-align: center;
             margin-bottom: 20px;
             width: 95%;
             max-width: 900px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border-top: 5px solid #e67e22;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            border-top: 6px solid #e74c3c; /* Color rojo para atención */
         }
 
         .input-row {
@@ -36,7 +36,7 @@
             justify-content: center;
             flex-wrap: wrap;
             margin-bottom: 15px;
-            align-items: flex-start; /* Changed from flex-end to accommodate hidden inputs expanding */
+            align-items: flex-start;
         }
 
         .input-group {
@@ -45,96 +45,83 @@
             text-align: left;
         }
         
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color: #555; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 13px; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        select, input[type="color"], input[type="number"], input[type="text"], input[type="file"] {
-            padding: 8px 10px;
-            font-size: 14px;
-            border-radius: 5px;
-            width: 100%;
-            border: 1px solid #ccc;
-            background: #f9f9f9;
-            height: 38px;
-            box-sizing: border-box;
-        }
-        
-        /* Ajuste específico para input file */
-        input[type="file"] { padding: 5px; }
-
-        /* Inputs para tamaño personalizado */
-        .custom-dims {
-            display: none; /* Oculto por defecto */
-            gap: 10px;
-            background: #ffeaa7;
+        select, input {
             padding: 10px;
-            border-radius: 5px;
-            border: 1px dashed #e67e22;
-            margin-top: 5px;
+            font-size: 14px;
+            border-radius: 6px;
+            width: 100%;
+            border: 1px solid #bdc3c7;
+            background: #fdfdfd;
+            height: 42px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
         }
-        .custom-dims.active { display: flex; }
-        
-        /* Input para medida de tira personalizada */
-        .custom-strip-input {
+        select:focus, input:focus { border-color: #e74c3c; outline: none; }
+
+        /* Inputs condicionales */
+        .conditional-input {
             display: none;
-            margin-top: 5px;
-            background: #dff9fb;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px dashed #22a6b3;
+            margin-top: 8px;
+            padding: 10px;
+            background: #fff5e6; /* Naranja muy suave */
+            border-radius: 6px;
+            border: 1px dashed #f39c12;
+            animation: fadeIn 0.3s ease;
         }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
         .btn-print {
-            background-color: #e67e22;
+            background-color: #e74c3c;
             color: white;
             border: none;
-            padding: 12px 40px;
+            padding: 15px 40px;
             font-size: 18px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             width: 100%;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: background 0.2s;
+            box-shadow: 0 4px 0 #c0392b;
+            transition: transform 0.1s, background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        .btn-print:hover { background-color: #d35400; }
+        .btn-print:hover { background-color: #c0392b; }
+        .btn-print:active { transform: translateY(4px); box-shadow: none; }
 
         .info-bar {
             background-color: #ecf0f1;
             color: #2c3e50;
-            padding: 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-top: 15px;
             font-weight: bold;
+            border-left: 5px solid #3498db;
+            text-align: left;
         }
-        
+
         /* Toggle Radio Buttons */
-        .radio-group {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 5px;
-        }
-        .radio-group label {
-            font-weight: normal;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+        .radio-group { display: flex; gap: 15px; margin-bottom: 5px; }
+        .radio-group label { font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 5px; text-transform: none; }
         input[type="radio"] { width: auto; height: auto; margin: 0; }
 
         /* --- VISTA PREVIA --- */
         .preview-area {
             width: 100%;
             overflow: auto;
-            background-color: #95a5a6;
+            background-color: #7f8c8d;
             padding: 40px;
             box-sizing: border-box;
             border-radius: 8px;
             display: flex;
             justify-content: center;
-            border: 1px solid #7f8c8d;
+            border: 1px solid #666;
         }
 
         /* --- HOJA DINÁMICA --- */
@@ -148,9 +135,9 @@
             justify-content: flex-start;
             gap: 0.12in; 
             position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
             transform-origin: top center;
-            transition: width 0.3s, height 0.3s;
+            transition: all 0.3s ease;
         }
         
         .sheet-header {
@@ -160,7 +147,7 @@
             margin-bottom: 0.1in;
             padding-bottom: 5px;
             font-weight: bold;
-            font-size: 10pt;
+            font-size: 11pt;
             text-transform: uppercase;
             color: #333;
         }
@@ -173,6 +160,7 @@
             position: relative;
         }
 
+        /* Líneas de corte */
         .cut-line {
             width: 100%;
             border-top: 1px dashed #bbb;
@@ -197,47 +185,65 @@
         svg { overflow: visible; display: block; z-index: 1; }
         text { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; }
 
+        /* --- MODO IMPRESIÓN ESTRICTO --- */
         @media print {
-            body { background: none; margin: 0; padding: 0; }
-            .controls, .preview-area::-webkit-scrollbar { display: none; }
-            .preview-area { padding: 0; background: none; width: 100%; display: block; }
-            .sheet { margin: 0; box-shadow: none; }
+            @page {
+                /* Esto será sobrescrito por JS, pero es el fallback */
+                margin: 0;
+            }
+            body { 
+                background: none; 
+                margin: 0; 
+                padding: 0; 
+                width: 100%;
+                height: 100%;
+            }
+            .controls, .preview-area::-webkit-scrollbar { display: none !important; }
+            .preview-area { 
+                padding: 0; 
+                background: none; 
+                width: 100%; 
+                display: block; 
+                border: none;
+                overflow: visible;
+            }
+            .sheet { 
+                margin: 0; 
+                box-shadow: none; 
+                /* Forzar impresión de colores de fondo */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
         }
-        
-        @page { margin: 0; } 
     </style>
+    <!-- Estilo Dinámico de Página para Control Total -->
     <style id="page-style"></style>
 </head>
 <body>
 
     <div class="controls">
         <div class="input-row">
+            <!-- 1. TAMAÑO PAPEL -->
             <div class="input-group">
-                <label>1. TAMAÑO PAPEL:</label>
+                <label>1. TAMAÑO EXACTO DE PAPEL:</label>
                 <select id="paperSelect" onchange="handlePaperChange()">
                     <option value="tabloid">Tabloide (11" x 17")</option>
                     <option value="superTabloid">Super Tabloide (12" x 18")</option>
                     <option value="a3">A3 (29.7cm x 42cm)</option>
-                    <option value="a3plus">A3+ (32.9cm x 48.3cm)</option>
                     <option value="custom29x49">Recorte (29cm x 49cm)</option>
-                    <option value="custom">📏 PERSONALIZADO (Ingresar medidas)</option>
+                    <option value="custom">📏 TAMAÑO PERSONALIZADO...</option>
                 </select>
                 
-                <!-- Inputs ocultos para papel personalizado -->
-                <div class="custom-dims" id="customInputs">
-                    <div style="flex:1">
-                        <label>ANCHO (cm):</label>
-                        <input type="number" id="customW" value="50" step="0.5" onchange="updateCustomSize()">
-                    </div>
-                    <div style="flex:1">
-                        <label>ALTO (cm):</label>
-                        <input type="number" id="customH" value="40" step="0.5" onchange="updateCustomSize()">
-                    </div>
+                <!-- Personalizado -->
+                <div class="conditional-input" id="customInputs" style="display:none; flex-wrap:wrap; gap:10px;">
+                    <div style="flex:1"><label>Ancho (cm):</label><input type="number" id="customW" value="50" step="0.1" onchange="updateCustomSize()"></div>
+                    <div style="flex:1"><label>Alto (cm):</label><input type="number" id="customH" value="40" step="0.1" onchange="updateCustomSize()"></div>
                 </div>
             </div>
 
+            <!-- 2. CONTENIDO -->
             <div class="input-group">
-                <label>2. CONTENIDO / MEDIDAS:</label>
+                <label>2. CONTENIDO / MEDIDA:</label>
                 <select id="layoutSelect" onchange="handleLayoutChange()">
                     <option value="mix">MIXTO (Optimizado)</option>
                     <option value="10">SOLO 10 PIES (14")</option>
@@ -246,46 +252,49 @@
                     <option value="custom_strip">📏 MEDIDA MANUAL...</option>
                 </select>
                 
-                <!-- Input oculto para medida de tira personalizada -->
-                <div class="custom-strip-input" id="customStripInput">
-                    <label style="font-size:11px; margin-bottom:2px;">DISTANCIA DIAMANTE-DIAMANTE (Pulgadas):</label>
+                <!-- Medida manual -->
+                <div class="conditional-input" id="customStripInput" style="display:none;">
+                    <label>Distancia Diamante-Diamante (pulgadas):</label>
                     <input type="number" id="customStripLenVal" value="13.0" step="0.125" onchange="renderSheet()">
-                    <div style="font-size:10px; color:#555; margin-top:2px;">(Mide de centro a centro de los diamantes)</div>
+                    <div style="font-size:10px; color:#e67e22; margin-top:3px;">*Mide de centro a centro exacto.</div>
                 </div>
             </div>
             
-            <div class="input-group">
+            <!-- 3. FONDO -->
+            <div class="input-group" style="max-width: 150px;">
                 <label>3. FONDO:</label>
                 <select id="bgMode" onchange="toggleColorPicker()">
                     <option value="transparent">Transparente</option>
-                    <option value="black" selected>Negro (Clásico)</option>
+                    <option value="black" selected>Negro</option>
                     <option value="custom">Color...</option>
                 </select>
-            </div>
-            
-            <div class="input-group" id="colorPickerGroup" style="display:none; max-width: 60px;">
-                <label>COLOR:</label>
-                <input type="color" id="customColorInput" value="#1a5276" onchange="renderSheet()">
+                <div class="conditional-input" id="colorPickerGroup" style="display:none; padding:5px;">
+                    <input type="color" id="customColorInput" value="#1a5276" onchange="renderSheet()" style="height:35px; padding:2px;">
+                </div>
             </div>
         </div>
         
-        <!-- SECCIÓN DE ETIQUETA PERSONALIZADA -->
-        <div class="input-row" style="border-top: 1px dashed #ccc; padding-top: 15px;">
-            <div class="input-group" style="max-width: 400px;">
-                <label>4. ETIQUETA CENTRAL (PERSONALIZAR):</label>
+        <!-- 4. ETIQUETA -->
+        <div class="input-row" style="border-top: 1px dashed #ddd; padding-top: 15px; margin-top:15px;">
+            <div class="input-group" style="flex: 2;">
+                <label>4. ETIQUETA CENTRAL (LOGO/TEXTO):</label>
                 <div class="radio-group">
                     <label><input type="radio" name="lblType" value="text" checked onchange="toggleLabelMode()"> Texto</label>
-                    <label><input type="radio" name="lblType" value="image" onchange="toggleLabelMode()"> Imagen/Logo</label>
+                    <label><input type="radio" name="lblType" value="image" onchange="toggleLabelMode()"> Imagen</label>
                 </div>
                 
                 <div id="textInputContainer">
-                    <input type="text" id="customLabelText" value="ABPC" placeholder="Ej: TU CLUB" onkeyup="updateLabelText()">
+                    <input type="text" id="customLabelText" value="ABPC" placeholder="NOMBRE DEL CLUB" onkeyup="updateLabelText()">
                 </div>
                 
                 <div id="imageInputContainer" style="display:none;">
                     <input type="file" id="customLabelImg" accept="image/*" onchange="handleImageUpload()">
-                    <div id="imgStatus" style="font-size:11px; color:#27ae60; margin-top:2px; display:none;">Imagen cargada correctamente.</div>
+                    <div id="imgStatus" style="font-size:11px; color:#27ae60; margin-top:2px; display:none;">✅ Imagen cargada.</div>
                 </div>
+            </div>
+            
+            <div class="input-group">
+                 <!-- Espacio vacío para balancear -->
             </div>
         </div>
 
@@ -293,7 +302,12 @@
             Calculando capacidad...
         </div>
 
-        <button class="btn-print" onclick="window.print()" style="margin-top:10px;">🖨️ IMPRIMIR</button>
+        <button class="btn-print" onclick="window.print()">
+            💾 GUARDAR COMO PDF / IMPRIMIR
+        </button>
+        <div style="font-size:11px; color:#666; margin-top:5px;">
+            <strong>Tip:</strong> En la ventana de impresión, selecciona "Guardar como PDF", Papel correcto y <strong>Escala: 100%</strong>.
+        </div>
     </div>
 
     <div class="preview-area">
@@ -305,8 +319,8 @@
     <script>
         // Configuración Base
         const STRIP_H_IN = 1.35; // Altura fija de la tira
-        const MIN_GAP_IN = 0.12; // Espacio mínimo para tijera
-        const MARGIN_V_IN = 0.5; // Margen vertical total (arriba+abajo) de la hoja
+        const MIN_GAP_IN = 0.12; // Espacio mínimo
+        const MARGIN_V_IN = 0.5; // Margen vertical
 
         // Variables de Estado
         let currentW = 17;
@@ -314,31 +328,26 @@
         let currentName = "Tabloide";
         let maxCapacity = 0;
         
-        // Estado de Etiqueta
-        let labelMode = 'text'; // 'text' o 'image'
+        let labelMode = 'text';
         let labelTextStr = 'ABPC';
-        let labelImgData = null; // Base64 de la imagen
-        let labelImgRatio = 1; // ancho/alto
+        let labelImgData = null; 
+        let labelImgRatio = 1;
 
         // Tamaños predefinidos
         const presets = {
             'tabloid': { w: 17, h: 11, name: 'Tabloide (11x17")' },
             'superTabloid': { w: 18, h: 12, name: 'Super Tabloide (12x18")' },
-            'a3': { w: 16.54, h: 11.69, name: 'A3 Standard' }, 
-            'a3plus': { w: 19.02, h: 12.95, name: 'A3+ / Super B' }, 
+            'a3': { w: 16.54, h: 11.69, name: 'A3' }, 
             'custom29x49': { w: 19.29, h: 11.42, name: 'Recorte 29x49 cm' }
         };
 
         // --- MANEJO DE ETIQUETA ---
         function toggleLabelMode() {
             const radios = document.getElementsByName('lblType');
-            for(let r of radios) {
-                if(r.checked) labelMode = r.value;
-            }
+            for(let r of radios) if(r.checked) labelMode = r.value;
             
             document.getElementById('textInputContainer').style.display = labelMode === 'text' ? 'block' : 'none';
             document.getElementById('imageInputContainer').style.display = labelMode === 'image' ? 'block' : 'none';
-            
             renderSheet();
         }
 
@@ -351,7 +360,6 @@
             const fileInput = document.getElementById('customLabelImg');
             const file = fileInput.files[0];
             const statusDiv = document.getElementById('imgStatus');
-            
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -372,12 +380,11 @@
         function handlePaperChange() {
             const val = document.getElementById('paperSelect').value;
             const customDiv = document.getElementById('customInputs');
-
             if (val === 'custom') {
-                customDiv.classList.add('active');
+                customDiv.style.display = 'flex';
                 updateCustomSize(); 
             } else {
-                customDiv.classList.remove('active');
+                customDiv.style.display = 'none';
                 const p = presets[val];
                 currentW = p.w;
                 currentH = p.h;
@@ -386,16 +393,10 @@
             }
         }
         
-        // --- LOGICA DE LAYOUT (CAMBIADA) ---
         function handleLayoutChange() {
             const val = document.getElementById('layoutSelect').value;
             const customStripDiv = document.getElementById('customStripInput');
-            
-            if (val === 'custom_strip') {
-                customStripDiv.style.display = 'block';
-            } else {
-                customStripDiv.style.display = 'none';
-            }
+            customStripDiv.style.display = (val === 'custom_strip') ? 'block' : 'none';
             renderSheet();
         }
 
@@ -419,16 +420,28 @@
         function updateSystem() {
             maxCapacity = calculateCapacity();
             const styleElem = document.getElementById('page-style');
-            styleElem.innerHTML = `@page { size: ${currentW}in ${currentH}in; margin: 0; }`;
+            
+            // Determinar orientación para CSS Print
+            const orientation = currentW > currentH ? 'landscape' : 'portrait';
+            
+            // INYECTAR CSS ESTRICTO DE PÁGINA
+            // Esto le dice al diálogo de impresión el tamaño exacto del papel
+            styleElem.innerHTML = `
+                @page { 
+                    size: ${currentW}in ${currentH}in; 
+                    margin: 0; 
+                }
+            `;
+
             const sheet = document.getElementById('sheetContent');
             sheet.style.width = currentW + 'in';
             sheet.style.height = currentH + 'in';
 
             const msg = document.getElementById('statusMsg');
             let warn = "";
-            if (currentW < 14.5) warn = " ⚠️ ¡CUIDADO! Ancho de papel podría ser insuficiente para tiras largas.";
-            msg.innerText = `Papel: ${currentName} | Capacidad: ${maxCapacity} Tiras.${warn}`;
-            msg.style.color = warn ? "#c0392b" : "#2c3e50";
+            if (currentW < 14.5) warn = " ⚠️ Papel angosto. Revisa si cabe la tira larga.";
+            msg.innerHTML = `Papel: <strong>${currentName}</strong> (${currentW.toFixed(1)}" x ${currentH.toFixed(1)}") | Caben: <strong>${maxCapacity}</strong> Tiras. ${warn}`;
+            msg.style.borderLeftColor = warn ? "#c0392b" : "#3498db";
 
             renderSheet();
         }
@@ -440,16 +453,14 @@
         }
 
         // --- RENDERIZADO SVG ---
-        // Configuración por defecto
         const configs = {
             '10': { inches: 14.0, label: '10 Pies' },
             '9':  { inches: 12.5, label: '9 Pies' },
             '8':  { inches: 11.0, label: '8 Pies' },
-            'custom_strip': { inches: 13.0, label: 'Personalizada' } // Placeholder
+            'custom_strip': { inches: 13.0, label: 'Personalizada' }
         };
 
         function getStripSVG(type) {
-            // Manejo de medida personalizada en tiempo real
             if (type === 'custom_strip') {
                 const customVal = parseFloat(document.getElementById('customStripLenVal').value) || 13;
                 configs['custom_strip'].inches = customVal;
@@ -484,18 +495,14 @@
 
             const cutBorder = `<rect x="0" y="0" width="${w}" height="${h}" rx="0.15" fill="none" stroke="#999" stroke-width="0.015" stroke-dasharray="0.1, 0.1"/>`;
 
-            // GENERAR CONTENIDO DE ETIQUETA
             let labelContent = "";
             if (labelMode === 'image' && labelImgData) {
-                // Altura objetivo de imagen: 0.35 pulgadas
                 const imgH = 0.35;
                 const imgW = imgH * labelImgRatio;
-                // Centrar: (ancho_tira / 2) - (ancho_img / 2)
                 const imgX = (w / 2) - (imgW / 2);
-                const imgY = h - 0.45; // Posición Y cerca del fondo
+                const imgY = h - 0.45;
                 labelContent = `<image href="${labelImgData}" x="${imgX}" y="${imgY}" height="${imgH}" width="${imgW}" />`;
             } else {
-                // Texto por defecto o personalizado
                 labelContent = `<text x="${w/2}" y="${h-0.15}" font-size="0.18" fill="${textColor}" text-anchor="middle" opacity="0.9">${labelTextStr}</text>`;
             }
 
@@ -508,9 +515,7 @@
                     <line x1="0" y1="${h/2}" x2="${w}" y2="${h/2}" stroke="${tickColor}" stroke-width="0.01" opacity="0.5"/>
                     <g stroke="${tickColor}" stroke-width="0.04">${ticks}</g>
                     <polygon points="${w/2},${h/2-0.25} ${w/2+0.3},${h/2} ${w/2},${h/2+0.25} ${w/2-0.3},${h/2}" fill="${cGold}" stroke="#B8860B" stroke-width="0.01"/>
-                    
                     ${labelContent}
-                    
                     <path d="M0,${h/2} L0.25,${h/2+0.2} L0.25,${h/2-0.2} Z" fill="${guideColor}" opacity="0.8"/>
                     <path d="M${w},${h/2} L${w-0.25},${h/2+0.2} L${w-0.25},${h/2-0.2} Z" fill="${guideColor}" opacity="0.8"/>
                 </svg>
@@ -522,7 +527,7 @@
             const layoutType = document.getElementById('layoutSelect').value;
             const container = document.getElementById('sheetContent');
             
-            let html = `<div class="sheet-header">PLANTILLA - ${currentName}</div>`;
+            let html = `<div class="sheet-header">PLANTILLA ${labelTextStr} - ${currentName}</div>`;
 
             if (maxCapacity > 0) {
                 if (layoutType === 'mix') {
