@@ -3,554 +3,548 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador Universal</title>
+    <title>Generador Profesional ABPC - Juan Miguel Rios Redondo</title>
+    <!-- Librería PDF (Estándar Industrial) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22; /* Naranja Energético */
+            --bg: #ecf0f1;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #2c3e50;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--primary);
+            background-image: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             margin: 0;
             padding: 20px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #ecf0f1;
+            color: #333;
         }
 
-        /* --- CONTROLES (Solo pantalla) --- */
-        .controls {
-            background: #fff;
-            color: #333;
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 20px;
+        .main-panel {
+            background-color: var(--glass);
+            padding: 30px;
+            border-radius: 16px;
             width: 95%;
             max-width: 900px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-            border-top: 6px solid #e74c3c; /* Color rojo para atención */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border-top: 6px solid var(--accent);
+            backdrop-filter: blur(10px);
         }
 
-        .input-row {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-            align-items: flex-start;
+        /* --- CABECERA --- */
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+        h1 { margin: 0; font-size: 24px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* --- GRID DE CONTROLES --- */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
         }
 
-        .input-group {
-            flex: 1;
-            min-width: 180px;
-            text-align: left;
+        .control-group {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s;
         }
+        .control-group:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+        label { display: block; font-weight: 700; font-size: 12px; margin-bottom: 8px; color: #555; text-transform: uppercase; }
         
-        label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 13px; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        select, input {
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 6px;
+        select, input[type="number"], input[type="text"] {
             width: 100%;
-            border: 1px solid #bdc3c7;
-            background: #fdfdfd;
-            height: 42px;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        select:focus, input:focus { border-color: #e74c3c; outline: none; }
-
-        /* Inputs condicionales */
-        .conditional-input {
-            display: none;
-            margin-top: 8px;
-            padding: 10px;
-            background: #fff5e6; /* Naranja muy suave */
+            padding: 12px;
+            border: 2px solid #eee;
             border-radius: 6px;
-            border: 1px dashed #f39c12;
-            animation: fadeIn 0.3s ease;
+            font-size: 14px;
+            background: #f9f9f9;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        select:focus, input:focus { border-color: var(--accent); outline: none; background: white; }
 
-        .btn-print {
-            background-color: #e74c3c;
+        /* Botones Rápidos */
+        .quick-qty { display: flex; gap: 8px; margin-top: 10px; }
+        .q-btn {
+            flex: 1;
+            background: #dfe6e9;
+            border: none;
+            padding: 8px;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #2d3436;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .q-btn:hover { background: #b2bec3; }
+        .q-btn.active { background: var(--primary); color: white; }
+
+        /* Toggle Modo */
+        .toggle-container {
+            display: flex;
+            background: #eee;
+            border-radius: 6px;
+            padding: 4px;
+            margin-bottom: 15px;
+        }
+        .toggle-btn {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            color: #777;
+        }
+        .toggle-btn.active { background: white; color: var(--accent); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+        /* Botón Acción */
+        .btn-action {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
             color: white;
             border: none;
-            padding: 15px 40px;
+            padding: 20px;
+            width: 100%;
             font-size: 18px;
+            font-weight: 800;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            width: 100%;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 0 4px 0 #c0392b;
-            transition: transform 0.1s, background 0.2s;
+            box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3);
+            transition: all 0.3s;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             gap: 10px;
         }
-        .btn-print:hover { background-color: #c0392b; }
-        .btn-print:active { transform: translateY(4px); box-shadow: none; }
+        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
 
-        .info-bar {
-            background-color: #ecf0f1;
-            color: #2c3e50;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            margin-top: 15px;
-            font-weight: bold;
-            border-left: 5px solid #3498db;
-            text-align: left;
-        }
-
-        /* Toggle Radio Buttons */
-        .radio-group { display: flex; gap: 15px; margin-bottom: 5px; }
-        .radio-group label { font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 5px; text-transform: none; }
-        input[type="radio"] { width: auto; height: auto; margin: 0; }
-
-        /* --- VISTA PREVIA --- */
-        .preview-area {
-            width: 100%;
-            overflow: auto;
-            background-color: #7f8c8d;
-            padding: 40px;
-            box-sizing: border-box;
+        /* Info Box */
+        .info-box {
+            background: #dff9fb;
+            color: #130f40;
+            padding: 15px;
             border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            border-left: 4px solid #22a6b3;
             display: flex;
-            justify-content: center;
-            border: 1px solid #666;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* --- HOJA DINÁMICA --- */
-        .sheet {
-            background-color: white;
-            padding: 0.25in; 
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column; 
-            align-items: center;
-            justify-content: flex-start;
-            gap: 0.12in; 
-            position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-            transform-origin: top center;
-            transition: all 0.3s ease;
+        /* Vista Previa Visual */
+        .visual-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 4px;
+            background: #95a5a6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 2px solid #7f8c8d;
         }
-        
-        .sheet-header {
-            width: 100%;
+        .mini-strip {
+            height: 10px;
+            background: #2c3e50;
+            border-radius: 2px;
+        }
+
+        /* --- CRÉDITOS --- */
+        .footer-cr {
             text-align: center;
-            border-bottom: 2px solid #333;
-            margin-bottom: 0.1in;
-            padding-bottom: 5px;
-            font-weight: bold;
-            font-size: 11pt;
-            text-transform: uppercase;
-            color: #333;
+            margin-top: 30px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
         }
-
-        .strip-wrapper {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
-
-        /* Líneas de corte */
-        .cut-line {
-            width: 100%;
-            border-top: 1px dashed #bbb;
-            position: absolute;
-            bottom: -0.06in; 
-            left: 0;
-            z-index: 0;
-        }
-        .sheet .strip-wrapper:last-child .cut-line { display: none; }
-
-        .strip-label {
-            font-size: 8pt;
-            color: #999;
-            font-weight: bold;
-            width: 100%;
-            text-align: left;
-            position: absolute;
-            top: -12px;
-            left: 0;
-        }
-
-        svg { overflow: visible; display: block; z-index: 1; }
-        text { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; }
-
-        /* --- MODO IMPRESIÓN ESTRICTO --- */
-        @media print {
-            @page {
-                /* Esto será sobrescrito por JS, pero es el fallback */
-                margin: 0;
-            }
-            body { 
-                background: none; 
-                margin: 0; 
-                padding: 0; 
-                width: 100%;
-                height: 100%;
-            }
-            .controls, .preview-area::-webkit-scrollbar { display: none !important; }
-            .preview-area { 
-                padding: 0; 
-                background: none; 
-                width: 100%; 
-                display: block; 
-                border: none;
-                overflow: visible;
-            }
-            .sheet { 
-                margin: 0; 
-                box-shadow: none; 
-                /* Forzar impresión de colores de fondo */
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
+        .footer-cr strong {
+            color: #fff;
+            font-size: 13px;
         }
     </style>
-    <!-- Estilo Dinámico de Página para Control Total -->
-    <style id="page-style"></style>
 </head>
 <body>
 
-    <div class="controls">
-        <div class="input-row">
-            <!-- 1. TAMAÑO PAPEL -->
-            <div class="input-group">
-                <label>1. TAMAÑO EXACTO DE PAPEL:</label>
-                <select id="paperSelect" onchange="handlePaperChange()">
+<div class="main-panel">
+    <div class="header">
+        <h1>Generador Maestro de Slicers</h1>
+    </div>
+
+    <div class="controls-grid">
+        <!-- GRUPO 1: PRODUCCIÓN -->
+        <div class="control-group">
+            <label>1. Objetivo de Producción</label>
+            <input type="number" id="totalStrips" value="72" min="1" onchange="updateCalc()">
+            <div class="quick-qty">
+                <button class="q-btn" onclick="setQty(24)">1 Mesa (24)</button>
+                <button class="q-btn" onclick="setQty(48)">2 Mesas (48)</button>
+                <button class="q-btn active" onclick="setQty(72)">3 Mesas (72)</button>
+            </div>
+            <div style="margin-top:15px;">
+                <label>Medida de Mesa</label>
+                <select id="sizeType" onchange="updateCalc()">
+                    <option value="mix">MIXTO (Equilibrado)</option>
+                    <option value="10">Solo 10 Pies (14")</option>
+                    <option value="9">Solo 9 Pies (12.5")</option>
+                    <option value="8">Solo 8 Pies (11")</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- GRUPO 2: FORMATO -->
+        <div class="control-group">
+            <label>2. Formato de Salida</label>
+            <div class="toggle-container">
+                <div class="toggle-btn active" id="btnSheet" onclick="setMode('sheet')">HOJAS (PAGINADO)</div>
+                <div class="toggle-btn" id="btnRoll" onclick="setMode('roll')">ROLLO (PLOTTER)</div>
+            </div>
+            
+            <div id="panelSheet">
+                <label>Tamaño de Hoja</label>
+                <select id="paperStandard" onchange="updateCalc()">
                     <option value="tabloid">Tabloide (11" x 17")</option>
                     <option value="superTabloid">Super Tabloide (12" x 18")</option>
                     <option value="a3">A3 (29.7cm x 42cm)</option>
-                    <option value="custom29x49">Recorte (29cm x 49cm)</option>
-                    <option value="custom">📏 TAMAÑO PERSONALIZADO...</option>
+                    <option value="a3plus">A3+ / Super B (33cm x 48cm)</option>
                 </select>
-                
-                <!-- Personalizado -->
-                <div class="conditional-input" id="customInputs" style="display:none; flex-wrap:wrap; gap:10px;">
-                    <div style="flex:1"><label>Ancho (cm):</label><input type="number" id="customW" value="50" step="0.1" onchange="updateCustomSize()"></div>
-                    <div style="flex:1"><label>Alto (cm):</label><input type="number" id="customH" value="40" step="0.1" onchange="updateCustomSize()"></div>
-                </div>
             </div>
 
-            <!-- 2. CONTENIDO -->
-            <div class="input-group">
-                <label>2. CONTENIDO / MEDIDA:</label>
-                <select id="layoutSelect" onchange="handleLayoutChange()">
-                    <option value="mix">MIXTO (Optimizado)</option>
-                    <option value="10">SOLO 10 PIES (14")</option>
-                    <option value="9">SOLO 9 PIES (12.5")</option>
-                    <option value="8">SOLO 8 PIES (11")</option>
-                    <option value="custom_strip">📏 MEDIDA MANUAL...</option>
-                </select>
-                
-                <!-- Medida manual -->
-                <div class="conditional-input" id="customStripInput" style="display:none;">
-                    <label>Distancia Diamante-Diamante (pulgadas):</label>
-                    <input type="number" id="customStripLenVal" value="13.0" step="0.125" onchange="renderSheet()">
-                    <div style="font-size:10px; color:#e67e22; margin-top:3px;">*Mide de centro a centro exacto.</div>
-                </div>
-            </div>
-            
-            <!-- 3. FONDO -->
-            <div class="input-group" style="max-width: 150px;">
-                <label>3. FONDO:</label>
-                <select id="bgMode" onchange="toggleColorPicker()">
-                    <option value="transparent">Transparente</option>
-                    <option value="black" selected>Negro</option>
-                    <option value="custom">Color...</option>
-                </select>
-                <div class="conditional-input" id="colorPickerGroup" style="display:none; padding:5px;">
-                    <input type="color" id="customColorInput" value="#1a5276" onchange="renderSheet()" style="height:35px; padding:2px;">
-                </div>
-            </div>
-        </div>
-        
-        <!-- 4. ETIQUETA -->
-        <div class="input-row" style="border-top: 1px dashed #ddd; padding-top: 15px; margin-top:15px;">
-            <div class="input-group" style="flex: 2;">
-                <label>4. ETIQUETA CENTRAL (LOGO/TEXTO):</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="lblType" value="text" checked onchange="toggleLabelMode()"> Texto</label>
-                    <label><input type="radio" name="lblType" value="image" onchange="toggleLabelMode()"> Imagen</label>
-                </div>
-                
-                <div id="textInputContainer">
-                    <input type="text" id="customLabelText" value="ABPC" placeholder="NOMBRE DEL CLUB" onkeyup="updateLabelText()">
-                </div>
-                
-                <div id="imageInputContainer" style="display:none;">
-                    <input type="file" id="customLabelImg" accept="image/*" onchange="handleImageUpload()">
-                    <div id="imgStatus" style="font-size:11px; color:#27ae60; margin-top:2px; display:none;">✅ Imagen cargada.</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                 <!-- Espacio vacío para balancear -->
+            <div id="panelRoll" style="display:none;">
+                <label>Ancho del Rollo (cm)</label>
+                <input type="number" id="rollWidth" value="60" onchange="updateCalc()">
+                <small style="color:#888;">El largo se calculará automáticamente.</small>
             </div>
         </div>
 
-        <div class="info-bar" id="statusMsg">
-            Calculando capacidad...
-        </div>
-
-        <button class="btn-print" onclick="window.print()">
-            💾 GUARDAR COMO PDF / IMPRIMIR
-        </button>
-        <div style="font-size:11px; color:#666; margin-top:5px;">
-            <strong>Tip:</strong> En la ventana de impresión, selecciona "Guardar como PDF", Papel correcto y <strong>Escala: 100%</strong>.
+        <!-- GRUPO 3: DISEÑO -->
+        <div class="control-group">
+            <label>3. Personalización</label>
+            <div style="margin-bottom:15px;">
+                <label>Etiqueta Central</label>
+                <input type="text" id="labelText" value="ABPC" placeholder="Nombre del Club" onkeyup="updateCalc()">
+            </div>
+            <div>
+                <label>Color de Fondo</label>
+                <select id="bgMode" onchange="updateCalc()">
+                    <option value="black">Negro (Clásico)</option>
+                    <option value="transparent">Transparente (Solo Corte)</option>
+                    <option value="blue">Azul Torneo</option>
+                    <option value="green">Verde Paño</option>
+                </select>
+            </div>
         </div>
     </div>
 
-    <div class="preview-area">
-        <div class="sheet" id="sheetContent">
-            <!-- Contenido JS -->
-        </div>
+    <div class="info-box" id="statusMsg">
+        <!-- JS inyectará info aquí -->
     </div>
 
-    <script>
-        // Configuración Base
-        const STRIP_H_IN = 1.35; // Altura fija de la tira
-        const MIN_GAP_IN = 0.12; // Espacio mínimo
-        const MARGIN_V_IN = 0.5; // Margen vertical
+    <button class="btn-action" onclick="generatePDF()">
+        <span>⬇</span> Generar PDF Maestro
+    </button>
+    
+    <label style="margin-top:20px;">Previsualización de Lote:</label>
+    <div class="visual-preview" id="previewGrid"></div>
+</div>
 
-        // Variables de Estado
-        let currentW = 17;
-        let currentH = 11;
-        let currentName = "Tabloide";
-        let maxCapacity = 0;
+<div class="footer-cr">
+    Herramienta desarrollada por <strong>Juan Miguel Rios Redondo</strong><br>
+    <span id="copyright-text"></span>
+</div>
+
+<script>
+    // --- AUTOGENERAR AÑO COPYRIGHT ---
+    document.getElementById('copyright-text').innerText = "© " + new Date().getFullYear();
+
+    // --- VARIABLES DE ESTADO ---
+    let mode = 'sheet'; // 'sheet' o 'roll'
+    
+    // Dimensiones Físicas (Pulgadas)
+    const STRIP_H = 1.35; 
+    const GAP_X = 0.1;    // Espacio horizontal entre tiras
+    const GAP_Y = 0.2;    // Espacio vertical
+    const MARGIN = 0.3;   // Margen seguro
+    
+    let calc = {
+        paperW: 0,
+        paperH: 0,
+        cols: 0,
+        rowsPerPage: 0,
+        totalPages: 0,
+        stripsPerPage: 0,
+        stripsToPrint: [] // Array de objetos {w, label}
+    };
+
+    // --- UI LOGIC ---
+    function setQty(n) {
+        document.getElementById('totalStrips').value = n;
+        // Update active class
+        document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        updateCalc();
+    }
+
+    function setMode(m) {
+        mode = m;
+        document.getElementById('btnSheet').className = m === 'sheet' ? 'toggle-btn active' : 'toggle-btn';
+        document.getElementById('btnRoll').className = m === 'roll' ? 'toggle-btn active' : 'toggle-btn';
         
-        let labelMode = 'text';
-        let labelTextStr = 'ABPC';
-        let labelImgData = null; 
-        let labelImgRatio = 1;
+        document.getElementById('panelSheet').style.display = m === 'sheet' ? 'block' : 'none';
+        document.getElementById('panelRoll').style.display = m === 'roll' ? 'block' : 'none';
+        updateCalc();
+    }
 
-        // Tamaños predefinidos
-        const presets = {
-            'tabloid': { w: 17, h: 11, name: 'Tabloide (11x17")' },
-            'superTabloid': { w: 18, h: 12, name: 'Super Tabloide (12x18")' },
-            'a3': { w: 16.54, h: 11.69, name: 'A3' }, 
-            'custom29x49': { w: 19.29, h: 11.42, name: 'Recorte 29x49 cm' }
+    // --- CORE CALCULATION ---
+    function updateCalc() {
+        const qty = parseInt(document.getElementById('totalStrips').value) || 24;
+        const type = document.getElementById('sizeType').value;
+        const bgMode = document.getElementById('bgMode').value;
+        
+        // 1. Generar Lista de Tiras
+        calc.stripsToPrint = [];
+        if (type === 'mix') {
+            const base = Math.floor(qty / 3);
+            let rem = qty % 3;
+            // Ordenar: Grandes primero para optimizar ancho columna
+            for(let i=0; i < base + (rem>0?1:0); i++) calc.stripsToPrint.push({w:14.0, l:"10 Pies"});
+            for(let i=0; i < base + (rem>1?1:0); i++) calc.stripsToPrint.push({w:12.5, l:"9 Pies"});
+            for(let i=0; i < base; i++) calc.stripsToPrint.push({w:11.0, l:"8 Pies"});
+        } else {
+            let s = 14.0, l = "10 Pies";
+            if(type==='9'){s=12.5; l="9 Pies";}
+            if(type==='8'){s=11.0; l="8 Pies";}
+            for(let i=0; i<qty; i++) calc.stripsToPrint.push({w:s, l:l});
+        }
+
+        // 2. Determinar Papel
+        if (mode === 'sheet') {
+            const pt = document.getElementById('paperStandard').value;
+            if(pt==='tabloid') { calc.paperW=17; calc.paperH=11; }
+            if(pt==='superTabloid') { calc.paperW=18; calc.paperH=12; }
+            if(pt==='a3') { calc.paperW=16.54; calc.paperH=11.69; }
+            if(pt==='a3plus') { calc.paperW=19; calc.paperH=13; }
+        } else {
+            const wCm = parseFloat(document.getElementById('rollWidth').value) || 60;
+            calc.paperW = wCm / 2.54;
+            // Altura infinita por ahora
+        }
+
+        // 3. Calcular Grid
+        // Usamos el ancho de la tira más grande (14.0) + marcas de corte (0.2 approx)
+        const colWidth = 14.2; 
+        const rowHeight = STRIP_H + GAP_Y;
+
+        const usableW = calc.paperW - (MARGIN*2);
+        calc.cols = Math.floor(usableW / colWidth);
+        if(calc.cols < 1) calc.cols = 1;
+
+        if (mode === 'sheet') {
+            const usableH = calc.paperH - (MARGIN*2) - 0.5; // 0.5 header
+            calc.rowsPerPage = Math.floor(usableH / rowHeight);
+            calc.stripsPerPage = calc.cols * calc.rowsPerPage;
+            calc.totalPages = Math.ceil(qty / calc.stripsPerPage);
+        } else {
+            const totalRows = Math.ceil(qty / calc.cols);
+            calc.paperH = (totalRows * rowHeight) + (MARGIN*2) + 1.0; // +1.0 header
+            calc.rowsPerPage = totalRows;
+            calc.totalPages = 1;
+        }
+
+        // 4. Actualizar UI
+        const status = document.getElementById('statusMsg');
+        const wCm = (calc.paperW * 2.54).toFixed(1);
+        const hCm = (calc.paperH * 2.54).toFixed(1);
+        
+        if(mode === 'sheet') {
+            status.innerHTML = `<strong>Producción Paginada:</strong> Se generarán <strong>${calc.totalPages} páginas</strong> tamaño ${wCm}x${hCm}cm.<br>Cada página contiene hasta ${calc.stripsPerPage} tiras.`;
+        } else {
+            status.innerHTML = `<strong>Producción en Rollo:</strong> Se generará un archivo único de <strong>${wCm}cm x ${hCm}cm</strong>.<br>Optimizado para corte en plotter.`;
+        }
+
+        // Preview Visual
+        const preview = document.getElementById('previewGrid');
+        preview.innerHTML = '';
+        let color = '#2c3e50';
+        if(bgMode==='transparent') color = '#ecf0f1'; // Gris claro
+        if(bgMode==='blue') color = '#0984e3';
+        if(bgMode==='green') color = '#00b894';
+
+        calc.stripsToPrint.forEach(s => {
+            const d = document.createElement('div');
+            d.className = 'mini-strip';
+            d.style.backgroundColor = color;
+            if(bgMode==='transparent') d.style.border = "1px solid #333";
+            d.title = s.l;
+            preview.appendChild(d);
+        });
+    }
+
+    // --- PDF GENERATOR ---
+    async function generatePDF() {
+        const { jsPDF } = window.jspdf;
+        const orientation = calc.paperW > calc.paperH ? 'l' : 'p';
+        
+        const doc = new jsPDF({
+            orientation: orientation,
+            unit: 'in',
+            format: [calc.paperW, calc.paperH]
+        });
+
+        const labelTxt = document.getElementById('labelText').value;
+        const bgMode = document.getElementById('bgMode').value;
+        
+        // Colores
+        let fillCol = null, txtCol = [0,0,0], lineCol = [0,255,255]; // Default
+        const cBlack = [15,15,15];
+        const cWhite = [255,255,255];
+        const cGold = [255, 215, 0];
+        
+        if(bgMode==='black') { fillCol=cBlack; txtCol=cWhite; lineCol=[0,255,255]; }
+        if(bgMode==='transparent') { fillCol=null; txtCol=[0,0,0]; lineCol=[0,150,150]; }
+        if(bgMode==='blue') { fillCol=[10,60,120]; txtCol=cWhite; lineCol=[255,255,255]; }
+        if(bgMode==='green') { fillCol=[20,90,50]; txtCol=cWhite; lineCol=[255,255,255]; }
+
+        // Layout Vars
+        let cursorX = MARGIN;
+        let cursorY = 1.0; 
+        let itemsOnPage = 0;
+        let colIdx = 0;
+        const colW = 14.2; // Slot fijo para alinear columnas
+
+        // Footer Author Function
+        const addFooter = (pNum) => {
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text(`Desarrollado por Juan Miguel Rios Redondo - Pág ${pNum}`, MARGIN, calc.paperH - 0.2);
         };
 
-        // --- MANEJO DE ETIQUETA ---
-        function toggleLabelMode() {
-            const radios = document.getElementsByName('lblType');
-            for(let r of radios) if(r.checked) labelMode = r.value;
-            
-            document.getElementById('textInputContainer').style.display = labelMode === 'text' ? 'block' : 'none';
-            document.getElementById('imageInputContainer').style.display = labelMode === 'image' ? 'block' : 'none';
-            renderSheet();
-        }
-
-        function updateLabelText() {
-            labelTextStr = document.getElementById('customLabelText').value || "";
-            renderSheet();
-        }
-
-        function handleImageUpload() {
-            const fileInput = document.getElementById('customLabelImg');
-            const file = fileInput.files[0];
-            const statusDiv = document.getElementById('imgStatus');
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        labelImgData = e.target.result;
-                        labelImgRatio = img.width / img.height;
-                        statusDiv.style.display = 'block';
-                        renderSheet();
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // --- LOGICA PAPEL ---
-        function handlePaperChange() {
-            const val = document.getElementById('paperSelect').value;
-            const customDiv = document.getElementById('customInputs');
-            if (val === 'custom') {
-                customDiv.style.display = 'flex';
-                updateCustomSize(); 
-            } else {
-                customDiv.style.display = 'none';
-                const p = presets[val];
-                currentW = p.w;
-                currentH = p.h;
-                currentName = p.name;
-                updateSystem();
-            }
-        }
-        
-        function handleLayoutChange() {
-            const val = document.getElementById('layoutSelect').value;
-            const customStripDiv = document.getElementById('customStripInput');
-            customStripDiv.style.display = (val === 'custom_strip') ? 'block' : 'none';
-            renderSheet();
-        }
-
-        function updateCustomSize() {
-            const wCm = parseFloat(document.getElementById('customW').value) || 20;
-            const hCm = parseFloat(document.getElementById('customH').value) || 20;
-            currentW = wCm / 2.54;
-            currentH = hCm / 2.54;
-            currentName = `Personalizado (${wCm}x${hCm} cm)`;
-            updateSystem();
-        }
-
-        function calculateCapacity() {
-            const availableH = currentH - MARGIN_V_IN - 0.2; 
-            const unitH = STRIP_H_IN + MIN_GAP_IN;
-            let count = Math.floor(availableH / unitH);
-            if (count < 1) count = 0;
-            return count;
-        }
-
-        function updateSystem() {
-            maxCapacity = calculateCapacity();
-            const styleElem = document.getElementById('page-style');
-            
-            // Determinar orientación para CSS Print
-            const orientation = currentW > currentH ? 'landscape' : 'portrait';
-            
-            // INYECTAR CSS ESTRICTO DE PÁGINA
-            // Esto le dice al diálogo de impresión el tamaño exacto del papel
-            styleElem.innerHTML = `
-                @page { 
-                    size: ${currentW}in ${currentH}in; 
-                    margin: 0; 
-                }
-            `;
-
-            const sheet = document.getElementById('sheetContent');
-            sheet.style.width = currentW + 'in';
-            sheet.style.height = currentH + 'in';
-
-            const msg = document.getElementById('statusMsg');
-            let warn = "";
-            if (currentW < 14.5) warn = " ⚠️ Papel angosto. Revisa si cabe la tira larga.";
-            msg.innerHTML = `Papel: <strong>${currentName}</strong> (${currentW.toFixed(1)}" x ${currentH.toFixed(1)}") | Caben: <strong>${maxCapacity}</strong> Tiras. ${warn}`;
-            msg.style.borderLeftColor = warn ? "#c0392b" : "#3498db";
-
-            renderSheet();
-        }
-
-        function toggleColorPicker() {
-            const mode = document.getElementById('bgMode').value;
-            document.getElementById('colorPickerGroup').style.display = (mode === 'custom') ? 'block' : 'none';
-            renderSheet();
-        }
-
-        // --- RENDERIZADO SVG ---
-        const configs = {
-            '10': { inches: 14.0, label: '10 Pies' },
-            '9':  { inches: 12.5, label: '9 Pies' },
-            '8':  { inches: 11.0, label: '8 Pies' },
-            'custom_strip': { inches: 13.0, label: 'Personalizada' }
+        // Header Function
+        const addHeader = () => {
+             doc.setFontSize(14);
+             doc.setTextColor(0);
+             doc.text(`ORDEN DE PRODUCCIÓN ABPC - ${calc.stripsToPrint.length} UNIDADES`, calc.paperW/2, 0.5, {align:'center'});
         };
 
-        function getStripSVG(type) {
-            if (type === 'custom_strip') {
-                const customVal = parseFloat(document.getElementById('customStripLenVal').value) || 13;
-                configs['custom_strip'].inches = customVal;
-                configs['custom_strip'].label = `Medida: ${customVal}"`;
+        addHeader();
+        addFooter(1);
+
+        calc.stripsToPrint.forEach((strip, i) => {
+            // Check Page Break (Sheet Mode)
+            if (mode === 'sheet' && itemsOnPage >= calc.stripsPerPage) {
+                doc.addPage();
+                cursorX = MARGIN;
+                cursorY = 1.0;
+                itemsOnPage = 0;
+                colIdx = 0;
+                addHeader();
+                addFooter(doc.internal.getNumberOfPages());
             }
 
-            const conf = configs[type];
-            const w = conf.inches;
-            const h = STRIP_H_IN;
+            // Draw Strip
+            drawStripVector(doc, cursorX, cursorY, strip.w, STRIP_H, strip.l, labelTxt, fillCol, txtCol, lineCol, cGold);
+
+            // Move Cursor
+            colIdx++;
+            itemsOnPage++;
             
-            const bgMode = document.getElementById('bgMode').value;
-            let fillBody, strokeBorder, textColor, guideColor, tickColor;
-            const cCyan = "#00FFFF"; 
-            const cGold = "#FFD700";
-
-            if (bgMode === 'transparent') {
-                fillBody = "none"; strokeBorder = "#000"; textColor = "#000"; tickColor = "#009999"; guideColor = "#000";
-            } else if (bgMode === 'black') {
-                fillBody = "#111"; strokeBorder = "none"; textColor = "#FFF"; tickColor = cCyan; guideColor = "#FFF";
+            if (colIdx >= calc.cols) {
+                colIdx = 0;
+                cursorX = MARGIN;
+                cursorY += (STRIP_H + GAP_Y);
             } else {
-                fillBody = document.getElementById('customColorInput').value; strokeBorder = "none";
-                const isDark = parseInt(fillBody.substring(1), 16) < 0xffffff / 2;
-                textColor = isDark ? "#FFF" : "#000"; guideColor = textColor; tickColor = isDark ? cCyan : "#000";
+                cursorX += colW;
             }
+        });
 
-            let ticks = "";
-            const step = w / 10;
-            for(let i=1; i<10; i++) {
-                if(i===5) continue;
-                ticks += `<line x1="${step*i}" y1="${(h/2)-0.25}" x2="${step*i}" y2="${(h/2)+0.25}" />`;
-            }
+        doc.save(`Slicers_JMRR_${calc.stripsToPrint.length}_Unidades.pdf`);
+    }
 
-            const cutBorder = `<rect x="0" y="0" width="${w}" height="${h}" rx="0.15" fill="none" stroke="#999" stroke-width="0.015" stroke-dasharray="0.1, 0.1"/>`;
-
-            let labelContent = "";
-            if (labelMode === 'image' && labelImgData) {
-                const imgH = 0.35;
-                const imgW = imgH * labelImgRatio;
-                const imgX = (w / 2) - (imgW / 2);
-                const imgY = h - 0.45;
-                labelContent = `<image href="${labelImgData}" x="${imgX}" y="${imgY}" height="${imgH}" width="${imgW}" />`;
-            } else {
-                labelContent = `<text x="${w/2}" y="${h-0.15}" font-size="0.18" fill="${textColor}" text-anchor="middle" opacity="0.9">${labelTextStr}</text>`;
-            }
-
-            return `
-            <div class="strip-wrapper">
-                <div class="strip-label" style="color:${textColor === '#FFF' ? '#999' : '#555'}">${conf.label}</div>
-                <svg width="${w}in" height="${h}in" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="0" y="0" width="${w}" height="${h}" rx="0.15" fill="${fillBody}" stroke="${strokeBorder}" stroke-width="0.02"/>
-                    ${bgMode !== 'black' && bgMode !== 'custom' ? cutBorder : ''}
-                    <line x1="0" y1="${h/2}" x2="${w}" y2="${h/2}" stroke="${tickColor}" stroke-width="0.01" opacity="0.5"/>
-                    <g stroke="${tickColor}" stroke-width="0.04">${ticks}</g>
-                    <polygon points="${w/2},${h/2-0.25} ${w/2+0.3},${h/2} ${w/2},${h/2+0.25} ${w/2-0.3},${h/2}" fill="${cGold}" stroke="#B8860B" stroke-width="0.01"/>
-                    ${labelContent}
-                    <path d="M0,${h/2} L0.25,${h/2+0.2} L0.25,${h/2-0.2} Z" fill="${guideColor}" opacity="0.8"/>
-                    <path d="M${w},${h/2} L${w-0.25},${h/2+0.2} L${w-0.25},${h/2-0.2} Z" fill="${guideColor}" opacity="0.8"/>
-                </svg>
-                <div class="cut-line"></div>
-            </div>`;
+    function drawStripVector(doc, x, y, w, h, subLabel, mainLabel, fill, txt, line, gold) {
+        // 1. Fondo
+        if(fill) {
+            doc.setFillColor(fill[0], fill[1], fill[2]);
+            doc.rect(x, y, w, h, 'F');
+        } else {
+            // Outline para transparente
+            doc.setDrawColor(0);
+            doc.setLineWidth(0.01);
+            doc.rect(x, y, w, h, 'S');
         }
 
-        function renderSheet() {
-            const layoutType = document.getElementById('layoutSelect').value;
-            const container = document.getElementById('sheetContent');
-            
-            let html = `<div class="sheet-header">PLANTILLA ${labelTextStr} - ${currentName}</div>`;
+        // 2. Crop Marks (Marcas de Corte) - PRO FEATURE
+        doc.setDrawColor(0);
+        doc.setLineWidth(0.01);
+        const cmLen = 0.15; // Longitud marca
+        // Top Left
+        doc.line(x, y, x - cmLen, y); // Horiz
+        doc.line(x, y, x, y - cmLen); // Vert
+        // Top Right
+        doc.line(x+w, y, x+w+cmLen, y);
+        doc.line(x+w, y, x+w, y-cmLen);
+        // Bottom Left
+        doc.line(x, y+h, x-cmLen, y+h);
+        doc.line(x, y+h, x, y+h+cmLen);
+        // Bottom Right
+        doc.line(x+w, y+h, x+w+cmLen, y+h);
+        doc.line(x+w, y+h, x+w, y+h+cmLen);
 
-            if (maxCapacity > 0) {
-                if (layoutType === 'mix') {
-                    const base = Math.floor(maxCapacity / 3);
-                    let rem = maxCapacity % 3;
-                    const c10 = base + (rem > 0 ? 1 : 0);
-                    const c9 = base + (rem > 1 ? 1 : 0);
-                    const c8 = base;
+        // 3. Línea Central
+        doc.setDrawColor(line[0], line[1], line[2]);
+        doc.setLineWidth(0.02);
+        doc.line(x, y+h/2, x+w, y+h/2);
 
-                    for(let i=0; i<c10; i++) html += getStripSVG('10');
-                    for(let i=0; i<c9; i++) html += getStripSVG('9');
-                    for(let i=0; i<c8; i++) html += getStripSVG('8');
-                } else {
-                    for(let i=0; i<maxCapacity; i++) html += getStripSVG(layoutType);
-                }
-            } else {
-                html += `<div style="padding:20px; color:red; font-weight:bold;">El papel es muy pequeño para imprimir tiras.</div>`;
-            }
-
-            container.innerHTML = html;
+        // 4. Ticks
+        const step = w/10;
+        doc.setLineWidth(0.03);
+        for(let t=1; t<10; t++) {
+            if(t===5) continue;
+            let tx = x + (step*t);
+            doc.line(tx, y + h/2 - 0.2, tx, y + h/2 + 0.2);
         }
 
-        updateSystem();
-    </script>
+        // 5. Diamante
+        doc.setFillColor(gold[0], gold[1], gold[2]);
+        const cx = x + w/2;
+        const cy = y + h/2;
+        doc.triangle(cx, cy-0.25, cx+0.25, cy, cx-0.25, cy, 'F');
+        doc.triangle(cx, cy+0.25, cx+0.25, cy, cx-0.25, cy, 'F');
+
+        // 6. Textos
+        doc.setTextColor(txt[0], txt[1], txt[2]);
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text(mainLabel, cx, y + h - 0.2, {align:'center'});
+
+        doc.setFontSize(8);
+        doc.setTextColor(100);
+        doc.text(subLabel, x + 0.1, y + 0.15); // Label interno superior
+    }
+
+    // Init
+    updateCalc();
+</script>
+
 </body>
 </html>
+
