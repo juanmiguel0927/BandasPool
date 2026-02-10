@@ -73,11 +73,22 @@
             box-sizing: border-box;
         }
         
+        /* Input especial para medida custom */
+        .custom-strip-input {
+            margin-top: 10px;
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px dashed #e67e22;
+            display: none; /* Oculto por defecto */
+        }
+        .custom-strip-input input { background: white; border-color: #e67e22; }
+        
         /* Estilos para input color */
         input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 100%; /* Ocupa espacio completo si aparece */
+            width: 100%; 
             height: 38px;
             padding: 0;
             background: none;
@@ -127,7 +138,7 @@
         /* Filas de colores mixtos */
         .mix-row {
             display: grid;
-            grid-template-columns: 60px 1fr 40px; /* Label | Select | ColorInput */
+            grid-template-columns: 60px 1fr 40px; 
             gap: 10px;
             margin-bottom: 8px;
             background: #f8f9fa;
@@ -222,7 +233,15 @@
                     <option value="10">Solo 10 Pies (14")</option>
                     <option value="9">Solo 9 Pies (12.5")</option>
                     <option value="8">Solo 8 Pies (11")</option>
+                    <option value="custom">★ MEDIDA PERSONALIZADA</option>
                 </select>
+                
+                <!-- INPUT MEDIDA MANUAL -->
+                <div id="customSizeContainer" class="custom-strip-input">
+                    <label style="color:#d35400;">Distancia Diamante a Diamante (Pulgadas):</label>
+                    <input type="number" id="customVal" value="13.5" step="0.125" onchange="updateCalc()">
+                    <small style="color:#666; font-size:10px;">Mide de centro a centro.</small>
+                </div>
             </div>
         </div>
 
@@ -359,7 +378,6 @@
         const mode = document.getElementById(selectId).value;
         const input = document.getElementById(inputId);
         
-        // Mostrar/Ocultar input picker solo si es Custom
         if (mode === 'custom') {
             input.style.display = 'block';
             return { mode: 'custom', val: input.value };
@@ -374,13 +392,16 @@
         const qty = parseInt(document.getElementById('totalStrips').value) || 24;
         const type = document.getElementById('sizeType').value;
         
+        // Manejo de Input Custom
+        const customInput = document.getElementById('customSizeContainer');
+        customInput.style.display = (type === 'custom') ? 'block' : 'none';
+        
         // Gestión de UI de colores
         const isMix = (type === 'mix');
         document.getElementById('singleColorControl').style.display = isMix ? 'none' : 'block';
         document.getElementById('mixColorControl').style.display = isMix ? 'block' : 'none';
 
         // Obtener configuraciones de color
-        // Si no es Mix, usamos bgMode. Si es Mix, usamos bgMixN
         const colGlobal = resolveColor('bgMode', 'colorGlobal');
         const col10 = resolveColor('bgMix10', 'colorMix10');
         const col9 = resolveColor('bgMix9', 'colorMix9');
@@ -391,16 +412,20 @@
         if (type === 'mix') {
             const base = Math.floor(qty / 3);
             let rem = qty % 3;
-            // 10 pies
             for(let i=0; i < base + (rem>0?1:0); i++) calc.stripsToPrint.push({w:14.0, l:"10 Pies", colorCfg: col10});
-            // 9 pies
             for(let i=0; i < base + (rem>1?1:0); i++) calc.stripsToPrint.push({w:12.5, l:"9 Pies", colorCfg: col9});
-            // 8 pies
             for(let i=0; i < base; i++) calc.stripsToPrint.push({w:11.0, l:"8 Pies", colorCfg: col8});
         } else {
             let s = 14.0, l = "10 Pies";
             if(type==='9'){s=12.5; l="9 Pies";}
             if(type==='8'){s=11.0; l="8 Pies";}
+            
+            // Lógica Personalizada
+            if(type==='custom') {
+                s = parseFloat(document.getElementById('customVal').value) || 12.0;
+                l = `Medida: ${s}"`;
+            }
+            
             for(let i=0; i<qty; i++) calc.stripsToPrint.push({w:s, l:l, colorCfg: colGlobal});
         }
 
@@ -417,7 +442,12 @@
         }
 
         // 3. Calcular Grid
-        const colWidth = 14.2; 
+        // Determinar ancho máximo de tira en el lote para calcular columnas seguras
+        let maxStripW = 0;
+        calc.stripsToPrint.forEach(s => { if(s.w > maxStripW) maxStripW = s.w; });
+        // Gap horizontal de seguridad
+        const colWidth = maxStripW + 0.2; 
+        
         const rowHeight = STRIP_H + GAP_Y;
         const usableW = calc.paperW - (MARGIN*2);
         
@@ -455,7 +485,6 @@
             const d = document.createElement('div');
             d.className = 'mini-strip';
             
-            // Visualización de color
             let bg = '#eee';
             let border = 'none';
             
@@ -525,7 +554,11 @@
         let cursorY = 1.0; 
         let itemsOnPage = 0;
         let colIdx = 0;
-        const colW = 14.2;
+        
+        // Calcular ancho de columna dinámico basado en la tira más ancha del set
+        let maxStripW = 0;
+        calc.stripsToPrint.forEach(s => { if(s.w > maxStripW) maxStripW = s.w; });
+        const colW = maxStripW + 0.2;
 
         const addFooter = (pNum) => {
             doc.setFontSize(8); doc.setTextColor(150);
