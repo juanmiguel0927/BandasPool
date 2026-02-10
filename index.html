@@ -9,9 +9,9 @@
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #e67e22; /* Naranja Energético */
+            --accent: #e67e22;
             --bg: #ecf0f1;
-            --glass: rgba(255, 255, 255, 0.95);
+            --glass: rgba(255, 255, 255, 0.98);
         }
 
         body {
@@ -32,13 +32,11 @@
             padding: 30px;
             border-radius: 16px;
             width: 95%;
-            max-width: 900px;
+            max-width: 950px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             border-top: 6px solid var(--accent);
-            backdrop-filter: blur(10px);
         }
 
-        /* --- CABECERA --- */
         .header {
             text-align: center;
             margin-bottom: 25px;
@@ -47,10 +45,9 @@
         }
         h1 { margin: 0; font-size: 24px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
         
-        /* --- GRID DE CONTROLES --- */
         .controls-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 25px;
         }
@@ -68,17 +65,30 @@
         
         select, input[type="number"], input[type="text"] {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 2px solid #eee;
             border-radius: 6px;
             font-size: 14px;
             background: #f9f9f9;
-            transition: border-color 0.3s;
             box-sizing: border-box;
         }
-        select:focus, input:focus { border-color: var(--accent); outline: none; background: white; }
+        
+        /* Estilos para input color */
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 100%; /* Ocupa espacio completo si aparece */
+            height: 38px;
+            padding: 0;
+            background: none;
+            cursor: pointer;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; }
 
-        /* Botones Rápidos */
         .quick-qty { display: flex; gap: 8px; margin-top: 10px; }
         .q-btn {
             flex: 1;
@@ -95,7 +105,6 @@
         .q-btn:hover { background: #b2bec3; }
         .q-btn.active { background: var(--primary); color: white; }
 
-        /* Toggle Modo */
         .toggle-container {
             display: flex;
             background: #eee;
@@ -115,7 +124,21 @@
         }
         .toggle-btn.active { background: white; color: var(--accent); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        /* Botón Acción */
+        /* Filas de colores mixtos */
+        .mix-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 40px; /* Label | Select | ColorInput */
+            gap: 10px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 6px;
+            align-items: center;
+        }
+        .mix-row label { margin: 0; font-size: 11px; }
+        .mix-row select { padding: 6px; font-size: 12px; }
+        .mix-row input[type="color"] { margin-top: 0; height: 30px; }
+
         .btn-action {
             background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
             color: white;
@@ -137,7 +160,6 @@
         }
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
 
-        /* Info Box */
         .info-box {
             background: #dff9fb;
             color: #130f40;
@@ -146,12 +168,8 @@
             font-size: 13px;
             margin-bottom: 20px;
             border-left: 4px solid #22a6b3;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        /* Vista Previa Visual */
         .visual-preview {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
@@ -170,7 +188,6 @@
             border-radius: 2px;
         }
 
-        /* --- CRÉDITOS --- */
         .footer-cr {
             text-align: center;
             margin-top: 30px;
@@ -178,10 +195,7 @@
             color: rgba(255,255,255,0.7);
             line-height: 1.5;
         }
-        .footer-cr strong {
-            color: #fff;
-            font-size: 13px;
-        }
+        .footer-cr strong { color: #fff; }
     </style>
 </head>
 <body>
@@ -204,7 +218,7 @@
             <div style="margin-top:15px;">
                 <label>Medida de Mesa</label>
                 <select id="sizeType" onchange="updateCalc()">
-                    <option value="mix">MIXTO (Equilibrado)</option>
+                    <option value="mix">MIXTO (Configurable)</option>
                     <option value="10">Solo 10 Pies (14")</option>
                     <option value="9">Solo 9 Pies (12.5")</option>
                     <option value="8">Solo 8 Pies (11")</option>
@@ -237,28 +251,62 @@
             </div>
         </div>
 
-        <!-- GRUPO 3: DISEÑO -->
+        <!-- GRUPO 3: PERSONALIZACIÓN -->
         <div class="control-group">
             <label>3. Personalización</label>
             <div style="margin-bottom:15px;">
                 <label>Etiqueta Central</label>
                 <input type="text" id="labelText" value="ABPC" placeholder="Nombre del Club" onkeyup="updateCalc()">
             </div>
-            <div>
-                <label>Color de Fondo</label>
+            
+            <!-- CONTROLES DE COLOR ORDENADOS -->
+            <label>Colores de Fondo</label>
+            
+            <!-- Single Color Mode -->
+            <div id="singleColorControl">
                 <select id="bgMode" onchange="updateCalc()">
-                    <option value="black">Negro (Clásico)</option>
-                    <option value="transparent">Transparente (Solo Corte)</option>
-                    <option value="blue">Azul Torneo</option>
-                    <option value="green">Verde Paño</option>
+                    <option value="transparent" selected>Transparente</option>
+                    <option value="black">Negro</option>
+                    <option value="custom">Personalizado</option>
                 </select>
+                <input type="color" id="colorGlobal" value="#3498db" onchange="updateCalc()" style="display:none;">
             </div>
+
+            <!-- Mix Color Mode -->
+            <div id="mixColorControl" style="display:none;">
+                <div class="mix-row">
+                    <label>10 Pies:</label>
+                    <select id="bgMix10" onchange="updateCalc()">
+                        <option value="transparent" selected>Transparente</option>
+                        <option value="black">Negro</option>
+                        <option value="custom">Personalizado</option>
+                    </select>
+                    <input type="color" id="colorMix10" value="#e74c3c" onchange="updateCalc()" style="display:none;">
+                </div>
+                <div class="mix-row">
+                    <label>9 Pies:</label>
+                    <select id="bgMix9" onchange="updateCalc()">
+                        <option value="transparent">Transparente</option>
+                        <option value="black" selected>Negro</option>
+                        <option value="custom">Personalizado</option>
+                    </select>
+                    <input type="color" id="colorMix9" value="#2ecc71" onchange="updateCalc()" style="display:none;">
+                </div>
+                <div class="mix-row">
+                    <label>8 Pies:</label>
+                    <select id="bgMix8" onchange="updateCalc()">
+                        <option value="transparent">Transparente</option>
+                        <option value="black">Negro</option>
+                        <option value="custom" selected>Personalizado</option>
+                    </select>
+                    <input type="color" id="colorMix8" value="#3498db" onchange="updateCalc()">
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <div class="info-box" id="statusMsg">
-        <!-- JS inyectará info aquí -->
-    </div>
+    <div class="info-box" id="statusMsg"></div>
 
     <button class="btn-action" onclick="generatePDF()">
         <span>⬇</span> Generar PDF Maestro
@@ -274,32 +322,24 @@
 </div>
 
 <script>
-    // --- AUTOGENERAR AÑO COPYRIGHT ---
+    // --- AUTOGENERAR AÑO ---
     document.getElementById('copyright-text').innerText = "© " + new Date().getFullYear();
 
-    // --- VARIABLES DE ESTADO ---
-    let mode = 'sheet'; // 'sheet' o 'roll'
-    
-    // Dimensiones Físicas (Pulgadas)
+    // --- VARIABLES ---
+    let mode = 'sheet'; 
     const STRIP_H = 1.35; 
-    const GAP_X = 0.1;    // Espacio horizontal entre tiras
-    const GAP_Y = 0.2;    // Espacio vertical
-    const MARGIN = 0.3;   // Margen seguro
+    const GAP_Y = 0.2; 
+    const MARGIN = 0.3;
     
     let calc = {
-        paperW: 0,
-        paperH: 0,
-        cols: 0,
-        rowsPerPage: 0,
-        totalPages: 0,
-        stripsPerPage: 0,
-        stripsToPrint: [] // Array de objetos {w, label}
+        paperW: 0, paperH: 0, cols: 0,
+        rowsPerPage: 0, totalPages: 0, stripsPerPage: 0,
+        stripsToPrint: [] 
     };
 
     // --- UI LOGIC ---
     function setQty(n) {
         document.getElementById('totalStrips').value = n;
-        // Update active class
         document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
         event.target.classList.add('active');
         updateCalc();
@@ -309,32 +349,59 @@
         mode = m;
         document.getElementById('btnSheet').className = m === 'sheet' ? 'toggle-btn active' : 'toggle-btn';
         document.getElementById('btnRoll').className = m === 'roll' ? 'toggle-btn active' : 'toggle-btn';
-        
         document.getElementById('panelSheet').style.display = m === 'sheet' ? 'block' : 'none';
         document.getElementById('panelRoll').style.display = m === 'roll' ? 'block' : 'none';
         updateCalc();
+    }
+
+    // --- HELPER: GET COLOR CONFIG ---
+    function resolveColor(selectId, inputId) {
+        const mode = document.getElementById(selectId).value;
+        const input = document.getElementById(inputId);
+        
+        // Mostrar/Ocultar input picker solo si es Custom
+        if (mode === 'custom') {
+            input.style.display = 'block';
+            return { mode: 'custom', val: input.value };
+        } else {
+            input.style.display = 'none';
+            return { mode: mode, val: null };
+        }
     }
 
     // --- CORE CALCULATION ---
     function updateCalc() {
         const qty = parseInt(document.getElementById('totalStrips').value) || 24;
         const type = document.getElementById('sizeType').value;
-        const bgMode = document.getElementById('bgMode').value;
         
+        // Gestión de UI de colores
+        const isMix = (type === 'mix');
+        document.getElementById('singleColorControl').style.display = isMix ? 'none' : 'block';
+        document.getElementById('mixColorControl').style.display = isMix ? 'block' : 'none';
+
+        // Obtener configuraciones de color
+        // Si no es Mix, usamos bgMode. Si es Mix, usamos bgMixN
+        const colGlobal = resolveColor('bgMode', 'colorGlobal');
+        const col10 = resolveColor('bgMix10', 'colorMix10');
+        const col9 = resolveColor('bgMix9', 'colorMix9');
+        const col8 = resolveColor('bgMix8', 'colorMix8');
+
         // 1. Generar Lista de Tiras
         calc.stripsToPrint = [];
         if (type === 'mix') {
             const base = Math.floor(qty / 3);
             let rem = qty % 3;
-            // Ordenar: Grandes primero para optimizar ancho columna
-            for(let i=0; i < base + (rem>0?1:0); i++) calc.stripsToPrint.push({w:14.0, l:"10 Pies"});
-            for(let i=0; i < base + (rem>1?1:0); i++) calc.stripsToPrint.push({w:12.5, l:"9 Pies"});
-            for(let i=0; i < base; i++) calc.stripsToPrint.push({w:11.0, l:"8 Pies"});
+            // 10 pies
+            for(let i=0; i < base + (rem>0?1:0); i++) calc.stripsToPrint.push({w:14.0, l:"10 Pies", colorCfg: col10});
+            // 9 pies
+            for(let i=0; i < base + (rem>1?1:0); i++) calc.stripsToPrint.push({w:12.5, l:"9 Pies", colorCfg: col9});
+            // 8 pies
+            for(let i=0; i < base; i++) calc.stripsToPrint.push({w:11.0, l:"8 Pies", colorCfg: col8});
         } else {
             let s = 14.0, l = "10 Pies";
             if(type==='9'){s=12.5; l="9 Pies";}
             if(type==='8'){s=11.0; l="8 Pies";}
-            for(let i=0; i<qty; i++) calc.stripsToPrint.push({w:s, l:l});
+            for(let i=0; i<qty; i++) calc.stripsToPrint.push({w:s, l:l, colorCfg: colGlobal});
         }
 
         // 2. Determinar Papel
@@ -347,102 +414,125 @@
         } else {
             const wCm = parseFloat(document.getElementById('rollWidth').value) || 60;
             calc.paperW = wCm / 2.54;
-            // Altura infinita por ahora
         }
 
         // 3. Calcular Grid
-        // Usamos el ancho de la tira más grande (14.0) + marcas de corte (0.2 approx)
         const colWidth = 14.2; 
         const rowHeight = STRIP_H + GAP_Y;
-
         const usableW = calc.paperW - (MARGIN*2);
+        
         calc.cols = Math.floor(usableW / colWidth);
         if(calc.cols < 1) calc.cols = 1;
 
         if (mode === 'sheet') {
-            const usableH = calc.paperH - (MARGIN*2) - 0.5; // 0.5 header
+            const usableH = calc.paperH - (MARGIN*2) - 0.5;
             calc.rowsPerPage = Math.floor(usableH / rowHeight);
             calc.stripsPerPage = calc.cols * calc.rowsPerPage;
             calc.totalPages = Math.ceil(qty / calc.stripsPerPage);
         } else {
             const totalRows = Math.ceil(qty / calc.cols);
-            calc.paperH = (totalRows * rowHeight) + (MARGIN*2) + 1.0; // +1.0 header
+            calc.paperH = (totalRows * rowHeight) + (MARGIN*2) + 1.0;
             calc.rowsPerPage = totalRows;
             calc.totalPages = 1;
         }
 
-        // 4. Actualizar UI
+        // 4. Update UI Info
         const status = document.getElementById('statusMsg');
         const wCm = (calc.paperW * 2.54).toFixed(1);
         const hCm = (calc.paperH * 2.54).toFixed(1);
         
         if(mode === 'sheet') {
-            status.innerHTML = `<strong>Producción Paginada:</strong> Se generarán <strong>${calc.totalPages} páginas</strong> tamaño ${wCm}x${hCm}cm.<br>Cada página contiene hasta ${calc.stripsPerPage} tiras.`;
+            status.innerHTML = `<strong>Producción Paginada:</strong> ${calc.totalPages} páginas tamaño ${wCm}x${hCm}cm.<br>Capacidad por hoja: ${calc.stripsPerPage} tiras.`;
         } else {
-            status.innerHTML = `<strong>Producción en Rollo:</strong> Se generará un archivo único de <strong>${wCm}cm x ${hCm}cm</strong>.<br>Optimizado para corte en plotter.`;
+            status.innerHTML = `<strong>Producción en Rollo:</strong> Archivo único de ${wCm}cm x ${hCm}cm.`;
         }
 
         // Preview Visual
         const preview = document.getElementById('previewGrid');
         preview.innerHTML = '';
-        let color = '#2c3e50';
-        if(bgMode==='transparent') color = '#ecf0f1'; // Gris claro
-        if(bgMode==='blue') color = '#0984e3';
-        if(bgMode==='green') color = '#00b894';
-
+        
         calc.stripsToPrint.forEach(s => {
             const d = document.createElement('div');
             d.className = 'mini-strip';
-            d.style.backgroundColor = color;
-            if(bgMode==='transparent') d.style.border = "1px solid #333";
+            
+            // Visualización de color
+            let bg = '#eee';
+            let border = 'none';
+            
+            if(s.colorCfg.mode === 'transparent') {
+                bg = '#ecf0f1';
+                border = '1px solid #999';
+            } else if (s.colorCfg.mode === 'black') {
+                bg = '#2d3436';
+            } else {
+                bg = s.colorCfg.val;
+            }
+            
+            d.style.backgroundColor = bg;
+            d.style.border = border;
             d.title = s.l;
             preview.appendChild(d);
         });
+    }
+
+    // --- HELPER DE COLOR PARA PDF ---
+    function hexToRgb(hex) {
+        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? [
+            parseInt(result[1], 16),
+            parseInt(result[2], 16),
+            parseInt(result[3], 16)
+        ] : [0, 0, 0];
+    }
+
+    function isDark(rgb) {
+        const brightness = Math.round(((parseInt(rgb[0]) * 299) +
+                      (parseInt(rgb[1]) * 587) +
+                      (parseInt(rgb[2]) * 114)) / 1000);
+        return brightness < 125;
+    }
+
+    function getColorTheme(cfg) {
+        const cCyan = [0, 255, 255];
+        const cGold = [255, 215, 0];
+        const cWhite = [255, 255, 255];
+        const cBlack = [15, 15, 15];
+        
+        if (cfg.mode === 'transparent') {
+            return { fill: null, txt: [0,0,0], line: [0,150,150], gold: cGold };
+        }
+        
+        if (cfg.mode === 'black') {
+            return { fill: cBlack, txt: cWhite, line: cCyan, gold: cGold };
+        }
+        
+        // Custom
+        const bgRgb = hexToRgb(cfg.val);
+        const txtRgb = isDark(bgRgb) ? cWhite : [0,0,0];
+        const lineRgb = isDark(bgRgb) ? cCyan : [0,0,0];
+        
+        return { fill: bgRgb, txt: txtRgb, line: lineRgb, gold: cGold };
     }
 
     // --- PDF GENERATOR ---
     async function generatePDF() {
         const { jsPDF } = window.jspdf;
         const orientation = calc.paperW > calc.paperH ? 'l' : 'p';
-        
-        const doc = new jsPDF({
-            orientation: orientation,
-            unit: 'in',
-            format: [calc.paperW, calc.paperH]
-        });
-
+        const doc = new jsPDF({ orientation, unit: 'in', format: [calc.paperW, calc.paperH] });
         const labelTxt = document.getElementById('labelText').value;
-        const bgMode = document.getElementById('bgMode').value;
-        
-        // Colores
-        let fillCol = null, txtCol = [0,0,0], lineCol = [0,255,255]; // Default
-        const cBlack = [15,15,15];
-        const cWhite = [255,255,255];
-        const cGold = [255, 215, 0];
-        
-        if(bgMode==='black') { fillCol=cBlack; txtCol=cWhite; lineCol=[0,255,255]; }
-        if(bgMode==='transparent') { fillCol=null; txtCol=[0,0,0]; lineCol=[0,150,150]; }
-        if(bgMode==='blue') { fillCol=[10,60,120]; txtCol=cWhite; lineCol=[255,255,255]; }
-        if(bgMode==='green') { fillCol=[20,90,50]; txtCol=cWhite; lineCol=[255,255,255]; }
 
-        // Layout Vars
         let cursorX = MARGIN;
         let cursorY = 1.0; 
         let itemsOnPage = 0;
         let colIdx = 0;
-        const colW = 14.2; // Slot fijo para alinear columnas
+        const colW = 14.2;
 
-        // Footer Author Function
         const addFooter = (pNum) => {
-            doc.setFontSize(8);
-            doc.setTextColor(150);
+            doc.setFontSize(8); doc.setTextColor(150);
             doc.text(`Desarrollado por Juan Miguel Rios Redondo - Pág ${pNum}`, MARGIN, calc.paperH - 0.2);
         };
-
-        // Header Function
         const addHeader = () => {
-             doc.setFontSize(14);
-             doc.setTextColor(0);
+             doc.setFontSize(14); doc.setTextColor(0);
              doc.text(`ORDEN DE PRODUCCIÓN ABPC - ${calc.stripsToPrint.length} UNIDADES`, calc.paperW/2, 0.5, {align:'center'});
         };
 
@@ -450,28 +540,18 @@
         addFooter(1);
 
         calc.stripsToPrint.forEach((strip, i) => {
-            // Check Page Break (Sheet Mode)
             if (mode === 'sheet' && itemsOnPage >= calc.stripsPerPage) {
                 doc.addPage();
-                cursorX = MARGIN;
-                cursorY = 1.0;
-                itemsOnPage = 0;
-                colIdx = 0;
-                addHeader();
-                addFooter(doc.internal.getNumberOfPages());
+                cursorX = MARGIN; cursorY = 1.0; itemsOnPage = 0; colIdx = 0;
+                addHeader(); addFooter(doc.internal.getNumberOfPages());
             }
 
-            // Draw Strip
-            drawStripVector(doc, cursorX, cursorY, strip.w, STRIP_H, strip.l, labelTxt, fillCol, txtCol, lineCol, cGold);
+            const theme = getColorTheme(strip.colorCfg);
+            drawStripVector(doc, cursorX, cursorY, strip.w, STRIP_H, strip.l, labelTxt, theme);
 
-            // Move Cursor
-            colIdx++;
-            itemsOnPage++;
-            
+            colIdx++; itemsOnPage++;
             if (colIdx >= calc.cols) {
-                colIdx = 0;
-                cursorX = MARGIN;
-                cursorY += (STRIP_H + GAP_Y);
+                colIdx = 0; cursorX = MARGIN; cursorY += (STRIP_H + GAP_Y);
             } else {
                 cursorX += colW;
             }
@@ -480,41 +560,29 @@
         doc.save(`Slicers_JMRR_${calc.stripsToPrint.length}_Unidades.pdf`);
     }
 
-    function drawStripVector(doc, x, y, w, h, subLabel, mainLabel, fill, txt, line, gold) {
-        // 1. Fondo
-        if(fill) {
-            doc.setFillColor(fill[0], fill[1], fill[2]);
+    function drawStripVector(doc, x, y, w, h, subLabel, mainLabel, theme) {
+        // Fondo
+        if(theme.fill) {
+            doc.setFillColor(theme.fill[0], theme.fill[1], theme.fill[2]);
             doc.rect(x, y, w, h, 'F');
         } else {
-            // Outline para transparente
-            doc.setDrawColor(0);
-            doc.setLineWidth(0.01);
-            doc.rect(x, y, w, h, 'S');
+            doc.setDrawColor(0); doc.setLineWidth(0.01); doc.rect(x, y, w, h, 'S');
         }
 
-        // 2. Crop Marks (Marcas de Corte) - PRO FEATURE
-        doc.setDrawColor(0);
-        doc.setLineWidth(0.01);
-        const cmLen = 0.15; // Longitud marca
-        // Top Left
-        doc.line(x, y, x - cmLen, y); // Horiz
-        doc.line(x, y, x, y - cmLen); // Vert
-        // Top Right
-        doc.line(x+w, y, x+w+cmLen, y);
-        doc.line(x+w, y, x+w, y-cmLen);
-        // Bottom Left
-        doc.line(x, y+h, x-cmLen, y+h);
-        doc.line(x, y+h, x, y+h+cmLen);
-        // Bottom Right
-        doc.line(x+w, y+h, x+w+cmLen, y+h);
-        doc.line(x+w, y+h, x+w, y+h+cmLen);
+        // Crop Marks
+        doc.setDrawColor(0); doc.setLineWidth(0.01);
+        const cmLen = 0.15;
+        doc.line(x, y, x - cmLen, y); doc.line(x, y, x, y - cmLen);
+        doc.line(x+w, y, x+w+cmLen, y); doc.line(x+w, y, x+w, y-cmLen);
+        doc.line(x, y+h, x-cmLen, y+h); doc.line(x, y+h, x, y+h+cmLen);
+        doc.line(x+w, y+h, x+w+cmLen, y+h); doc.line(x+w, y+h, x+w, y+h+cmLen);
 
-        // 3. Línea Central
-        doc.setDrawColor(line[0], line[1], line[2]);
+        // Línea Central
+        doc.setDrawColor(theme.line[0], theme.line[1], theme.line[2]);
         doc.setLineWidth(0.02);
         doc.line(x, y+h/2, x+w, y+h/2);
 
-        // 4. Ticks
+        // Ticks
         const step = w/10;
         doc.setLineWidth(0.03);
         for(let t=1; t<10; t++) {
@@ -523,25 +591,21 @@
             doc.line(tx, y + h/2 - 0.2, tx, y + h/2 + 0.2);
         }
 
-        // 5. Diamante
-        doc.setFillColor(gold[0], gold[1], gold[2]);
-        const cx = x + w/2;
-        const cy = y + h/2;
+        // Diamante
+        doc.setFillColor(theme.gold[0], theme.gold[1], theme.gold[2]);
+        const cx = x + w/2; const cy = y + h/2;
         doc.triangle(cx, cy-0.25, cx+0.25, cy, cx-0.25, cy, 'F');
         doc.triangle(cx, cy+0.25, cx+0.25, cy, cx-0.25, cy, 'F');
 
-        // 6. Textos
-        doc.setTextColor(txt[0], txt[1], txt[2]);
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
+        // Textos
+        doc.setTextColor(theme.txt[0], theme.txt[1], theme.txt[2]);
+        doc.setFontSize(14); doc.setFont("helvetica", "bold");
         doc.text(mainLabel, cx, y + h - 0.2, {align:'center'});
 
-        doc.setFontSize(8);
-        doc.setTextColor(100);
-        doc.text(subLabel, x + 0.1, y + 0.15); // Label interno superior
+        doc.setFontSize(8); doc.setTextColor(100);
+        doc.text(subLabel, x + 0.1, y + 0.15);
     }
 
-    // Init
     updateCalc();
 </script>
 
