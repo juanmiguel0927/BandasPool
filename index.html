@@ -87,6 +87,10 @@
         }
         .q-btn:hover { background: #b2bec3; }
         .q-btn.active { background: var(--primary); color: white; }
+        
+        /* Botón Test Oculto por defecto */
+        #btnTestQty { display: none; background-color: #f39c12; color: white; }
+        #btnTestQty:hover { background-color: #d35400; }
 
         .toggle-container {
             display: flex; background: #eee; border-radius: 6px; padding: 4px; margin-bottom: 15px;
@@ -124,6 +128,9 @@
         
         /* Personalizado */
         .custom-strip-input { display: none; margin-top:10px; padding:10px; background:#fef9e7; border:1px dashed #f39c12; border-radius:6px; }
+        
+        /* Diamond Color Wrapper */
+        .diamond-color-wrapper { margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px; }
     </style>
 </head>
 <body>
@@ -140,8 +147,9 @@
             <label>1. Objetivo de Producción</label>
             <input type="number" id="totalStrips" value="72" min="1" onchange="updateCalc()">
             <div class="quick-qty">
-                <button class="q-btn" onclick="setQty(1)">Prueba (1)</button>
+                <button class="q-btn" id="btnTestQty" onclick="setQty(1)">Prueba (1)</button>
                 <button class="q-btn" onclick="setQty(24)">1 Mesa (24)</button>
+                <button class="q-btn" onclick="setQty(48)">2 Mesas (48)</button>
                 <button class="q-btn active" onclick="setQty(72)">3 Mesas (72)</button>
             </div>
             <div style="margin-top:15px;">
@@ -170,9 +178,9 @@
             
             <div id="panelSheet">
                 <label>Tamaño de Hoja</label>
-                <select id="paperStandard" onchange="updateCalc()">
-                    <option value="letter" style="color:#c0392b; font-weight:bold;">★ Carta (11" x 8.5") - [PRUEBA DE VISIBILIDAD]</option>
-                    <option value="legal" style="color:#c0392b; font-weight:bold;">★ Oficio (14" x 8.5") - [PRUEBA DE VISIBILIDAD]</option>
+                <select id="paperStandard" onchange="handlePaperChange()">
+                    <option value="letter" style="color:#c0392b; font-weight:bold;">★ Carta (11" x 8.5") - [PRUEBA]</option>
+                    <option value="legal" style="color:#c0392b; font-weight:bold;">★ Oficio (14" x 8.5") - [PRUEBA]</option>
                     <option value="tabloid" selected>Tabloide (11" x 17") - [PRODUCCIÓN]</option>
                     <option value="superTabloid">Super Tabloide (12" x 18")</option>
                     <option value="a3">A3 (29.7cm x 42cm)</option>
@@ -237,6 +245,12 @@
                     <input type="color" id="colorMix8" value="#3498db" onchange="updateCalc()">
                 </div>
             </div>
+
+            <!-- Nuevo: Color del Diamante -->
+            <div class="diamond-color-wrapper">
+                <label>Color del Diamante Central</label>
+                <input type="color" id="diamondColor" value="#FFD700" onchange="updateCalc()">
+            </div>
         </div>
     </div>
 
@@ -265,18 +279,44 @@
     const GAP_Y = 0.2; 
     const MARGIN = 0.3;
     
-    // VARIABLES GRÁFICAS JUMBO (AQUÍ ESTÁ LA CLAVE)
-    // Aumentamos el grosor de línea y el tamaño del diamante
-    const LINE_WIDTH_JUMBO = 0.08; // Muy grueso (antes 0.02)
-    const DIAMOND_RADIUS = 0.40;   // Enorme (antes 0.25)
+    // VARIABLES GRÁFICAS JUMBO
+    const LINE_WIDTH_JUMBO = 0.08; 
+    const DIAMOND_RADIUS = 0.40;   
     
     let calc = { paperW: 0, paperH: 0, cols: 0, rowsPerPage: 0, totalPages: 0, stripsPerPage: 0, stripsToPrint: [] };
 
     function setQty(n) {
         document.getElementById('totalStrips').value = n;
-        document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
+        
+        // Actualizar estado visual de botones
+        document.querySelectorAll('.q-btn').forEach(b => {
+            b.classList.remove('active');
+            if (b.getAttribute('onclick').includes(`(${n})`)) {
+                b.classList.add('active');
+            }
+        });
+        
         updateCalc();
+    }
+
+    function handlePaperChange() {
+        const pt = document.getElementById('paperStandard').value;
+        const btnTest = document.getElementById('btnTestQty');
+        
+        if (pt === 'letter' || pt === 'legal') {
+            // Modo Prueba: Mostrar botón y forzar cantidad
+            btnTest.style.display = 'block';
+            setQty(1);
+        } else {
+            // Modo Producción: Ocultar botón y regresar a 1 mesa
+            btnTest.style.display = 'none';
+            // Si la cantidad actual es 1 (porque venía de prueba), restablecer a 24
+            if (parseInt(document.getElementById('totalStrips').value) === 1) {
+                setQty(24);
+            } else {
+                updateCalc();
+            }
+        }
     }
 
     function setMode(m) {
@@ -285,7 +325,18 @@
         document.getElementById('btnRoll').className = m === 'roll' ? 'toggle-btn active' : 'toggle-btn';
         document.getElementById('panelSheet').style.display = m === 'sheet' ? 'block' : 'none';
         document.getElementById('panelRoll').style.display = m === 'roll' ? 'block' : 'none';
-        updateCalc();
+        
+        if(m === 'sheet') {
+            handlePaperChange(); // Verificar si el papel seleccionado es de prueba
+        } else {
+            // En modo rollo, ocultar prueba y forzar producción
+            document.getElementById('btnTestQty').style.display = 'none';
+            if (parseInt(document.getElementById('totalStrips').value) === 1) {
+                setQty(24);
+            } else {
+                updateCalc();
+            }
+        }
     }
 
     function resolveColor(selectId, inputId) {
@@ -413,21 +464,25 @@
     }
 
     function getColorTheme(cfg) {
+        // Obtenemos el color del diamante seleccionado
+        const dHex = document.getElementById('diamondColor').value;
+        const cDiamond = hexToRgb(dHex);
+        
         const cCyan = [0, 255, 255];
         const cGold = [255, 215, 0];
         const cWhite = [255, 255, 255];
         const cBlack = [15, 15, 15];
         
         if (cfg.mode === 'transparent') {
-            return { fill: null, txt: [0,0,0], line: [0,128,128], gold: cGold };
+            return { fill: null, txt: [0,0,0], line: [0,128,128], gold: cDiamond };
         }
         if (cfg.mode === 'black') {
-            return { fill: cBlack, txt: cWhite, line: cCyan, gold: cGold };
+            return { fill: cBlack, txt: cWhite, line: cCyan, gold: cDiamond };
         }
         const bgRgb = hexToRgb(cfg.val);
         const txtRgb = isDark(bgRgb) ? cWhite : [0,0,0];
         const lineRgb = isDark(bgRgb) ? cCyan : [0,0,0];
-        return { fill: bgRgb, txt: txtRgb, line: lineRgb, gold: cGold };
+        return { fill: bgRgb, txt: txtRgb, line: lineRgb, gold: cDiamond };
     }
 
     async function generatePDF() {
@@ -510,7 +565,7 @@
             doc.line(tx, y + h/2 - 0.3, tx, y + h/2 + 0.3);
         }
 
-        // Diamante GRANDE (JUMBO)
+        // Diamante GRANDE (JUMBO) - Color dinámico
         doc.setFillColor(theme.gold[0], theme.gold[1], theme.gold[2]);
         const cx = x + w/2; const cy = y + h/2;
         const dR = DIAMOND_RADIUS; // 0.40 INCHES
