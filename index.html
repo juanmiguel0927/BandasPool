@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador Profesional ABPC - Juan Miguel Rios Redondo</title>
-    <!-- Librería PDF (Estándar Industrial) -->
+    <title>Generador ABPC - Alta Visibilidad</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #e67e22;
+            --accent: #d35400; /* Naranja más fuerte para indicar visibilidad */
             --bg: #ecf0f1;
             --glass: rgba(255, 255, 255, 0.98);
         }
@@ -17,7 +16,6 @@
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background-color: var(--primary);
-            background-image: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             margin: 0;
             padding: 20px;
             min-height: 100vh;
@@ -73,78 +71,29 @@
             box-sizing: border-box;
         }
         
-        /* Input especial para medida custom */
-        .custom-strip-input {
-            margin-top: 10px;
-            background: #fff3cd;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px dashed #e67e22;
-            display: none; /* Oculto por defecto */
-        }
-        .custom-strip-input input { background: white; border-color: #e67e22; }
-        
-        /* Estilos para input color */
         input[type="color"] {
-            -webkit-appearance: none;
-            border: none;
-            width: 100%; 
-            height: 38px;
-            padding: 0;
-            background: none;
-            cursor: pointer;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 5px;
+            -webkit-appearance: none; border: none; width: 100%; height: 38px; padding: 0; background: none; cursor: pointer; border-radius: 4px; overflow: hidden; margin-top: 5px;
         }
         input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
         input[type="color"]::-webkit-color-swatch { border: none; }
 
         .quick-qty { display: flex; gap: 8px; margin-top: 10px; }
         .q-btn {
-            flex: 1;
-            background: #dfe6e9;
-            border: none;
-            padding: 8px;
-            font-size: 11px;
-            border-radius: 4px;
-            cursor: pointer;
-            color: #2d3436;
-            font-weight: bold;
-            transition: background 0.2s;
+            flex: 1; background: #dfe6e9; border: none; padding: 8px; font-size: 11px; border-radius: 4px; cursor: pointer; color: #2d3436; font-weight: bold; transition: background 0.2s;
         }
         .q-btn:hover { background: #b2bec3; }
         .q-btn.active { background: var(--primary); color: white; }
 
         .toggle-container {
-            display: flex;
-            background: #eee;
-            border-radius: 6px;
-            padding: 4px;
-            margin-bottom: 15px;
+            display: flex; background: #eee; border-radius: 6px; padding: 4px; margin-bottom: 15px;
         }
         .toggle-btn {
-            flex: 1;
-            text-align: center;
-            padding: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 4px;
-            color: #777;
+            flex: 1; text-align: center; padding: 8px; font-size: 12px; font-weight: bold; cursor: pointer; border-radius: 4px; color: #777;
         }
         .toggle-btn.active { background: white; color: var(--accent); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        /* Filas de colores mixtos */
         .mix-row {
-            display: grid;
-            grid-template-columns: 60px 1fr 40px; 
-            gap: 10px;
-            margin-bottom: 8px;
-            background: #f8f9fa;
-            padding: 8px;
-            border-radius: 6px;
-            align-items: center;
+            display: grid; grid-template-columns: 60px 1fr 40px; gap: 10px; margin-bottom: 8px; background: #f8f9fa; padding: 8px; border-radius: 6px; align-items: center;
         }
         .mix-row label { margin: 0; font-size: 11px; }
         .mix-row select { padding: 6px; font-size: 12px; }
@@ -152,72 +101,35 @@
 
         .btn-action {
             background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-            color: white;
-            border: none;
-            padding: 20px;
-            width: 100%;
-            font-size: 18px;
-            font-weight: 800;
-            border-radius: 8px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3);
-            transition: all 0.3s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            color: white; border: none; padding: 20px; width: 100%; font-size: 18px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
 
         .info-box {
-            background: #dff9fb;
-            color: #130f40;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 13px;
-            margin-bottom: 20px;
-            border-left: 4px solid #22a6b3;
+            background: #dff9fb; color: #130f40; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 4px solid #22a6b3;
         }
 
         .visual-preview {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-            gap: 4px;
-            background: #95a5a6;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 2px solid #7f8c8d;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 4px; background: #95a5a6; padding: 15px; border-radius: 8px; margin-top: 20px; max-height: 200px; overflow-y: auto; border: 2px solid #7f8c8d;
         }
-        .mini-strip {
-            height: 10px;
-            background: #2c3e50;
-            border-radius: 2px;
-        }
+        .mini-strip { height: 10px; background: #2c3e50; border-radius: 2px; }
 
-        .footer-cr {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 12px;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.5;
-        }
+        .footer-cr { text-align: center; margin-top: 30px; font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.5; }
         .footer-cr strong { color: #fff; }
+        
+        .custom-strip-input { margin-top: 10px; background: #fff3cd; padding: 10px; border-radius: 6px; border: 1px dashed #e67e22; display: none; }
     </style>
 </head>
 <body>
 
 <div class="main-panel">
     <div class="header">
-        <h1>Generador Maestro de Slicers</h1>
+        <h1>Generador ABPC - Alta Visibilidad</h1>
     </div>
 
     <div class="controls-grid">
-        <!-- GRUPO 1: PRODUCCIÓN -->
+        <!-- GRUPO 1 -->
         <div class="control-group">
             <label>1. Objetivo de Producción</label>
             <input type="number" id="totalStrips" value="72" min="1" onchange="updateCalc()">
@@ -235,24 +147,20 @@
                     <option value="8">Solo 8 Pies (11")</option>
                     <option value="custom">★ MEDIDA PERSONALIZADA</option>
                 </select>
-                
-                <!-- INPUT MEDIDA MANUAL -->
                 <div id="customSizeContainer" class="custom-strip-input">
                     <label style="color:#d35400;">Distancia Diamante a Diamante (Pulgadas):</label>
                     <input type="number" id="customVal" value="13.5" step="0.125" onchange="updateCalc()">
-                    <small style="color:#666; font-size:10px;">Mide de centro a centro.</small>
                 </div>
             </div>
         </div>
 
-        <!-- GRUPO 2: FORMATO -->
+        <!-- GRUPO 2 -->
         <div class="control-group">
             <label>2. Formato de Salida</label>
             <div class="toggle-container">
                 <div class="toggle-btn active" id="btnSheet" onclick="setMode('sheet')">HOJAS (PAGINADO)</div>
                 <div class="toggle-btn" id="btnRoll" onclick="setMode('roll')">ROLLO (PLOTTER)</div>
             </div>
-            
             <div id="panelSheet">
                 <label>Tamaño de Hoja</label>
                 <select id="paperStandard" onchange="updateCalc()">
@@ -262,36 +170,31 @@
                     <option value="a3plus">A3+ / Super B (33cm x 48cm)</option>
                 </select>
             </div>
-
             <div id="panelRoll" style="display:none;">
                 <label>Ancho del Rollo (cm)</label>
                 <input type="number" id="rollWidth" value="60" onchange="updateCalc()">
-                <small style="color:#888;">El largo se calculará automáticamente.</small>
             </div>
         </div>
 
-        <!-- GRUPO 3: PERSONALIZACIÓN -->
+        <!-- GRUPO 3 -->
         <div class="control-group">
-            <label>3. Personalización</label>
+            <label>3. Personalización (Colores)</label>
             <div style="margin-bottom:15px;">
                 <label>Etiqueta Central</label>
                 <input type="text" id="labelText" value="ABPC" placeholder="Nombre del Club" onkeyup="updateCalc()">
             </div>
             
-            <!-- CONTROLES DE COLOR ORDENADOS -->
-            <label>Colores de Fondo</label>
-            
-            <!-- Single Color Mode -->
+            <label>Selección de Colores</label>
+            <!-- Single -->
             <div id="singleColorControl">
                 <select id="bgMode" onchange="updateCalc()">
-                    <option value="transparent" selected>Transparente</option>
-                    <option value="black">Negro</option>
+                    <option value="transparent" selected>Transparente (Bordes)</option>
+                    <option value="black">Negro (Fondo Sólido)</option>
                     <option value="custom">Personalizado</option>
                 </select>
                 <input type="color" id="colorGlobal" value="#3498db" onchange="updateCalc()" style="display:none;">
             </div>
-
-            <!-- Mix Color Mode -->
+            <!-- Mix -->
             <div id="mixColorControl" style="display:none;">
                 <div class="mix-row">
                     <label>10 Pies:</label>
@@ -321,7 +224,6 @@
                     <input type="color" id="colorMix8" value="#3498db" onchange="updateCalc()">
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -331,7 +233,7 @@
         <span>⬇</span> Generar PDF Maestro
     </button>
     
-    <label style="margin-top:20px;">Previsualización de Lote:</label>
+    <label style="margin-top:20px;">Previsualización:</label>
     <div class="visual-preview" id="previewGrid"></div>
 </div>
 
@@ -341,22 +243,20 @@
 </div>
 
 <script>
-    // --- AUTOGENERAR AÑO ---
     document.getElementById('copyright-text').innerText = "© " + new Date().getFullYear();
 
-    // --- VARIABLES ---
+    // --- CONFIGURACIÓN "ALTA VISIBILIDAD" ---
     let mode = 'sheet'; 
     const STRIP_H = 1.35; 
     const GAP_Y = 0.2; 
     const MARGIN = 0.3;
     
-    let calc = {
-        paperW: 0, paperH: 0, cols: 0,
-        rowsPerPage: 0, totalPages: 0, stripsPerPage: 0,
-        stripsToPrint: [] 
-    };
+    // GROSORES AUMENTADOS PARA VISIBILIDAD
+    const LINE_THICKNESS = 0.06; // Antes era 0.02/0.03
+    const DIAMOND_SIZE = 0.35;   // Antes era 0.25 (Radio vertical)
+    
+    let calc = { paperW: 0, paperH: 0, cols: 0, rowsPerPage: 0, totalPages: 0, stripsPerPage: 0, stripsToPrint: [] };
 
-    // --- UI LOGIC ---
     function setQty(n) {
         document.getElementById('totalStrips').value = n;
         document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
@@ -373,11 +273,9 @@
         updateCalc();
     }
 
-    // --- HELPER: GET COLOR CONFIG ---
     function resolveColor(selectId, inputId) {
         const mode = document.getElementById(selectId).value;
         const input = document.getElementById(inputId);
-        
         if (mode === 'custom') {
             input.style.display = 'block';
             return { mode: 'custom', val: input.value };
@@ -387,27 +285,21 @@
         }
     }
 
-    // --- CORE CALCULATION ---
     function updateCalc() {
         const qty = parseInt(document.getElementById('totalStrips').value) || 24;
         const type = document.getElementById('sizeType').value;
-        
-        // Manejo de Input Custom
         const customInput = document.getElementById('customSizeContainer');
         customInput.style.display = (type === 'custom') ? 'block' : 'none';
         
-        // Gestión de UI de colores
         const isMix = (type === 'mix');
-        document.getElementById('singleColorControl').style.display = isMix ? 'none' : 'block';
+        document.getElementById('singleColorControl').style.display = isMix ? 'none' : 'flex';
         document.getElementById('mixColorControl').style.display = isMix ? 'block' : 'none';
 
-        // Obtener configuraciones de color
         const colGlobal = resolveColor('bgMode', 'colorGlobal');
         const col10 = resolveColor('bgMix10', 'colorMix10');
         const col9 = resolveColor('bgMix9', 'colorMix9');
         const col8 = resolveColor('bgMix8', 'colorMix8');
 
-        // 1. Generar Lista de Tiras
         calc.stripsToPrint = [];
         if (type === 'mix') {
             const base = Math.floor(qty / 3);
@@ -419,17 +311,13 @@
             let s = 14.0, l = "10 Pies";
             if(type==='9'){s=12.5; l="9 Pies";}
             if(type==='8'){s=11.0; l="8 Pies";}
-            
-            // Lógica Personalizada
             if(type==='custom') {
                 s = parseFloat(document.getElementById('customVal').value) || 12.0;
                 l = `Medida: ${s}"`;
             }
-            
             for(let i=0; i<qty; i++) calc.stripsToPrint.push({w:s, l:l, colorCfg: colGlobal});
         }
 
-        // 2. Determinar Papel
         if (mode === 'sheet') {
             const pt = document.getElementById('paperStandard').value;
             if(pt==='tabloid') { calc.paperW=17; calc.paperH=11; }
@@ -441,11 +329,8 @@
             calc.paperW = wCm / 2.54;
         }
 
-        // 3. Calcular Grid
-        // Determinar ancho máximo de tira en el lote para calcular columnas seguras
         let maxStripW = 0;
         calc.stripsToPrint.forEach(s => { if(s.w > maxStripW) maxStripW = s.w; });
-        // Gap horizontal de seguridad
         const colWidth = maxStripW + 0.2; 
         
         const rowHeight = STRIP_H + GAP_Y;
@@ -466,7 +351,6 @@
             calc.totalPages = 1;
         }
 
-        // 4. Update UI Info
         const status = document.getElementById('statusMsg');
         const wCm = (calc.paperW * 2.54).toFixed(1);
         const hCm = (calc.paperH * 2.54).toFixed(1);
@@ -477,26 +361,16 @@
             status.innerHTML = `<strong>Producción en Rollo:</strong> Archivo único de ${wCm}cm x ${hCm}cm.`;
         }
 
-        // Preview Visual
         const preview = document.getElementById('previewGrid');
         preview.innerHTML = '';
-        
         calc.stripsToPrint.forEach(s => {
             const d = document.createElement('div');
             d.className = 'mini-strip';
-            
             let bg = '#eee';
             let border = 'none';
-            
-            if(s.colorCfg.mode === 'transparent') {
-                bg = '#ecf0f1';
-                border = '1px solid #999';
-            } else if (s.colorCfg.mode === 'black') {
-                bg = '#2d3436';
-            } else {
-                bg = s.colorCfg.val;
-            }
-            
+            if(s.colorCfg.mode === 'transparent') { bg = '#ecf0f1'; border = '1px solid #999'; }
+            else if (s.colorCfg.mode === 'black') { bg = '#2d3436'; }
+            else { bg = s.colorCfg.val; }
             d.style.backgroundColor = bg;
             d.style.border = border;
             d.title = s.l;
@@ -504,46 +378,35 @@
         });
     }
 
-    // --- HELPER DE COLOR PARA PDF ---
     function hexToRgb(hex) {
         let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? [
-            parseInt(result[1], 16),
-            parseInt(result[2], 16),
-            parseInt(result[3], 16)
-        ] : [0, 0, 0];
+        return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [0, 0, 0];
     }
 
     function isDark(rgb) {
-        const brightness = Math.round(((parseInt(rgb[0]) * 299) +
-                      (parseInt(rgb[1]) * 587) +
-                      (parseInt(rgb[2]) * 114)) / 1000);
+        const brightness = Math.round(((parseInt(rgb[0]) * 299) + (parseInt(rgb[1]) * 587) + (parseInt(rgb[2]) * 114)) / 1000);
         return brightness < 125;
     }
 
     function getColorTheme(cfg) {
         const cCyan = [0, 255, 255];
-        const cGold = [255, 215, 0];
+        const cGold = [255, 215, 0]; // Dorado Brillante
         const cWhite = [255, 255, 255];
         const cBlack = [15, 15, 15];
         
         if (cfg.mode === 'transparent') {
-            return { fill: null, txt: [0,0,0], line: [0,150,150], gold: cGold };
+            // En transparente, la línea debe ser oscura o cyan oscuro para verse en el papel blanco de respaldo
+            return { fill: null, txt: [0,0,0], line: [0,128,128], gold: cGold };
         }
-        
         if (cfg.mode === 'black') {
             return { fill: cBlack, txt: cWhite, line: cCyan, gold: cGold };
         }
-        
-        // Custom
         const bgRgb = hexToRgb(cfg.val);
         const txtRgb = isDark(bgRgb) ? cWhite : [0,0,0];
         const lineRgb = isDark(bgRgb) ? cCyan : [0,0,0];
-        
         return { fill: bgRgb, txt: txtRgb, line: lineRgb, gold: cGold };
     }
 
-    // --- PDF GENERATOR ---
     async function generatePDF() {
         const { jsPDF } = window.jspdf;
         const orientation = calc.paperW > calc.paperH ? 'l' : 'p';
@@ -555,7 +418,6 @@
         let itemsOnPage = 0;
         let colIdx = 0;
         
-        // Calcular ancho de columna dinámico basado en la tira más ancha del set
         let maxStripW = 0;
         calc.stripsToPrint.forEach(s => { if(s.w > maxStripW) maxStripW = s.w; });
         const colW = maxStripW + 0.2;
@@ -594,7 +456,7 @@
     }
 
     function drawStripVector(doc, x, y, w, h, subLabel, mainLabel, theme) {
-        // Fondo
+        // 1. Fondo
         if(theme.fill) {
             doc.setFillColor(theme.fill[0], theme.fill[1], theme.fill[2]);
             doc.rect(x, y, w, h, 'F');
@@ -602,7 +464,7 @@
             doc.setDrawColor(0); doc.setLineWidth(0.01); doc.rect(x, y, w, h, 'S');
         }
 
-        // Crop Marks
+        // 2. Crop Marks
         doc.setDrawColor(0); doc.setLineWidth(0.01);
         const cmLen = 0.15;
         doc.line(x, y, x - cmLen, y); doc.line(x, y, x, y - cmLen);
@@ -610,33 +472,52 @@
         doc.line(x, y+h, x-cmLen, y+h); doc.line(x, y+h, x, y+h+cmLen);
         doc.line(x+w, y+h, x+w+cmLen, y+h); doc.line(x+w, y+h, x+w, y+h+cmLen);
 
-        // Línea Central
+        // 3. Línea Central GRUESA
         doc.setDrawColor(theme.line[0], theme.line[1], theme.line[2]);
-        doc.setLineWidth(0.02);
+        doc.setLineWidth(LINE_THICKNESS * 0.6); // Línea central un poco menos gruesa que los ticks
         doc.line(x, y+h/2, x+w, y+h/2);
 
-        // Ticks
+        // 4. Ticks (Líneas de marca) EXTRA GRUESAS
         const step = w/10;
-        doc.setLineWidth(0.03);
+        doc.setLineWidth(LINE_THICKNESS); // Grosor aumentado
         for(let t=1; t<10; t++) {
             if(t===5) continue;
             let tx = x + (step*t);
-            doc.line(tx, y + h/2 - 0.2, tx, y + h/2 + 0.2);
+            // Hacemos las líneas un poco más largas también para visibilidad
+            doc.line(tx, y + h/2 - 0.25, tx, y + h/2 + 0.25);
         }
 
-        // Diamante
+        // 5. Diamante GRANDE
         doc.setFillColor(theme.gold[0], theme.gold[1], theme.gold[2]);
         const cx = x + w/2; const cy = y + h/2;
-        doc.triangle(cx, cy-0.25, cx+0.25, cy, cx-0.25, cy, 'F');
-        doc.triangle(cx, cy+0.25, cx+0.25, cy, cx-0.25, cy, 'F');
+        // DIAMOND_SIZE aumentado a 0.35 (aprox 9mm altura total 18mm)
+        doc.triangle(cx, cy-DIAMOND_SIZE, cx+DIAMOND_SIZE, cy, cx-DIAMOND_SIZE, cy, 'F');
+        doc.triangle(cx, cy+DIAMOND_SIZE, cx+DIAMOND_SIZE, cy, cx-DIAMOND_SIZE, cy, 'F');
 
-        // Textos
+        // 6. Textos
         doc.setTextColor(theme.txt[0], theme.txt[1], theme.txt[2]);
-        doc.setFontSize(14); doc.setFont("helvetica", "bold");
-        doc.text(mainLabel, cx, y + h - 0.2, {align:'center'});
+        doc.setFontSize(16); // Texto un poco más grande
+        doc.setFont("helvetica", "bold");
+        // Ajustamos la posición Y del texto para que no choque con el diamante grande
+        // El diamante llega hasta cy + 0.35. El texto debe estar abajo.
+        doc.text(mainLabel, cx, y + h - 0.15, {align:'center'});
 
+        // Label lateral pequeño
         doc.setFontSize(8); doc.setTextColor(100);
         doc.text(subLabel, x + 0.1, y + 0.15);
+        
+        // 7. Diamantes de los extremos (Guía de pegado)
+        // También los hacemos más grandes para que se vean bien
+        const endSize = 0.25;
+        doc.setFillColor(theme.line[0], theme.line[1], theme.line[2]); // Usar color de línea (cyan/blanco)
+        
+        // Izquierda
+        doc.triangle(x, y+h/2-endSize, x+endSize, y+h/2, x, y+h/2, 'F');
+        doc.triangle(x, y+h/2+endSize, x+endSize, y+h/2, x, y+h/2, 'F');
+        
+        // Derecha
+        doc.triangle(x+w, y+h/2-endSize, x+w-endSize, y+h/2, x+w, y+h/2, 'F');
+        doc.triangle(x+w, y+h/2+endSize, x+w-endSize, y+h/2, x+w, y+h/2, 'F');
     }
 
     updateCalc();
