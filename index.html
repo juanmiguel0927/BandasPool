@@ -131,7 +131,7 @@
 <div class="main-panel">
     <div class="header">
         <h1>Generador Slicers - Edición JUMBO</h1>
-        <div style="font-size:12px; color:#777; margin-top:5px;">Gráficos Maximizados para Alta Visibilidad</div>
+        <div style="font-size:12px; color:#777; margin-top:5px;">Gráficos Maximizados - Modo Prueba Disponible</div>
     </div>
 
     <div class="controls-grid">
@@ -140,8 +140,8 @@
             <label>1. Objetivo de Producción</label>
             <input type="number" id="totalStrips" value="72" min="1" onchange="updateCalc()">
             <div class="quick-qty">
+                <button class="q-btn" onclick="setQty(1)">Prueba (1)</button>
                 <button class="q-btn" onclick="setQty(24)">1 Mesa (24)</button>
-                <button class="q-btn" onclick="setQty(48)">2 Mesas (48)</button>
                 <button class="q-btn active" onclick="setQty(72)">3 Mesas (72)</button>
             </div>
             <div style="margin-top:15px;">
@@ -171,7 +171,9 @@
             <div id="panelSheet">
                 <label>Tamaño de Hoja</label>
                 <select id="paperStandard" onchange="updateCalc()">
-                    <option value="tabloid">Tabloide (11" x 17")</option>
+                    <option value="letter" style="color:#c0392b; font-weight:bold;">★ Carta (11" x 8.5") - [PRUEBA DE VISIBILIDAD]</option>
+                    <option value="legal" style="color:#c0392b; font-weight:bold;">★ Oficio (14" x 8.5") - [PRUEBA DE VISIBILIDAD]</option>
+                    <option value="tabloid" selected>Tabloide (11" x 17") - [PRODUCCIÓN]</option>
                     <option value="superTabloid">Super Tabloide (12" x 18")</option>
                     <option value="a3">A3 (29.7cm x 42cm)</option>
                     <option value="a3plus">A3+ / Super B (33cm x 48cm)</option>
@@ -220,7 +222,7 @@
                     <label>9 Pies:</label>
                     <select id="bgMix9" onchange="updateCalc()">
                         <option value="transparent">Transparente</option>
-                        <option value="black" selected>Negro</option>
+                        <option value="black">Negro</option>
                         <option value="custom">Personalizado</option>
                     </select>
                     <input type="color" id="colorMix9" value="#2ecc71" onchange="updateCalc()" style="display:none;">
@@ -333,6 +335,9 @@
 
         if (mode === 'sheet') {
             const pt = document.getElementById('paperStandard').value;
+            // Configurar tamaños landscape para aprovechar el largo
+            if(pt==='letter') { calc.paperW=11; calc.paperH=8.5; }
+            if(pt==='legal') { calc.paperW=14; calc.paperH=8.5; }
             if(pt==='tabloid') { calc.paperW=17; calc.paperH=11; }
             if(pt==='superTabloid') { calc.paperW=18; calc.paperH=12; }
             if(pt==='a3') { calc.paperW=16.54; calc.paperH=11.69; }
@@ -350,12 +355,13 @@
         const usableW = calc.paperW - (MARGIN*2);
         
         calc.cols = Math.floor(usableW / colWidth);
-        if(calc.cols < 1) calc.cols = 1;
+        if(calc.cols < 1) calc.cols = 1; // Fallback para que pinte aunque se corte
 
         if (mode === 'sheet') {
             const usableH = calc.paperH - (MARGIN*2) - 0.5;
             calc.rowsPerPage = Math.floor(usableH / rowHeight);
             calc.stripsPerPage = calc.cols * calc.rowsPerPage;
+            if(calc.stripsPerPage < 1) calc.stripsPerPage = 1; // Fallback
             calc.totalPages = Math.ceil(qty / calc.stripsPerPage);
         } else {
             const totalRows = Math.ceil(qty / calc.cols);
@@ -369,7 +375,12 @@
         const hCm = (calc.paperH * 2.54).toFixed(1);
         
         if(mode === 'sheet') {
-            status.innerHTML = `<strong>Producción Paginada:</strong> ${calc.totalPages} páginas tamaño ${wCm}x${hCm}cm.<br>Capacidad por hoja: ${calc.stripsPerPage} tiras.`;
+            let note = "";
+            const pt = document.getElementById('paperStandard').value;
+            if(pt === 'letter' || pt === 'legal') {
+                note = "<br><span style='color:#c0392b;'>⚠️ MODO PRUEBA: El papel es pequeño. La tira saldrá cortada, pero sirve para verificar el grosor y tamaño de los gráficos.</span>";
+            }
+            status.innerHTML = `<strong>Producción Paginada:</strong> ${calc.totalPages} páginas tamaño ${wCm}x${hCm}cm.<br>Capacidad por hoja: ${calc.stripsPerPage} tiras.${note}`;
         } else {
             status.innerHTML = `<strong>Producción en Rollo:</strong> Archivo único de ${wCm}cm x ${hCm}cm.`;
         }
@@ -530,4 +541,3 @@
 
 </body>
 </html>
-
