@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador De Slicers - Juan Miguel Rios Redondo</title>
+    <title>Generador Slicers - Max Diamond</title>
     <!-- Librería PDF (Estándar Industrial) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #c0392b; /* Rojo Intenso para Visibilidad Máxima */
+            --accent: #e74c3c; /* Rojo Intenso para Visibilidad Máxima */
             --bg: #ecf0f1;
             --glass: rgba(255, 255, 255, 0.98);
         }
@@ -105,11 +105,11 @@
         .mix-row input[type="color"] { margin-top: 0; height: 30px; }
 
         .btn-action {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white; border: none; padding: 22px; width: 100%; font-size: 18px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(192, 57, 43, 0.4); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white; border: none; padding: 20px; width: 100%; font-size: 18px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
-        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(192, 57, 43, 0.5); }
+        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
 
         .info-box {
             background: #fadbd8; color: #922b21; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 4px solid #c0392b; font-weight: 600;
@@ -137,7 +137,7 @@
 <div class="main-panel">
     <div class="header">
         <h1>Generador De Slicers</h1>
-        <div style="font-size:12px; color:#777; margin-top:5px;">Configuración JUMBO (Máxima Visibilidad)</div>
+        <div style="font-size:12px; color:#777; margin-top:5px;">Configuración MAX DIAMOND (Máxima Visibilidad)</div>
     </div>
 
     <div class="controls-grid">
@@ -212,7 +212,7 @@
             <div id="panelRoll" style="display:none;">
                 <label>Ancho del Rollo (cm)</label>
                 <input type="number" id="rollWidth" value="60" onchange="updateCalc()">
-                <small style="color:#888;">El largo se calculará automáticamente.</small>
+                <small style="color:#888;">El sistema calculará el largo necesario.</small>
             </div>
             
             <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
@@ -286,7 +286,7 @@
     <div class="info-box" id="statusMsg"></div>
 
     <button class="btn-action" onclick="generatePDF()">
-        <span>⬇</span> Generar PDF Maestro (MAX)
+        <span>⬇</span> Generar PDF Maestro (MAX DIAMOND)
     </button>
     
     <label style="margin-top:20px; font-weight:bold; color:white;">Previsualización de Lote:</label>
@@ -303,15 +303,15 @@
 
     // --- VARIABLES JUMBO ---
     let mode = 'sheet'; 
-    const STRIP_H = 1.40; // 3.55 cm
+    const STRIP_H = 1.40; 
     const GAP_Y = 0.2; 
     const MARGIN = 0.3;
     
     // VARIABLES GRÁFICAS JUMBO (MAXIMUM POWER)
     const LINE_WIDTH_MAX = 0.12; // 3mm de grosor (BARRA SÓLIDA)
-    // El diamante tendrá un radio de 0.32 pulgadas para no chocar con el texto
-    // Altura del rombo será 0.32 arriba + 0.32 abajo = 0.64 pulgadas
-    const DIAMOND_RADIUS = 0.32;   
+    // El diamante tendrá un radio de 0.50 pulgadas
+    // Altura del rombo será 0.50 arriba + 0.50 abajo = 1.00 pulgada (la tira mide 1.40)
+    const DIAMOND_RADIUS = 0.50;   
     
     let calc = { paperW: 0, paperH: 0, cols: 0, rowsPerPage: 0, totalPages: 0, stripsPerPage: 0, stripsToPrint: [] };
 
@@ -416,6 +416,7 @@
 
         if (mode === 'sheet') {
             const pt = document.getElementById('paperStandard').value;
+            // Medidas en pulgadas por defecto
             if(pt==='letter') { calc.paperW=11; calc.paperH=8.5; }
             else if(pt==='legal') { calc.paperW=14; calc.paperH=8.5; }
             else if(pt==='tabloid') { calc.paperW=17; calc.paperH=11; }
@@ -617,11 +618,11 @@
         doc.triangle(cx, cy+dR, cx+dR, cy, cx-dR, cy, 'F');
 
         doc.setTextColor(theme.txt[0], theme.txt[1], theme.txt[2]);
-        doc.setFontSize(18); 
+        doc.setFontSize(14); // Texto más pequeño para dar espacio al diamante
         doc.setFont("helvetica", "bold");
         
         // Texto posicionado en el borde inferior para no chocar con el diamante
-        doc.text(mainLabel, cx, y + h - 0.12, {align:'center'});
+        doc.text(mainLabel, cx, y + h - 0.05, {align:'center'});
 
         doc.setFontSize(9); doc.setTextColor(100);
         doc.text(subLabel, x + 0.1, y + 0.15);
