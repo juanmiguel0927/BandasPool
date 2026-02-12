@@ -9,7 +9,7 @@
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #e67e22;
+            --accent: #c0392b; /* Rojo Intenso para Visibilidad Máxima */
             --bg: #ecf0f1;
             --glass: rgba(255, 255, 255, 0.98);
         }
@@ -71,9 +71,9 @@
             font-size: 14px;
             background: #f9f9f9;
             box-sizing: border-box;
+            font-weight: 600;
         }
         
-        /* Input Color */
         input[type="color"] {
             -webkit-appearance: none; border: none; width: 100%; height: 38px; padding: 0; background: none; cursor: pointer; border-radius: 4px; overflow: hidden; margin-top: 5px;
         }
@@ -105,11 +105,11 @@
         .mix-row input[type="color"] { margin-top: 0; height: 30px; }
 
         .btn-action {
-            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-            color: white; border: none; padding: 20px; width: 100%; font-size: 18px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white; border: none; padding: 22px; width: 100%; font-size: 18px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(192, 57, 43, 0.4); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
-        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
+        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(192, 57, 43, 0.5); }
 
         .info-box {
             background: #fadbd8; color: #922b21; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 4px solid #c0392b; font-weight: 600;
@@ -126,7 +126,6 @@
         .custom-strip-input { display: none; margin-top:10px; padding:10px; background:#fef9e7; border:1px dashed #f39c12; border-radius:6px; }
         .diamond-color-wrapper { margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px; }
         
-        /* Inputs Custom Sheet */
         .custom-sheet-container { display: none; margin-top:10px; padding:10px; background:#e8f6f3; border:1px dashed #1abc9c; border-radius:6px; }
         .custom-sheet-row { display: flex; gap: 10px; align-items: flex-end; }
         .custom-sheet-row > div { flex: 1; }
@@ -138,7 +137,7 @@
 <div class="main-panel">
     <div class="header">
         <h1>Generador De Slicers</h1>
-        <div style="font-size:12px; color:#777; margin-top:5px;">Herramienta Profesional de Producción</div>
+        <div style="font-size:12px; color:#777; margin-top:5px;">Configuración JUMBO (Máxima Visibilidad)</div>
     </div>
 
     <div class="controls-grid">
@@ -188,7 +187,6 @@
                     <option value="legal" style="color:#c0392b;">Oficio (14" x 8.5") - [PRUEBA]</option>
                 </select>
                 
-                <!-- INPUTS HOJA PERSONALIZADA -->
                 <div id="customSheetContainer" class="custom-sheet-container">
                     <label style="color:#16a085; margin-bottom:5px;">Definir Medidas de la Hoja:</label>
                     <div class="custom-sheet-row">
@@ -214,19 +212,15 @@
             <div id="panelRoll" style="display:none;">
                 <label>Ancho del Rollo (cm)</label>
                 <input type="number" id="rollWidth" value="60" onchange="updateCalc()">
-                <small style="color:#888;">El sistema calculará el largo necesario.</small>
+                <small style="color:#888;">El largo se calculará automáticamente.</small>
             </div>
             
-            <!-- OPCIÓN DE CORTE -->
             <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
                 <label>Método de Corte <span class="tech-badge">PRO</span></label>
                 <select id="cutStyle" onchange="updateCalc()" style="border: 2px solid #e74c3c;">
                     <option value="laser" selected>🛑 Línea Roja (Láser/Troquelado)</option>
                     <option value="scissors">✂️ Línea Gris (Manual)</option>
                 </select>
-                <small style="display:block; margin-top:5px; color:#c0392b; font-size:11px;">
-                    *La línea roja es universal para máquinas de corte.
-                </small>
             </div>
         </div>
 
@@ -264,7 +258,7 @@
                 <div class="mix-row">
                     <label>9 Pies:</label>
                     <select id="bgMix9" onchange="updateCalc()">
-                        <option value="transparent" selected>Transparente</option>
+                        <option value="transparent">Transparente</option>
                         <option value="black">Negro</option>
                         <option value="custom">Personalizado</option>
                     </select>
@@ -281,7 +275,7 @@
                 </div>
             </div>
 
-            <!-- Nuevo: Color del Diamante -->
+            <!-- Color del Diamante -->
             <div class="diamond-color-wrapper">
                 <label>Color del Diamante Central</label>
                 <input type="color" id="diamondColor" value="#FFD700" onchange="updateCalc()">
@@ -292,7 +286,7 @@
     <div class="info-box" id="statusMsg"></div>
 
     <button class="btn-action" onclick="generatePDF()">
-        <span>⬇</span> Generar PDF Maestro
+        <span>⬇</span> Generar PDF Maestro (MAX)
     </button>
     
     <label style="margin-top:20px; font-weight:bold; color:white;">Previsualización de Lote:</label>
@@ -309,11 +303,15 @@
 
     // --- VARIABLES JUMBO ---
     let mode = 'sheet'; 
-    const STRIP_H = 1.40; 
+    const STRIP_H = 1.40; // 3.55 cm
     const GAP_Y = 0.2; 
     const MARGIN = 0.3;
-    const LINE_WIDTH_JUMBO = 0.08; 
-    const DIAMOND_RADIUS = 0.40;   
+    
+    // VARIABLES GRÁFICAS JUMBO (MAXIMUM POWER)
+    const LINE_WIDTH_MAX = 0.12; // 3mm de grosor (BARRA SÓLIDA)
+    // El diamante tendrá un radio de 0.32 pulgadas para no chocar con el texto
+    // Altura del rombo será 0.32 arriba + 0.32 abajo = 0.64 pulgadas
+    const DIAMOND_RADIUS = 0.32;   
     
     let calc = { paperW: 0, paperH: 0, cols: 0, rowsPerPage: 0, totalPages: 0, stripsPerPage: 0, stripsToPrint: [] };
 
@@ -333,14 +331,12 @@
         const btnTest = document.getElementById('btnTestQty');
         const customContainer = document.getElementById('customSheetContainer');
         
-        // Mostrar/Ocultar Inputs Custom
         if (pt === 'custom_sheet') {
             customContainer.style.display = 'block';
         } else {
             customContainer.style.display = 'none';
         }
 
-        // Lógica de Prueba
         if (pt === 'letter' || pt === 'legal') {
             btnTest.style.display = 'block';
             setQty(1);
@@ -420,7 +416,6 @@
 
         if (mode === 'sheet') {
             const pt = document.getElementById('paperStandard').value;
-            // Medidas en pulgadas por defecto
             if(pt==='letter') { calc.paperW=11; calc.paperH=8.5; }
             else if(pt==='legal') { calc.paperW=14; calc.paperH=8.5; }
             else if(pt==='tabloid') { calc.paperW=17; calc.paperH=11; }
@@ -582,7 +577,7 @@
             }
         });
 
-        doc.save(`Slicers_JMRR_JUMBO_${calc.stripsToPrint.length}.pdf`);
+        doc.save(`Slicers_JMRR_MAX_${calc.stripsToPrint.length}.pdf`);
     }
 
     function drawStripVector(doc, x, y, w, h, subLabel, mainLabel, theme, cutStyle) {
@@ -608,7 +603,7 @@
         doc.line(x, y+h/2, x+w, y+h/2);
 
         const step = w/10;
-        doc.setLineWidth(LINE_WIDTH_JUMBO); 
+        doc.setLineWidth(LINE_WIDTH_MAX); 
         for(let t=1; t<10; t++) {
             if(t===5) continue;
             let tx = x + (step*t);
@@ -624,7 +619,9 @@
         doc.setTextColor(theme.txt[0], theme.txt[1], theme.txt[2]);
         doc.setFontSize(18); 
         doc.setFont("helvetica", "bold");
-        doc.text(mainLabel, cx, y + h - 0.1, {align:'center'});
+        
+        // Texto posicionado en el borde inferior para no chocar con el diamante
+        doc.text(mainLabel, cx, y + h - 0.12, {align:'center'});
 
         doc.setFontSize(9); doc.setTextColor(100);
         doc.text(subLabel, x + 0.1, y + 0.15);
