@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador ABPC - Universal Custom</title>
+    <title>Generador De Slicers - Juan Miguel Rios Redondo</title>
+    <!-- Librería PDF (Estándar Industrial) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #8e44ad; /* Color Premium Universal */
+            --accent: #e67e22;
             --bg: #ecf0f1;
             --glass: rgba(255, 255, 255, 0.98);
         }
@@ -42,7 +43,7 @@
             border-bottom: 2px solid #eee;
             padding-bottom: 15px;
         }
-        h1 { margin: 0; font-size: 26px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-weight: 900; }
+        h1 { margin: 0; font-size: 28px; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
         
         .controls-grid {
             display: grid;
@@ -60,22 +61,21 @@
         }
         .control-group:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
 
-        label { display: block; font-weight: 800; font-size: 12px; margin-bottom: 8px; color: #333; text-transform: uppercase; }
+        label { display: block; font-weight: 800; font-size: 12px; margin-bottom: 8px; color: #555; text-transform: uppercase; }
         
         select, input[type="number"], input[type="text"] {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #bdc3c7;
+            padding: 10px;
+            border: 2px solid #eee;
             border-radius: 6px;
-            font-size: 15px;
+            font-size: 14px;
             background: #f9f9f9;
             box-sizing: border-box;
-            font-weight: 600;
         }
         
         /* Input Color */
         input[type="color"] {
-            -webkit-appearance: none; border: none; width: 100%; height: 42px; padding: 0; background: none; cursor: pointer; border-radius: 4px; overflow: hidden; margin-top: 5px;
+            -webkit-appearance: none; border: none; width: 100%; height: 38px; padding: 0; background: none; cursor: pointer; border-radius: 4px; overflow: hidden; margin-top: 5px;
         }
         input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
         input[type="color"]::-webkit-color-swatch { border: none; }
@@ -105,38 +105,40 @@
         .mix-row input[type="color"] { margin-top: 0; height: 30px; }
 
         .btn-action {
-            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
-            color: white; border: none; padding: 22px; width: 100%; font-size: 20px; font-weight: 900; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(142, 68, 173, 0.4); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white; border: none; padding: 20px; width: 100%; font-size: 18px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
-        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(142, 68, 173, 0.5); }
+        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
 
         .info-box {
-            background: #f4ecf7; color: #5b2c6f; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 5px solid #8e44ad; font-weight: bold;
+            background: #fadbd8; color: #922b21; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 4px solid #c0392b; font-weight: 600;
         }
 
         .visual-preview {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 4px; background: #555; padding: 15px; border-radius: 8px; margin-top: 20px; max-height: 200px; overflow-y: auto; border: 2px solid #333;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 4px; background: #95a5a6; padding: 15px; border-radius: 8px; margin-top: 20px; max-height: 200px; overflow-y: auto; border: 2px solid #7f8c8d;
         }
         .mini-strip { height: 12px; background: #2c3e50; border-radius: 2px; border: 1px solid rgba(255,255,255,0.2); }
 
         .footer-cr { text-align: center; margin-top: 30px; font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.5; }
         .footer-cr strong { color: #fff; }
         
-        .hidden-input { display: none; margin-top:10px; padding:10px; background:#fef9e7; border:1px dashed #f39c12; border-radius:6px; }
+        .custom-strip-input { display: none; margin-top:10px; padding:10px; background:#fef9e7; border:1px dashed #f39c12; border-radius:6px; }
         .diamond-color-wrapper { margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px; }
         
-        /* Custom Sheet Inputs */
+        /* Inputs Custom Sheet */
+        .custom-sheet-container { display: none; margin-top:10px; padding:10px; background:#e8f6f3; border:1px dashed #1abc9c; border-radius:6px; }
         .custom-sheet-row { display: flex; gap: 10px; align-items: flex-end; }
         .custom-sheet-row > div { flex: 1; }
+        .tech-badge { background:#c0392b; color:white; font-size:9px; padding:2px 5px; border-radius:3px; vertical-align:middle; margin-left:5px; }
     </style>
 </head>
 <body>
 
 <div class="main-panel">
     <div class="header">
-        <h1>Generador Slicers - Universal</h1>
-        <div style="font-size:12px; color:#777; margin-top:5px;">Soporte para medidas personalizadas</div>
+        <h1>Generador De Slicers</h1>
+        <div style="font-size:12px; color:#777; margin-top:5px;">Herramienta Profesional de Producción</div>
     </div>
 
     <div class="controls-grid">
@@ -159,7 +161,7 @@
                     <option value="8">Solo 8 Pies (11")</option>
                     <option value="custom">★ MEDIDA PERSONALIZADA</option>
                 </select>
-                <div id="customSizeContainer" class="hidden-input">
+                <div id="customSizeContainer" class="custom-strip-input">
                     <label style="color:#d35400;">Distancia (Pulgadas):</label>
                     <input type="number" id="customVal" value="13.5" step="0.125" onchange="updateCalc()">
                 </div>
@@ -181,13 +183,14 @@
                     <option value="superTabloid">Super Tabloide (12" x 18")</option>
                     <option value="a3">A3 (29.7cm x 42cm)</option>
                     <option value="a3plus">A3+ / Super B (33cm x 48cm)</option>
-                    <option value="letter" style="color:#c0392b;">★ Carta (Prueba Visibilidad)</option>
-                    <option value="legal" style="color:#c0392b;">★ Oficio (Prueba Visibilidad)</option>
-                    <option value="custom_sheet" style="font-weight:bold; color:#2c3e50;">★ TAMAÑO PERSONALIZADO...</option>
+                    <option value="custom_sheet" style="color:#16a085; font-weight:bold;">★ TAMAÑO PERSONALIZADO...</option>
+                    <option value="letter" style="color:#c0392b;">Carta (11" x 8.5") - [PRUEBA]</option>
+                    <option value="legal" style="color:#c0392b;">Oficio (14" x 8.5") - [PRUEBA]</option>
                 </select>
                 
                 <!-- INPUTS HOJA PERSONALIZADA -->
-                <div id="customSheetContainer" class="hidden-input">
+                <div id="customSheetContainer" class="custom-sheet-container">
+                    <label style="color:#16a085; margin-bottom:5px;">Definir Medidas de la Hoja:</label>
                     <div class="custom-sheet-row">
                         <div>
                             <label>Ancho</label>
@@ -197,7 +200,7 @@
                             <label>Alto</label>
                             <input type="number" id="customSheetH" value="35" step="0.1" onchange="updateCalc()">
                         </div>
-                        <div style="flex: 0.5;">
+                        <div style="flex: 0.6;">
                             <label>Unidad</label>
                             <select id="customSheetUnit" onchange="updateCalc()">
                                 <option value="cm">cm</option>
@@ -211,16 +214,19 @@
             <div id="panelRoll" style="display:none;">
                 <label>Ancho del Rollo (cm)</label>
                 <input type="number" id="rollWidth" value="60" onchange="updateCalc()">
-                <small style="color:#888;">El largo se calculará automáticamente.</small>
+                <small style="color:#888;">El sistema calculará el largo necesario.</small>
             </div>
             
+            <!-- OPCIÓN DE CORTE -->
             <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
-                <label>Estilo de Borde (Corte)</label>
-                <select id="cutStyle" onchange="updateCalc()">
-                    <option value="laser">🛑 Línea ROJA (Para Máquina Láser)</option>
-                    <option value="scissors">✂️ Línea GRIS (Para Tijeras)</option>
-                    <option value="none">Ninguna (Solo Gráficos)</option>
+                <label>Método de Corte <span class="tech-badge">PRO</span></label>
+                <select id="cutStyle" onchange="updateCalc()" style="border: 2px solid #e74c3c;">
+                    <option value="laser" selected>🛑 Línea Roja (Láser/Troquelado)</option>
+                    <option value="scissors">✂️ Línea Gris (Manual)</option>
                 </select>
+                <small style="display:block; margin-top:5px; color:#c0392b; font-size:11px;">
+                    *La línea roja es universal para máquinas de corte.
+                </small>
             </div>
         </div>
 
@@ -258,7 +264,7 @@
                 <div class="mix-row">
                     <label>9 Pies:</label>
                     <select id="bgMix9" onchange="updateCalc()">
-                        <option value="transparent">Transparente</option>
+                        <option value="transparent" selected>Transparente</option>
                         <option value="black">Negro</option>
                         <option value="custom">Personalizado</option>
                     </select>
@@ -286,7 +292,7 @@
     <div class="info-box" id="statusMsg"></div>
 
     <button class="btn-action" onclick="generatePDF()">
-        <span>⬇</span> Generar PDF Maestro (JUMBO)
+        <span>⬇</span> Generar PDF Maestro
     </button>
     
     <label style="margin-top:20px; font-weight:bold; color:white;">Previsualización de Lote:</label>
@@ -327,14 +333,14 @@
         const btnTest = document.getElementById('btnTestQty');
         const customContainer = document.getElementById('customSheetContainer');
         
-        // Manejo Input Personalizado
+        // Mostrar/Ocultar Inputs Custom
         if (pt === 'custom_sheet') {
             customContainer.style.display = 'block';
         } else {
             customContainer.style.display = 'none';
         }
 
-        // Manejo Modo Prueba
+        // Lógica de Prueba
         if (pt === 'letter' || pt === 'legal') {
             btnTest.style.display = 'block';
             setQty(1);
@@ -424,8 +430,8 @@
             else if(pt==='custom_sheet') {
                 const w = parseFloat(document.getElementById('customSheetW').value) || 10;
                 const h = parseFloat(document.getElementById('customSheetH').value) || 10;
-                const u = document.getElementById('customSheetUnit').value;
-                if(u === 'cm') {
+                const unit = document.getElementById('customSheetUnit').value;
+                if(unit === 'cm') {
                     calc.paperW = w / 2.54;
                     calc.paperH = h / 2.54;
                 } else {
@@ -465,18 +471,18 @@
         const wCm = (calc.paperW * 2.54).toFixed(1);
         const hCm = (calc.paperH * 2.54).toFixed(1);
         
+        const cutStyle = document.getElementById('cutStyle').value;
+        const cutMsg = cutStyle === 'laser' ? "LÁSER (ROJO)" : "MANUAL (GRIS)";
+
         if(mode === 'sheet') {
             let note = "";
             const pt = document.getElementById('paperStandard').value;
-            const cutStyle = document.getElementById('cutStyle').value;
-            let cutMsg = cutStyle === 'laser' ? "Línea ROJA" : (cutStyle === 'scissors' ? "Línea GRIS" : "Sin línea");
-            
             if(pt === 'letter' || pt === 'legal') {
                 note = "<br><span style='color:#c0392b;'>⚠️ MODO PRUEBA VISUAL: La tira saldrá cortada.</span>";
             }
-            status.innerHTML = `<strong>Producción Paginada:</strong> ${calc.totalPages} páginas (${wCm}x${hCm}cm).<br>Capacidad por hoja: ${calc.stripsPerPage} tiras. | Corte: ${cutMsg}${note}`;
+            status.innerHTML = `<strong>Producción Paginada:</strong> ${calc.totalPages} páginas (${wCm}x${hCm}cm).<br>Capacidad por hoja: ${calc.stripsPerPage} tiras. | Estilo: ${cutMsg}${note}`;
         } else {
-            status.innerHTML = `<strong>Producción en Rollo:</strong> Archivo único de ${wCm}cm x ${hCm}cm.`;
+            status.innerHTML = `<strong>Producción en Rollo:</strong> Archivo único de ${wCm}cm x ${hCm}cm. | Estilo: ${cutMsg}`;
         }
 
         const preview = document.getElementById('previewGrid');
@@ -545,19 +551,24 @@
             doc.setFontSize(8); doc.setTextColor(150);
             doc.text(`Desarrollado por Juan Miguel Rios Redondo - Pág ${pNum}`, MARGIN, calc.paperH - 0.2);
         };
-        const addHeader = () => {
+        const addHeader = (txt) => {
              doc.setFontSize(14); doc.setTextColor(0);
-             doc.text(`ORDEN DE PRODUCCIÓN ABPC - ${calc.stripsToPrint.length} UNIDADES`, calc.paperW/2, 0.5, {align:'center'});
+             doc.text(txt, calc.paperW/2, 0.5, {align:'center'});
+             
+             if (cutStyle === 'laser') {
+                 doc.setFontSize(10); doc.setTextColor(231, 76, 60); 
+                 doc.text("⚠️ NOTA TÉCNICA: Línea ROJA (RGB 255,0,0) es TRAZO DE CORTE (CutContour).", calc.paperW/2, 0.7, {align:'center'});
+             }
         };
 
-        addHeader();
+        addHeader(`ORDEN DE PRODUCCIÓN ABPC - ${calc.stripsToPrint.length} UNIDADES`);
         addFooter(1);
 
         calc.stripsToPrint.forEach((strip, i) => {
             if (mode === 'sheet' && itemsOnPage >= calc.stripsPerPage) {
                 doc.addPage();
                 cursorX = MARGIN; cursorY = 1.0; itemsOnPage = 0; colIdx = 0;
-                addHeader(); addFooter(doc.internal.getNumberOfPages());
+                addHeader("CONTINUACIÓN"); addFooter(doc.internal.getNumberOfPages());
             }
 
             const theme = getColorTheme(strip.colorCfg);
