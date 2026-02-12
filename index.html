@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador Slicers </title>
-    <!-- Librería PDF -->
+    <title>Generador ABPC - Universal Custom</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #c0392b; /* Rojo intenso para versión Jumbo */
+            --accent: #8e44ad; /* Color Premium Universal */
             --bg: #ecf0f1;
             --glass: rgba(255, 255, 255, 0.98);
         }
@@ -43,7 +42,7 @@
             border-bottom: 2px solid #eee;
             padding-bottom: 15px;
         }
-        h1 { margin: 0; font-size: 26px; color: #c0392b; text-transform: uppercase; letter-spacing: 1px; font-weight: 900; }
+        h1 { margin: 0; font-size: 26px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-weight: 900; }
         
         .controls-grid {
             display: grid;
@@ -88,9 +87,7 @@
         .q-btn:hover { background: #b2bec3; }
         .q-btn.active { background: var(--primary); color: white; }
         
-        /* Botón Test Oculto por defecto */
         #btnTestQty { display: none; background-color: #f39c12; color: white; }
-        #btnTestQty:hover { background-color: #d35400; }
 
         .toggle-container {
             display: flex; background: #eee; border-radius: 6px; padding: 4px; margin-bottom: 15px;
@@ -108,14 +105,14 @@
         .mix-row input[type="color"] { margin-top: 0; height: 30px; }
 
         .btn-action {
-            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
             color: white; border: none; padding: 22px; width: 100%; font-size: 20px; font-weight: 900; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(192, 57, 43, 0.4); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+            box-shadow: 0 10px 20px rgba(142, 68, 173, 0.4); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
-        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(192, 57, 43, 0.5); }
+        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(142, 68, 173, 0.5); }
 
         .info-box {
-            background: #fadbd8; color: #7b241c; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 5px solid #c0392b; font-weight: bold;
+            background: #f4ecf7; color: #5b2c6f; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 5px solid #8e44ad; font-weight: bold;
         }
 
         .visual-preview {
@@ -126,19 +123,20 @@
         .footer-cr { text-align: center; margin-top: 30px; font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.5; }
         .footer-cr strong { color: #fff; }
         
-        /* Personalizado */
-        .custom-strip-input { display: none; margin-top:10px; padding:10px; background:#fef9e7; border:1px dashed #f39c12; border-radius:6px; }
-        
-        /* Diamond Color Wrapper */
+        .hidden-input { display: none; margin-top:10px; padding:10px; background:#fef9e7; border:1px dashed #f39c12; border-radius:6px; }
         .diamond-color-wrapper { margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px; }
+        
+        /* Custom Sheet Inputs */
+        .custom-sheet-row { display: flex; gap: 10px; align-items: flex-end; }
+        .custom-sheet-row > div { flex: 1; }
     </style>
 </head>
 <body>
 
 <div class="main-panel">
     <div class="header">
-        <h1>Generador Slicers - Edición JUMBO</h1>
-        <div style="font-size:12px; color:#777; margin-top:5px;">Gráficos Maximizados - Modo Prueba Disponible</div>
+        <h1>Generador Slicers - Universal</h1>
+        <div style="font-size:12px; color:#777; margin-top:5px;">Soporte para medidas personalizadas</div>
     </div>
 
     <div class="controls-grid">
@@ -161,7 +159,7 @@
                     <option value="8">Solo 8 Pies (11")</option>
                     <option value="custom">★ MEDIDA PERSONALIZADA</option>
                 </select>
-                <div id="customSizeContainer" class="custom-strip-input">
+                <div id="customSizeContainer" class="hidden-input">
                     <label style="color:#d35400;">Distancia (Pulgadas):</label>
                     <input type="number" id="customVal" value="13.5" step="0.125" onchange="updateCalc()">
                 </div>
@@ -179,19 +177,50 @@
             <div id="panelSheet">
                 <label>Tamaño de Hoja</label>
                 <select id="paperStandard" onchange="handlePaperChange()">
-                    <option value="letter" style="color:#c0392b; font-weight:bold;">★ Carta (11" x 8.5") - [PRUEBA]</option>
-                    <option value="legal" style="color:#c0392b; font-weight:bold;">★ Oficio (14" x 8.5") - [PRUEBA]</option>
-                    <option value="tabloid" selected>Tabloide (11" x 17") - [PRODUCCIÓN]</option>
+                    <option value="tabloid" selected>Tabloide (11" x 17")</option>
                     <option value="superTabloid">Super Tabloide (12" x 18")</option>
                     <option value="a3">A3 (29.7cm x 42cm)</option>
                     <option value="a3plus">A3+ / Super B (33cm x 48cm)</option>
+                    <option value="letter" style="color:#c0392b;">★ Carta (Prueba Visibilidad)</option>
+                    <option value="legal" style="color:#c0392b;">★ Oficio (Prueba Visibilidad)</option>
+                    <option value="custom_sheet" style="font-weight:bold; color:#2c3e50;">★ TAMAÑO PERSONALIZADO...</option>
                 </select>
+                
+                <!-- INPUTS HOJA PERSONALIZADA -->
+                <div id="customSheetContainer" class="hidden-input">
+                    <div class="custom-sheet-row">
+                        <div>
+                            <label>Ancho</label>
+                            <input type="number" id="customSheetW" value="50" step="0.1" onchange="updateCalc()">
+                        </div>
+                        <div>
+                            <label>Alto</label>
+                            <input type="number" id="customSheetH" value="35" step="0.1" onchange="updateCalc()">
+                        </div>
+                        <div style="flex: 0.5;">
+                            <label>Unidad</label>
+                            <select id="customSheetUnit" onchange="updateCalc()">
+                                <option value="cm">cm</option>
+                                <option value="in">inch</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="panelRoll" style="display:none;">
                 <label>Ancho del Rollo (cm)</label>
                 <input type="number" id="rollWidth" value="60" onchange="updateCalc()">
                 <small style="color:#888;">El largo se calculará automáticamente.</small>
+            </div>
+            
+            <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
+                <label>Estilo de Borde (Corte)</label>
+                <select id="cutStyle" onchange="updateCalc()">
+                    <option value="laser">🛑 Línea ROJA (Para Máquina Láser)</option>
+                    <option value="scissors">✂️ Línea GRIS (Para Tijeras)</option>
+                    <option value="none">Ninguna (Solo Gráficos)</option>
+                </select>
             </div>
         </div>
 
@@ -274,12 +303,9 @@
 
     // --- VARIABLES JUMBO ---
     let mode = 'sheet'; 
-    // Altura aumentada ligeramente para dar aire a los gráficos grandes
     const STRIP_H = 1.40; 
     const GAP_Y = 0.2; 
     const MARGIN = 0.3;
-    
-    // VARIABLES GRÁFICAS JUMBO
     const LINE_WIDTH_JUMBO = 0.08; 
     const DIAMOND_RADIUS = 0.40;   
     
@@ -287,30 +313,33 @@
 
     function setQty(n) {
         document.getElementById('totalStrips').value = n;
-        
-        // Actualizar estado visual de botones
         document.querySelectorAll('.q-btn').forEach(b => {
             b.classList.remove('active');
             if (b.getAttribute('onclick').includes(`(${n})`)) {
                 b.classList.add('active');
             }
         });
-        
         updateCalc();
     }
 
     function handlePaperChange() {
         const pt = document.getElementById('paperStandard').value;
         const btnTest = document.getElementById('btnTestQty');
+        const customContainer = document.getElementById('customSheetContainer');
         
+        // Manejo Input Personalizado
+        if (pt === 'custom_sheet') {
+            customContainer.style.display = 'block';
+        } else {
+            customContainer.style.display = 'none';
+        }
+
+        // Manejo Modo Prueba
         if (pt === 'letter' || pt === 'legal') {
-            // Modo Prueba: Mostrar botón y forzar cantidad
             btnTest.style.display = 'block';
             setQty(1);
         } else {
-            // Modo Producción: Ocultar botón y regresar a 1 mesa
             btnTest.style.display = 'none';
-            // Si la cantidad actual es 1 (porque venía de prueba), restablecer a 24
             if (parseInt(document.getElementById('totalStrips').value) === 1) {
                 setQty(24);
             } else {
@@ -327,9 +356,8 @@
         document.getElementById('panelRoll').style.display = m === 'roll' ? 'block' : 'none';
         
         if(m === 'sheet') {
-            handlePaperChange(); // Verificar si el papel seleccionado es de prueba
+            handlePaperChange(); 
         } else {
-            // En modo rollo, ocultar prueba y forzar producción
             document.getElementById('btnTestQty').style.display = 'none';
             if (parseInt(document.getElementById('totalStrips').value) === 1) {
                 setQty(24);
@@ -386,13 +414,25 @@
 
         if (mode === 'sheet') {
             const pt = document.getElementById('paperStandard').value;
-            // Configurar tamaños landscape para aprovechar el largo
+            // Medidas en pulgadas por defecto
             if(pt==='letter') { calc.paperW=11; calc.paperH=8.5; }
-            if(pt==='legal') { calc.paperW=14; calc.paperH=8.5; }
-            if(pt==='tabloid') { calc.paperW=17; calc.paperH=11; }
-            if(pt==='superTabloid') { calc.paperW=18; calc.paperH=12; }
-            if(pt==='a3') { calc.paperW=16.54; calc.paperH=11.69; }
-            if(pt==='a3plus') { calc.paperW=19; calc.paperH=13; }
+            else if(pt==='legal') { calc.paperW=14; calc.paperH=8.5; }
+            else if(pt==='tabloid') { calc.paperW=17; calc.paperH=11; }
+            else if(pt==='superTabloid') { calc.paperW=18; calc.paperH=12; }
+            else if(pt==='a3') { calc.paperW=16.54; calc.paperH=11.69; }
+            else if(pt==='a3plus') { calc.paperW=19; calc.paperH=13; }
+            else if(pt==='custom_sheet') {
+                const w = parseFloat(document.getElementById('customSheetW').value) || 10;
+                const h = parseFloat(document.getElementById('customSheetH').value) || 10;
+                const u = document.getElementById('customSheetUnit').value;
+                if(u === 'cm') {
+                    calc.paperW = w / 2.54;
+                    calc.paperH = h / 2.54;
+                } else {
+                    calc.paperW = w;
+                    calc.paperH = h;
+                }
+            }
         } else {
             const wCm = parseFloat(document.getElementById('rollWidth').value) || 60;
             calc.paperW = wCm / 2.54;
@@ -406,13 +446,13 @@
         const usableW = calc.paperW - (MARGIN*2);
         
         calc.cols = Math.floor(usableW / colWidth);
-        if(calc.cols < 1) calc.cols = 1; // Fallback para que pinte aunque se corte
+        if(calc.cols < 1) calc.cols = 1; 
 
         if (mode === 'sheet') {
             const usableH = calc.paperH - (MARGIN*2) - 0.5;
             calc.rowsPerPage = Math.floor(usableH / rowHeight);
             calc.stripsPerPage = calc.cols * calc.rowsPerPage;
-            if(calc.stripsPerPage < 1) calc.stripsPerPage = 1; // Fallback
+            if(calc.stripsPerPage < 1) calc.stripsPerPage = 1; 
             calc.totalPages = Math.ceil(qty / calc.stripsPerPage);
         } else {
             const totalRows = Math.ceil(qty / calc.cols);
@@ -428,10 +468,13 @@
         if(mode === 'sheet') {
             let note = "";
             const pt = document.getElementById('paperStandard').value;
+            const cutStyle = document.getElementById('cutStyle').value;
+            let cutMsg = cutStyle === 'laser' ? "Línea ROJA" : (cutStyle === 'scissors' ? "Línea GRIS" : "Sin línea");
+            
             if(pt === 'letter' || pt === 'legal') {
-                note = "<br><span style='color:#c0392b;'>⚠️ MODO PRUEBA: El papel es pequeño. La tira saldrá cortada, pero sirve para verificar el grosor y tamaño de los gráficos.</span>";
+                note = "<br><span style='color:#c0392b;'>⚠️ MODO PRUEBA VISUAL: La tira saldrá cortada.</span>";
             }
-            status.innerHTML = `<strong>Producción Paginada:</strong> ${calc.totalPages} páginas tamaño ${wCm}x${hCm}cm.<br>Capacidad por hoja: ${calc.stripsPerPage} tiras.${note}`;
+            status.innerHTML = `<strong>Producción Paginada:</strong> ${calc.totalPages} páginas (${wCm}x${hCm}cm).<br>Capacidad por hoja: ${calc.stripsPerPage} tiras. | Corte: ${cutMsg}${note}`;
         } else {
             status.innerHTML = `<strong>Producción en Rollo:</strong> Archivo único de ${wCm}cm x ${hCm}cm.`;
         }
@@ -464,12 +507,9 @@
     }
 
     function getColorTheme(cfg) {
-        // Obtenemos el color del diamante seleccionado
         const dHex = document.getElementById('diamondColor').value;
         const cDiamond = hexToRgb(dHex);
-        
         const cCyan = [0, 255, 255];
-        const cGold = [255, 215, 0];
         const cWhite = [255, 255, 255];
         const cBlack = [15, 15, 15];
         
@@ -490,6 +530,7 @@
         const orientation = calc.paperW > calc.paperH ? 'l' : 'p';
         const doc = new jsPDF({ orientation, unit: 'in', format: [calc.paperW, calc.paperH] });
         const labelTxt = document.getElementById('labelText').value;
+        const cutStyle = document.getElementById('cutStyle').value; 
 
         let cursorX = MARGIN;
         let cursorY = 1.0; 
@@ -520,7 +561,7 @@
             }
 
             const theme = getColorTheme(strip.colorCfg);
-            drawStripVector(doc, cursorX, cursorY, strip.w, STRIP_H, strip.l, labelTxt, theme);
+            drawStripVector(doc, cursorX, cursorY, strip.w, STRIP_H, strip.l, labelTxt, theme, cutStyle);
 
             colIdx++; itemsOnPage++;
             if (colIdx >= calc.cols) {
@@ -533,56 +574,50 @@
         doc.save(`Slicers_JMRR_JUMBO_${calc.stripsToPrint.length}.pdf`);
     }
 
-    function drawStripVector(doc, x, y, w, h, subLabel, mainLabel, theme) {
-        // Fondo
+    function drawStripVector(doc, x, y, w, h, subLabel, mainLabel, theme, cutStyle) {
         if(theme.fill) {
             doc.setFillColor(theme.fill[0], theme.fill[1], theme.fill[2]);
             doc.rect(x, y, w, h, 'F');
-        } else {
-            doc.setDrawColor(0); doc.setLineWidth(0.01); doc.rect(x, y, w, h, 'S');
         }
 
-        // Crop Marks
-        doc.setDrawColor(0); doc.setLineWidth(0.01);
-        const cmLen = 0.15;
-        doc.line(x, y, x - cmLen, y); doc.line(x, y, x, y - cmLen);
-        doc.line(x+w, y, x+w+cmLen, y); doc.line(x+w, y, x+w, y-cmLen);
-        doc.line(x, y+h, x-cmLen, y+h); doc.line(x, y+h, x, y+h+cmLen);
-        doc.line(x+w, y+h, x+w+cmLen, y+h); doc.line(x+w, y+h, x+w, y+h+cmLen);
+        if (cutStyle === 'laser') {
+            doc.setDrawColor(255, 0, 0); 
+            doc.setLineWidth(0.005); 
+            doc.rect(x, y, w, h, 'S');
+        } else if (cutStyle === 'scissors') {
+            doc.setDrawColor(150); 
+            doc.setLineWidth(0.01);
+            doc.setLineDash([0.1, 0.1]); 
+            doc.rect(x, y, w, h, 'S');
+            doc.setLineDash([]); 
+        }
 
-        // Línea Central GRUESA
         doc.setDrawColor(theme.line[0], theme.line[1], theme.line[2]);
         doc.setLineWidth(0.04); 
         doc.line(x, y+h/2, x+w, y+h/2);
 
-        // Ticks GRUESOS
         const step = w/10;
-        doc.setLineWidth(LINE_WIDTH_JUMBO); // 0.08 INCHES
+        doc.setLineWidth(LINE_WIDTH_JUMBO); 
         for(let t=1; t<10; t++) {
             if(t===5) continue;
             let tx = x + (step*t);
-            // Líneas más altas (0.6 pulgadas en total)
             doc.line(tx, y + h/2 - 0.3, tx, y + h/2 + 0.3);
         }
 
-        // Diamante GRANDE (JUMBO) - Color dinámico
         doc.setFillColor(theme.gold[0], theme.gold[1], theme.gold[2]);
         const cx = x + w/2; const cy = y + h/2;
-        const dR = DIAMOND_RADIUS; // 0.40 INCHES
+        const dR = DIAMOND_RADIUS; 
         doc.triangle(cx, cy-dR, cx+dR, cy, cx-dR, cy, 'F');
         doc.triangle(cx, cy+dR, cx+dR, cy, cx-dR, cy, 'F');
 
-        // Textos
         doc.setTextColor(theme.txt[0], theme.txt[1], theme.txt[2]);
-        doc.setFontSize(18); // Más grande
+        doc.setFontSize(18); 
         doc.setFont("helvetica", "bold");
-        // Posicionarlo debajo del diamante gigante
         doc.text(mainLabel, cx, y + h - 0.1, {align:'center'});
 
         doc.setFontSize(9); doc.setTextColor(100);
         doc.text(subLabel, x + 0.1, y + 0.15);
         
-        // Extremos (Guías de pegado) Grandes
         const endSize = 0.30;
         doc.setFillColor(theme.line[0], theme.line[1], theme.line[2]);
         doc.triangle(x, y+h/2-endSize, x+endSize, y+h/2, x, y+h/2, 'F');
@@ -596,3 +631,4 @@
 
 </body>
 </html>
+
