@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador Slicers - Max Diamond</title>
-    <!-- Librería PDF (Estándar Industrial) -->
+    <title>Generador ABPC - Gold Master - Juan Miguel Rios Redondo</title>
+    
+    <!-- Librería PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #e74c3c; /* Rojo Intenso para Visibilidad Máxima */
-            --bg: #ecf0f1;
+            --accent: #f1c40f; /* Dorado Gold Master */
             --glass: rgba(255, 255, 255, 0.98);
         }
 
@@ -32,7 +33,7 @@
             padding: 30px;
             border-radius: 16px;
             width: 95%;
-            max-width: 950px;
+            max-width: 1000px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             border-top: 8px solid var(--accent);
         }
@@ -45,6 +46,21 @@
         }
         h1 { margin: 0; font-size: 28px; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
         
+        /* LIVE PREVIEW SECTION */
+        .live-preview-container {
+            background: #fff;
+            border: 2px solid #bdc3c7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            overflow-x: auto;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+        }
+        .live-label {
+            font-size: 12px; font-weight: bold; color: #7f8c8d; text-transform: uppercase; margin-bottom: 10px; display: block;
+        }
+
         .controls-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -64,30 +80,21 @@
         label { display: block; font-weight: 800; font-size: 12px; margin-bottom: 8px; color: #555; text-transform: uppercase; }
         
         select, input[type="number"], input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #eee;
-            border-radius: 6px;
-            font-size: 14px;
-            background: #f9f9f9;
-            box-sizing: border-box;
-            font-weight: 600;
+            width: 100%; padding: 10px; border: 2px solid #eee; border-radius: 6px; font-size: 14px; background: #f9f9f9; box-sizing: border-box;
         }
         
         input[type="color"] {
             -webkit-appearance: none; border: none; width: 100%; height: 38px; padding: 0; background: none; cursor: pointer; border-radius: 4px; overflow: hidden; margin-top: 5px;
         }
-        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-        input[type="color"]::-webkit-color-swatch { border: none; }
 
-        .quick-qty { display: flex; gap: 8px; margin-top: 10px; }
+        .quick-qty { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;}
         .q-btn {
-            flex: 1; background: #dfe6e9; border: none; padding: 8px; font-size: 11px; border-radius: 4px; cursor: pointer; color: #2d3436; font-weight: bold; transition: background 0.2s;
+            flex: 1; background: #dfe6e9; border: none; padding: 8px; font-size: 11px; border-radius: 4px; cursor: pointer; color: #2d3436; font-weight: bold; transition: background 0.2s; min-width: 60px;
         }
-        .q-btn:hover { background: #b2bec3; }
         .q-btn.active { background: var(--primary); color: white; }
         
-        #btnTestQty { display: none; background-color: #f39c12; color: white; }
+        /* Botón Test: oculto por defecto, amarillo para destacar */
+        #btnTestQty { display: none; background-color: #f1c40f; color: #333; flex: 0 0 auto; width: auto;} 
 
         .toggle-container {
             display: flex; background: #eee; border-radius: 6px; padding: 4px; margin-bottom: 15px;
@@ -95,41 +102,42 @@
         .toggle-btn {
             flex: 1; text-align: center; padding: 8px; font-size: 12px; font-weight: bold; cursor: pointer; border-radius: 4px; color: #777;
         }
-        .toggle-btn.active { background: white; color: var(--accent); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .toggle-btn.active { background: white; color: #e67e22; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        .mix-row {
-            display: grid; grid-template-columns: 60px 1fr 40px; gap: 10px; margin-bottom: 8px; background: #f8f9fa; padding: 8px; border-radius: 6px; align-items: center;
-        }
-        .mix-row label { margin: 0; font-size: 11px; }
-        .mix-row select { padding: 6px; font-size: 12px; }
-        .mix-row input[type="color"] { margin-top: 0; height: 30px; }
-
+        /* Botón Principal */
         .btn-action {
             background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
             color: white; border: none; padding: 20px; width: 100%; font-size: 18px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+            box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px;
         }
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
+
+        /* Botón Guía */
+        .btn-guide {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white; border: none; padding: 15px; width: 100%; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-guide:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(52, 152, 219, 0.4); }
 
         .info-box {
             background: #fadbd8; color: #922b21; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 4px solid #c0392b; font-weight: 600;
         }
 
-        .visual-preview {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 4px; background: #95a5a6; padding: 15px; border-radius: 8px; margin-top: 20px; max-height: 200px; overflow-y: auto; border: 2px solid #7f8c8d;
-        }
-        .mini-strip { height: 12px; background: #2c3e50; border-radius: 2px; border: 1px solid rgba(255,255,255,0.2); }
-
         .footer-cr { text-align: center; margin-top: 30px; font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.5; }
-        .footer-cr strong { color: #fff; }
         
         .custom-strip-input { display: none; margin-top:10px; padding:10px; background:#fef9e7; border:1px dashed #f39c12; border-radius:6px; }
         .diamond-color-wrapper { margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px; }
         
         .custom-sheet-container { display: none; margin-top:10px; padding:10px; background:#e8f6f3; border:1px dashed #1abc9c; border-radius:6px; }
         .custom-sheet-row { display: flex; gap: 10px; align-items: flex-end; }
-        .custom-sheet-row > div { flex: 1; }
-        .tech-badge { background:#c0392b; color:white; font-size:9px; padding:2px 5px; border-radius:3px; vertical-align:middle; margin-left:5px; }
+        
+        .mix-row {
+            display: grid; grid-template-columns: 60px 1fr 40px; gap: 10px; margin-bottom: 8px; background: #f8f9fa; padding: 8px; border-radius: 6px; align-items: center;
+        }
+        .mix-row label { margin: 0; font-size: 11px; }
+        .mix-row select { padding: 6px; font-size: 12px; }
+        .mix-row input[type="color"] { margin-top: 0; height: 30px; }
     </style>
 </head>
 <body>
@@ -137,7 +145,12 @@
 <div class="main-panel">
     <div class="header">
         <h1>Generador De Slicers</h1>
-        <div style="font-size:12px; color:#777; margin-top:5px;">Configuración MAX DIAMOND (Máxima Visibilidad)</div>
+        <div style="font-size:12px; color:#777; margin-top:5px;">Gold Master</div>
+    </div>
+
+    <span class="live-label">👁️ Previsualización del Diseño</span>
+    <div class="live-preview-container" id="livePreviewContainer">
+        <!-- SVG se inyectará aquí -->
     </div>
 
     <div class="controls-grid">
@@ -146,10 +159,10 @@
             <label>1. Objetivo de Producción</label>
             <input type="number" id="totalStrips" value="72" min="1" onchange="updateCalc()">
             <div class="quick-qty">
-                <button class="q-btn" id="btnTestQty" onclick="setQty(1)">Prueba (1)</button>
-                <button class="q-btn" onclick="setQty(24)">1 Mesa (24)</button>
-                <button class="q-btn" onclick="setQty(48)">2 Mesas (48)</button>
-                <button class="q-btn active" onclick="setQty(72)">3 Mesas (72)</button>
+                <button class="q-btn" id="btnTestQty" onclick="setQty(1)">PRUEBA (1)</button>
+                <button class="q-btn" onclick="setQty(24)">1 Mesa</button>
+                <button class="q-btn" onclick="setQty(48)">2 Mesas</button>
+                <button class="q-btn active" onclick="setQty(72)">3 Mesas</button>
             </div>
             <div style="margin-top:15px;">
                 <label>Medida de Mesa</label>
@@ -188,23 +201,10 @@
                 </select>
                 
                 <div id="customSheetContainer" class="custom-sheet-container">
-                    <label style="color:#16a085; margin-bottom:5px;">Definir Medidas de la Hoja:</label>
                     <div class="custom-sheet-row">
-                        <div>
-                            <label>Ancho</label>
-                            <input type="number" id="customSheetW" value="50" step="0.1" onchange="updateCalc()">
-                        </div>
-                        <div>
-                            <label>Alto</label>
-                            <input type="number" id="customSheetH" value="35" step="0.1" onchange="updateCalc()">
-                        </div>
-                        <div style="flex: 0.6;">
-                            <label>Unidad</label>
-                            <select id="customSheetUnit" onchange="updateCalc()">
-                                <option value="cm">cm</option>
-                                <option value="in">inch</option>
-                            </select>
-                        </div>
+                        <div style="flex:1;"><label>Ancho</label><input type="number" id="customSheetW" value="50" step="0.1" onchange="updateCalc()"></div>
+                        <div style="flex:1;"><label>Alto</label><input type="number" id="customSheetH" value="35" step="0.1" onchange="updateCalc()"></div>
+                        <div style="flex:0.6;"><label>Unidad</label><select id="customSheetUnit" onchange="updateCalc()"><option value="cm">cm</option><option value="in">in</option></select></div>
                     </div>
                 </div>
             </div>
@@ -212,11 +212,11 @@
             <div id="panelRoll" style="display:none;">
                 <label>Ancho del Rollo (cm)</label>
                 <input type="number" id="rollWidth" value="60" onchange="updateCalc()">
-                <small style="color:#888;">El sistema calculará el largo necesario.</small>
+                <small style="color:#888;">El largo se calculará automáticamente.</small>
             </div>
             
             <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
-                <label>Método de Corte <span class="tech-badge">PRO</span></label>
+                <label>Método de Corte</label>
                 <select id="cutStyle" onchange="updateCalc()" style="border: 2px solid #e74c3c;">
                     <option value="laser" selected>🛑 Línea Roja (Láser/Troquelado)</option>
                     <option value="scissors">✂️ Línea Gris (Manual)</option>
@@ -286,7 +286,11 @@
     <div class="info-box" id="statusMsg"></div>
 
     <button class="btn-action" onclick="generatePDF()">
-        <span>⬇</span> Generar PDF Maestro (MAX DIAMOND)
+        <span>⬇</span> Descargar PDF Final
+    </button>
+    
+    <button class="btn-guide" onclick="generateGuidePDF()">
+        <span>📘</span> Descargar Guía de Instalación
     </button>
     
     <label style="margin-top:20px; font-weight:bold; color:white;">Previsualización de Lote:</label>
@@ -306,11 +310,7 @@
     const STRIP_H = 1.40; 
     const GAP_Y = 0.2; 
     const MARGIN = 0.3;
-    
-    // VARIABLES GRÁFICAS JUMBO (MAXIMUM POWER)
-    const LINE_WIDTH_MAX = 0.12; // 3mm de grosor (BARRA SÓLIDA)
-    // El diamante tendrá un radio de 0.50 pulgadas
-    // Altura del rombo será 0.50 arriba + 0.50 abajo = 1.00 pulgada (la tira mide 1.40)
+    const LINE_WIDTH_MAX = 0.12; 
     const DIAMOND_RADIUS = 0.50;   
     
     let calc = { paperW: 0, paperH: 0, cols: 0, rowsPerPage: 0, totalPages: 0, stripsPerPage: 0, stripsToPrint: [] };
@@ -331,14 +331,10 @@
         const btnTest = document.getElementById('btnTestQty');
         const customContainer = document.getElementById('customSheetContainer');
         
-        if (pt === 'custom_sheet') {
-            customContainer.style.display = 'block';
-        } else {
-            customContainer.style.display = 'none';
-        }
+        customContainer.style.display = (pt === 'custom_sheet') ? 'block' : 'none';
 
         if (pt === 'letter' || pt === 'legal') {
-            btnTest.style.display = 'block';
+            btnTest.style.display = 'inline-block';
             setQty(1);
         } else {
             btnTest.style.display = 'none';
@@ -481,23 +477,46 @@
             status.innerHTML = `<strong>Producción en Rollo:</strong> Archivo único de ${wCm}cm x ${hCm}cm. | Estilo: ${cutMsg}`;
         }
 
-        const preview = document.getElementById('previewGrid');
-        preview.innerHTML = '';
-        calc.stripsToPrint.forEach(s => {
-            const d = document.createElement('div');
-            d.className = 'mini-strip';
-            let bg = '#eee';
-            let border = 'none';
-            if(s.colorCfg.mode === 'transparent') { bg = '#ecf0f1'; border = '1px solid #999'; }
-            else if (s.colorCfg.mode === 'black') { bg = '#2d3436'; }
-            else { bg = s.colorCfg.val; }
-            d.style.backgroundColor = bg;
-            d.style.border = border;
-            d.title = s.l;
-            preview.appendChild(d);
-        });
+        updateLivePreview();
     }
 
+    // --- LIVE SVG PREVIEW ---
+    function updateLivePreview() {
+        const container = document.getElementById('livePreviewContainer');
+        const strip = calc.stripsToPrint[0] || {w:14, l:"10 Pies", colorCfg:{mode:'black'}};
+        const theme = getColorTheme(strip.colorCfg);
+        const labelTxt = document.getElementById('labelText').value;
+        
+        const fill = theme.fill ? `rgb(${theme.fill.join(',')})` : 'none';
+        const stroke = theme.fill ? 'none' : '#333';
+        const line = `rgb(${theme.line.join(',')})`;
+        const gold = `rgb(${theme.gold.join(',')})`;
+        const txt = `rgb(${theme.txt.join(',')})`;
+        
+        const w = strip.w;
+        const h = STRIP_H;
+        
+        let ticks = "";
+        const step = w/10;
+        for(let t=1; t<10; t++) {
+            if(t===5) continue;
+            let tx = step*t;
+            ticks += `<line x1="${tx}" y1="${h/2 - 0.3}" x2="${tx}" y2="${h/2 + 0.3}" stroke="${line}" stroke-width="${LINE_WIDTH_MAX}" />`;
+        }
+
+        const svg = `
+        <svg width="${w*40}px" height="${h*40}px" viewBox="0 0 ${w} ${h}" style="max-width:100%; border:1px solid #ccc;">
+            <rect x="0" y="0" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="0.02"/>
+            <line x1="0" y1="${h/2}" x2="${w}" y2="${h/2}" stroke="${line}" stroke-width="0.04" />
+            ${ticks}
+            <polygon points="${w/2},${h/2-DIAMOND_RADIUS} ${w/2+DIAMOND_RADIUS},${h/2} ${w/2},${h/2+DIAMOND_RADIUS} ${w/2-DIAMOND_RADIUS},${h/2}" fill="${gold}"/>
+            <text x="${w/2}" y="${h-0.08}" font-family="Arial" font-weight="bold" font-size="0.14" fill="${txt}" text-anchor="middle">${labelTxt}</text>
+        </svg>`;
+        
+        container.innerHTML = svg;
+    }
+
+    // --- PDF HELPERS ---
     function hexToRgb(hex) {
         let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [0, 0, 0];
@@ -550,10 +569,9 @@
         const addHeader = (txt) => {
              doc.setFontSize(14); doc.setTextColor(0);
              doc.text(txt, calc.paperW/2, 0.5, {align:'center'});
-             
              if (cutStyle === 'laser') {
                  doc.setFontSize(10); doc.setTextColor(231, 76, 60); 
-                 doc.text("⚠️ NOTA TÉCNICA: Línea ROJA (RGB 255,0,0) es TRAZO DE CORTE (CutContour).", calc.paperW/2, 0.7, {align:'center'});
+                 doc.text("⚠️ NOTA TÉCNICA: Línea ROJA (RGB 255,0,0) es TRAZO DE CORTE.", calc.paperW/2, 0.7, {align:'center'});
              }
         };
 
@@ -618,11 +636,10 @@
         doc.triangle(cx, cy+dR, cx+dR, cy, cx-dR, cy, 'F');
 
         doc.setTextColor(theme.txt[0], theme.txt[1], theme.txt[2]);
-        doc.setFontSize(14); // Texto más pequeño para dar espacio al diamante
+        doc.setFontSize(14); 
         doc.setFont("helvetica", "bold");
         
-        // Texto posicionado en el borde inferior para no chocar con el diamante
-        doc.text(mainLabel, cx, y + h - 0.05, {align:'center'});
+        doc.text(mainLabel, cx, y + h - 0.08, {align:'center'});
 
         doc.setFontSize(9); doc.setTextColor(100);
         doc.text(subLabel, x + 0.1, y + 0.15);
@@ -635,9 +652,79 @@
         doc.triangle(x+w, y+h/2+endSize, x+w-endSize, y+h/2, x+w, y+h/2, 'F');
     }
 
+    // --- GUÍA DE INSTALACIÓN PDF ---
+    async function generateGuidePDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: 'p', unit: 'in', format: 'letter' });
+        
+        const m = 0.8;
+        let y = 1.0;
+
+        // Título Principal
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(24); 
+        doc.setTextColor(44, 62, 80);
+        doc.text("GUÍA DE INSTALACIÓN", doc.internal.pageSize.getWidth()/2, y, {align:'center'});
+        y += 0.3;
+        doc.setFontSize(14);
+        doc.setTextColor(127, 140, 141);
+        doc.text("SISTEMA DE PRECISIÓN PARA BILLAR", doc.internal.pageSize.getWidth()/2, y, {align:'center'});
+        
+        y += 0.5;
+        doc.setLineWidth(0.02); 
+        doc.setDrawColor(230, 126, 34); // Naranja acento
+        doc.line(m, y, doc.internal.pageSize.getWidth()-m, y);
+        y += 0.5;
+
+        // Paso 1
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16); doc.setTextColor(44, 62, 80);
+        doc.text("1. PREPARACIÓN DE LA SUPERFICIE", m, y); 
+        y+=0.3;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12); doc.setTextColor(50);
+        doc.text("• Limpie la superficie de la banda con alcohol isopropílico para eliminar", m + 0.3, y); y+=0.25;
+        doc.text("  cualquier rastro de grasa, tiza o polvo.", m + 0.3, y); y+=0.25;
+        doc.text("• Asegúrese de que la madera esté completamente seca antes de continuar.", m + 0.3, y); 
+        y+=0.6;
+
+        // Paso 2
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16); doc.setTextColor(44, 62, 80);
+        doc.text("2. ALINEACIÓN PRECISA", m, y); 
+        y+=0.3;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12); doc.setTextColor(50);
+        doc.text("• Localice el diamante de nácar original incrustado en la mesa.", m + 0.3, y); y+=0.25;
+        doc.text("• Presente la tira sin quitar el adhesivo.", m + 0.3, y); y+=0.25;
+        doc.text("• El DIAMANTE GRANDE impreso debe quedar perfectamente centrado", m + 0.3, y); y+=0.25;
+        doc.text("  sobre el diamante real de la mesa.", m + 0.3, y);
+        y+=0.6;
+
+        // Paso 3
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16); doc.setTextColor(44, 62, 80);
+        doc.text("3. APLICACIÓN PROFESIONAL", m, y); 
+        y+=0.3;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12); doc.setTextColor(50);
+        doc.text("• Retire el papel protector comenzando desde el centro.", m + 0.3, y); y+=0.25;
+        doc.text("• Pegue primero la zona central y presione suavemente hacia los extremos.", m + 0.3, y); y+=0.25;
+        doc.text("• Use un paño suave para frotar firmemente y asegurar la adherencia total.", m + 0.3, y); 
+        
+        // Footer Autoria
+        doc.setFontSize(10); 
+        doc.setTextColor(150);
+        const pageHeight = doc.internal.pageSize.getHeight();
+        doc.text("Desarrollado por Juan Miguel Rios Redondo © " + new Date().getFullYear(), doc.internal.pageSize.getWidth()/2, pageHeight - 0.5, {align:'center'});
+
+        doc.save("Guia_Instalacion_Slicers.pdf");
+    }
+
     updateCalc();
 </script>
 
 </body>
 </html>
+
 
