@@ -953,7 +953,7 @@
                 <rect x="0" y="0" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="0.02"/>
                 <line x1="0" y1="${h/2}" x2="${w}" y2="${h/2}" stroke="${line}" stroke-width="0.04" />
                 ${ticks}
-                <polygon points="${w/2},${h/2-DIAMOND_RADIUS} ${w/2+DIAMOND_RADIUS},${h/2} ${w/2},${h/2+DIAMOND_RADIUS} ${w/2-DIAMOND_RADIUS},${h/2}" fill="${gold}"/>
+                <polygon points="${w/2},${h/2-DIAMOND_RADIUS} ${w/2+DIAMOND_RADIUS},${h/2} ${w/2},${h/2+DIAMOND_RADIUS} ${w/2-DIAMOND_RADIUS},${h/2}" fill="${gold}" stroke="${txt}" stroke-width="0.03" stroke-linejoin="round"/>
                 <text x="${w/2}" y="${h-0.08}" font-family="Arial" font-weight="bold" font-size="0.14" fill="${txt}" text-anchor="middle">${labelTxt}</text>
             </svg>`;
             
@@ -1140,10 +1140,19 @@
                 doc.line(tx, y + h/2 - 0.3, tx, y + h/2 + 0.3);
             }
 
+            // Dibujar interior del diamante
             doc.setFillColor(theme.gold[0], theme.gold[1], theme.gold[2]);
             const cx = x + w/2; const cy = y + h/2; const dR = DIAMOND_RADIUS; 
             doc.triangle(cx, cy-dR, cx+dR, cy, cx-dR, cy, 'F');
             doc.triangle(cx, cy+dR, cx+dR, cy, cx-dR, cy, 'F');
+            
+            // Dibujar borde contrastante alrededor del diamante
+            doc.setDrawColor(theme.txt[0], theme.txt[1], theme.txt[2]);
+            doc.setLineWidth(0.02);
+            doc.line(cx, cy-dR, cx+dR, cy);
+            doc.line(cx+dR, cy, cx, cy+dR);
+            doc.line(cx, cy+dR, cx-dR, cy);
+            doc.line(cx-dR, cy, cx, cy-dR);
 
             doc.setTextColor(theme.txt[0], theme.txt[1], theme.txt[2]);
             doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text(mainLabel, cx, y + h - 0.08, {align:'center'});
