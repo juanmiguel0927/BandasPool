@@ -67,6 +67,15 @@
             display: flex; /* Se usa flex porque ambos body originales usaban flex */
         }
 
+        /* ESTILOS GLOBALES DEL MODAL EXTRACTOR */
+        .global-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85); z-index: 10000;
+            display: none; justify-content: center; align-items: center;
+            padding: 20px; box-sizing: border-box; backdrop-filter: blur(4px);
+        }
+        .global-modal-overlay.active { display: flex; }
+
         @media print {
             .no-print { display: none !important; }
             #app1-wrapper, #app2-wrapper { background: white !important; padding: 0 !important; }
@@ -118,7 +127,7 @@
         #app1-wrapper .diamond-color-wrapper { margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px; }
         #app1-wrapper .custom-sheet-container { display: none; margin-top:10px; padding:10px; background:#e8f6f3; border:1px dashed #1abc9c; border-radius:6px; }
         #app1-wrapper .custom-sheet-row { display: flex; gap: 10px; align-items: flex-end; }
-        #app1-wrapper .mix-row { display: grid; grid-template-columns: 60px 1fr 40px; gap: 10px; margin-bottom: 8px; background: #f8f9fa; padding: 8px; border-radius: 6px; align-items: center; }
+        #app1-wrapper .mix-row { display: grid; grid-template-columns: 60px 1fr 40px 40px; gap: 5px; margin-bottom: 8px; background: #f8f9fa; padding: 8px; border-radius: 6px; align-items: center; }
         #app1-wrapper .mix-row label { margin: 0; font-size: 11px; }
         #app1-wrapper .mix-row select { padding: 6px; font-size: 12px; }
         #app1-wrapper .mix-row input[type="color"] { margin-top: 0; height: 30px; }
@@ -252,6 +261,19 @@
 </head>
 <body>
 
+    <!-- Módulo Oculto Extractor de Color -->
+    <div id="colorExtractorModule" class="global-modal-overlay">
+        <div style="background: white; padding: 20px; border-radius: 12px; max-width: 400px; display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: #1e3a8a; font-family: sans-serif;">📸 Extractor de Color</h3>
+                <button onclick="document.getElementById('colorExtractorModule').classList.remove('active')" style="background:none; border:none; font-size:18px; cursor:pointer;">❌</button>
+            </div>
+            <span style="display:block; text-align:center; margin-bottom:10px; color:#64748b; font-size:12px; font-weight:bold; font-family: sans-serif;">Toque la imagen para extraer el color exacto de la mesa</span>
+            <canvas id="extractorCanvas" style="max-width:300px; max-height:300px; border:1px dashed #94a3b8; cursor:crosshair; display:block; margin:0 auto;"></canvas>
+            <input type="file" id="extractorInput" accept="image/*" style="display:none;">
+        </div>
+    </div>
+
     <!-- MENÚ PRINCIPAL PARA ALTERNAR HERRAMIENTAS -->
     <div class="main-system-nav no-print">
         <button class="active" onclick="switchMainApp(event, 'app1')">Generador de Slicers</button>
@@ -268,7 +290,15 @@
                 <div style="font-size:12px; color:#777; margin-top:5px;">Gold Master</div>
             </div>
 
-            <span class="live-label">👁️ Previsualización del Diseño</span>
+            <!-- Previsualización con selector agregado -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; width: 100%;">
+                <span class="live-label" style="margin-bottom: 0;">👁️ Previsualización del Diseño</span>
+                <select id="previewSelect" onchange="updateLivePreview()" style="display:none; width: auto; padding: 4px; font-size: 11px; border-radius: 4px; border: 1px solid #bdc3c7;">
+                    <option value="10">Mesa 10 Pies</option>
+                    <option value="9">Mesa 9 Pies</option>
+                    <option value="8">Mesa 8 Pies</option>
+                </select>
+            </div>
             <div class="live-preview-container" id="livePreviewContainer">
                 <!-- SVG se inyectará aquí -->
             </div>
@@ -348,20 +378,33 @@
                 <div class="control-group">
                     <label>3. Personalización</label>
                     <div style="margin-bottom:15px;">
-                        <label>Etiqueta Central</label>
-                        <input type="text" id="labelText" value="ABPC" placeholder="Nombre del Club" onkeyup="updateCalc()">
+                        <label>Etiqueta Central y Color</label>
+                        <div style="display:flex; gap: 6px;">
+                            <input type="text" id="labelText" value="ABPC" placeholder="Nombre del Club" onkeyup="updateCalc()" style="flex: 1; margin: 0;">
+                            <input type="color" id="labelColor" value="#ffffff" onchange="window.isAutoContrast=false; updateCalc()" style="width: 60px; margin: 0;" title="Color del Texto">
+                        </div>
                     </div>
                     
-                    <label>Colores de Fondo</label>
+                    <!-- Color de Líneas y Contraste -->
+                    <div style="margin-bottom:15px; border-bottom: 1px dashed #ccc; padding-bottom: 15px;">
+                        <label>Color de Líneas</label>
+                        <div style="display:flex; gap: 6px;">
+                            <input type="color" id="lineColor" value="#00ffff" onchange="window.isAutoContrast=false; updateCalc()" style="flex: 1;">
+                            <button class="btn-action" style="padding: 0 10px; margin: 0; background: #f59e0b; width: auto; font-size: 14px;" onclick="applyContrast()" title="Sugerir Color de Contraste Inteligente (YIQ)">💡 Autocontraste</button>
+                        </div>
+                    </div>
+
+                    <label>Colores de Fondo (Mesa)</label>
                     
                     <!-- Single Color Mode -->
-                    <div id="singleColorControl">
-                        <select id="bgMode" onchange="updateCalc()">
+                    <div id="singleColorControl" style="display:flex; gap: 6px; align-items: center; margin-bottom: 10px;">
+                        <select id="bgMode" onchange="updateCalc()" style="flex: 1;">
                             <option value="transparent" selected>Transparente</option>
                             <option value="black">Negro</option>
                             <option value="custom">Personalizado</option>
                         </select>
-                        <input type="color" id="colorGlobal" value="#3498db" onchange="updateCalc()" style="display:none;">
+                        <input type="color" id="colorGlobal" value="#3498db" onchange="updateCalc()" style="display:none; width: 60px;">
+                        <button class="btn-action" id="btnCamGlobal" onclick="openExtractor('colorGlobal', () => { if(document.getElementById('bgMode').value !== 'transparent') document.getElementById('bgMode').value='custom'; updateCalc(); })" style="display:none; padding: 0 10px; margin: 0; background: #475569; width: auto;" title="Extraer Color de la Mesa">📸</button>
                     </div>
 
                     <!-- Mix Color Mode -->
@@ -373,7 +416,8 @@
                                 <option value="black">Negro</option>
                                 <option value="custom">Personalizado</option>
                             </select>
-                            <input type="color" id="colorMix10" value="#e74c3c" onchange="updateCalc()" style="display:none;">
+                            <input type="color" id="colorMix10" value="#e74c3c" onchange="updateCalc()" style="display:none; width: 100%;">
+                            <button class="btn-action" id="btnCamMix10" onclick="openExtractor('colorMix10', () => { if(document.getElementById('bgMix10').value !== 'transparent') document.getElementById('bgMix10').value='custom'; updateCalc(); })" style="display:none; padding: 0 10px; margin: 0; background: #475569; width: auto;" title="Extraer Color de la Mesa">📸</button>
                         </div>
                         <div class="mix-row">
                             <label>9 Pies:</label>
@@ -382,7 +426,8 @@
                                 <option value="black">Negro</option>
                                 <option value="custom">Personalizado</option>
                             </select>
-                            <input type="color" id="colorMix9" value="#2ecc71" onchange="updateCalc()" style="display:none;">
+                            <input type="color" id="colorMix9" value="#2ecc71" onchange="updateCalc()" style="display:none; width: 100%;">
+                            <button class="btn-action" id="btnCamMix9" onclick="openExtractor('colorMix9', () => { if(document.getElementById('bgMix9').value !== 'transparent') document.getElementById('bgMix9').value='custom'; updateCalc(); })" style="display:none; padding: 0 10px; margin: 0; background: #475569; width: auto;" title="Extraer Color de la Mesa">📸</button>
                         </div>
                         <div class="mix-row">
                             <label>8 Pies:</label>
@@ -391,16 +436,17 @@
                                 <option value="black">Negro</option>
                                 <option value="custom" selected>Personalizado</option>
                             </select>
-                            <input type="color" id="colorMix8" value="#3498db" onchange="updateCalc()">
+                            <input type="color" id="colorMix8" value="#3498db" onchange="updateCalc()" style="width: 100%;">
+                            <button class="btn-action" id="btnCamMix8" onclick="openExtractor('colorMix8', () => { if(document.getElementById('bgMix8').value !== 'transparent') document.getElementById('bgMix8').value='custom'; updateCalc(); })" style="display:block; padding: 0 10px; margin: 0; background: #475569; width: auto;" title="Extraer Color de la Mesa">📸</button>
                         </div>
                     </div>
 
                     <!-- Color del Diamante -->
                     <div class="diamond-color-wrapper">
                         <label>Color del Diamante Central</label>
-                        <input type="color" id="diamondColor" value="#FFD700" onchange="updateCalc()">
+                        <input type="color" id="diamondColor" value="#FFD700" onchange="window.isAutoContrast=false; updateCalc()">
                     </div>
-                </div>
+                </div> <!-- Termina Control Group 3 -->
             </div>
 
             <div class="info-box" id="statusMsg"></div>
@@ -641,10 +687,8 @@
            NAVEGACIÓN PRINCIPAL
            ========================================= */
         function switchMainApp(e, appId) {
-            // Ocultar todas las herramientas
             document.querySelectorAll('.app-container').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.main-system-nav button').forEach(el => el.classList.remove('active'));
-            // Mostrar la seleccionada
             document.getElementById(appId + '-wrapper').classList.add('active');
             e.currentTarget.classList.add('active');
         }
@@ -653,6 +697,8 @@
            CÓDIGO APP 1: GENERADOR ABPC (GOLD)
            ========================================= */
         document.getElementById('copyright-text').innerText = "© " + new Date().getFullYear();
+
+        window.isAutoContrast = false;
 
         let mode = 'sheet'; 
         const STRIP_H = 1.40; 
@@ -713,14 +759,17 @@
             }
         }
 
-        function resolveColor(selectId, inputId) {
+        function resolveColor(selectId, inputId, camId) {
             const mode = document.getElementById(selectId).value;
             const input = document.getElementById(inputId);
-            if (mode === 'custom') {
+            const cam = document.getElementById(camId);
+            if (mode === 'custom' || mode === 'transparent') {
                 input.style.display = 'block';
-                return { mode: 'custom', val: input.value };
+                if(cam) cam.style.display = 'block';
+                return { mode: mode, val: input.value };
             } else {
                 input.style.display = 'none';
+                if(cam) cam.style.display = 'none';
                 return { mode: mode, val: null };
             }
         }
@@ -734,11 +783,12 @@
             const isMix = (type === 'mix');
             document.getElementById('singleColorControl').style.display = isMix ? 'none' : 'flex';
             document.getElementById('mixColorControl').style.display = isMix ? 'block' : 'none';
+            document.getElementById('previewSelect').style.display = isMix ? 'block' : 'none';
 
-            const colGlobal = resolveColor('bgMode', 'colorGlobal');
-            const col10 = resolveColor('bgMix10', 'colorMix10');
-            const col9 = resolveColor('bgMix9', 'colorMix9');
-            const col8 = resolveColor('bgMix8', 'colorMix8');
+            const colGlobal = resolveColor('bgMode', 'colorGlobal', 'btnCamGlobal');
+            const col10 = resolveColor('bgMix10', 'colorMix10', 'btnCamMix10');
+            const col9 = resolveColor('bgMix9', 'colorMix9', 'btnCamMix9');
+            const col8 = resolveColor('bgMix8', 'colorMix8', 'btnCamMix8');
 
             calc.stripsToPrint = [];
             if (type === 'mix') {
@@ -824,8 +874,25 @@
 
         function updateLivePreview() {
             const container = document.getElementById('livePreviewContainer');
-            const strip = calc.stripsToPrint[0] || {w:14, l:"10 Pies", colorCfg:{mode:'black'}};
+            const type = document.getElementById('sizeType').value;
+            
+            let strip = calc.stripsToPrint[0] || {w:14, l:"10 Pies", colorCfg:{mode:'black'}};
+            
+            if (type === 'mix') {
+                const pVal = document.getElementById('previewSelect').value;
+                const labelTarget = pVal + " Pies";
+                strip = calc.stripsToPrint.find(s => s.l === labelTarget) || strip;
+            }
+            
             const theme = getColorTheme(strip.colorCfg);
+            
+            // Si el autocontraste está encendido, sincronizamos los inputs visuales con la previsualización actual
+            if (window.isAutoContrast) {
+                document.getElementById('lineColor').value = "#" + ("000000" + rgbToHexVal(theme.line[0], theme.line[1], theme.line[2])).slice(-6);
+                document.getElementById('diamondColor').value = "#" + ("000000" + rgbToHexVal(theme.gold[0], theme.gold[1], theme.gold[2])).slice(-6);
+                document.getElementById('labelColor').value = "#" + ("000000" + rgbToHexVal(theme.txt[0], theme.txt[1], theme.txt[2])).slice(-6);
+            }
+            
             const labelTxt = document.getElementById('labelText').value;
             
             const fill = theme.fill ? `rgb(${theme.fill.join(',')})` : 'none';
@@ -846,7 +913,7 @@
             }
 
             const svg = `
-            <svg width="${w*40}px" height="${h*40}px" viewBox="0 0 ${w} ${h}" style="max-width:100%; border:1px solid #ccc;">
+            <svg width="100%" height="auto" viewBox="0 0 ${w} ${h}" style="border:1px solid #ccc; display: block; margin: 0 auto;">
                 <rect x="0" y="0" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="0.02"/>
                 <line x1="0" y1="${h/2}" x2="${w}" y2="${h/2}" stroke="${line}" stroke-width="0.04" />
                 ${ticks}
@@ -862,24 +929,114 @@
             return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [0, 0, 0];
         }
 
+        function rgbToHexVal(r, g, b) {
+            return ((r << 16) | (g << 8) | b).toString(16);
+        }
+
         function isDark(rgb) {
             const brightness = Math.round(((parseInt(rgb[0]) * 299) + (parseInt(rgb[1]) * 587) + (parseInt(rgb[2]) * 114)) / 1000);
             return brightness < 125;
         }
 
         function getColorTheme(cfg) {
-            const dHex = document.getElementById('diamondColor').value;
-            const cDiamond = hexToRgb(dHex);
-            const cCyan = [0, 255, 255];
-            const cWhite = [255, 255, 255];
-            const cBlack = [15, 15, 15];
+            let cLine = hexToRgb(document.getElementById('lineColor').value);
+            let cDiamond = hexToRgb(document.getElementById('diamondColor').value);
+            let cText = hexToRgb(document.getElementById('labelColor').value);
             
-            if (cfg.mode === 'transparent') return { fill: null, txt: [0,0,0], line: [0,128,128], gold: cDiamond };
-            if (cfg.mode === 'black') return { fill: cBlack, txt: cWhite, line: cCyan, gold: cDiamond };
-            const bgRgb = hexToRgb(cfg.val);
-            const txtRgb = isDark(bgRgb) ? cWhite : [0,0,0];
-            const lineRgb = isDark(bgRgb) ? cCyan : [0,0,0];
-            return { fill: bgRgb, txt: txtRgb, line: lineRgb, gold: cDiamond };
+            let bgHex = cfg.val;
+            if (cfg.mode === 'black') bgHex = '#000000';
+            else if (!bgHex) bgHex = '#ffffff';
+
+            let bgRgb = hexToRgb(bgHex);
+            let isDarkBg = isDark(bgRgb);
+
+            // Si el autocontraste está activo, calculamos los colores de la línea y el diamante basándonos en EL FONDO DE CADA MESA
+            if (window.isAutoContrast) {
+                const yiq = ((bgRgb[0] * 299) + (bgRgb[1] * 587) + (bgRgb[2] * 114)) / 1000;
+                if (yiq < 128) { // Fondo oscuro -> usa paleta neón
+                    cLine = hexToRgb(darkPalettes[contrastIndexDark % darkPalettes.length]);
+                    cDiamond = hexToRgb(darkPalettes[(contrastIndexDark + 1) % darkPalettes.length]);
+                    cText = hexToRgb(darkPalettes[(contrastIndexDark + 2) % darkPalettes.length]);
+                } else {         // Fondo claro -> usa paleta sólida/profunda
+                    cLine = hexToRgb(lightPalettes[contrastIndexLight % lightPalettes.length]);
+                    cDiamond = hexToRgb(lightPalettes[(contrastIndexLight + 1) % lightPalettes.length]);
+                    cText = hexToRgb(lightPalettes[(contrastIndexLight + 2) % lightPalettes.length]);
+                }
+            }
+
+            if (cfg.mode === 'transparent') {
+                return { fill: null, txt: cText, line: cLine, gold: cDiamond };
+            }
+            if (cfg.mode === 'black') {
+                return { fill: [15, 15, 15], txt: cText, line: cLine, gold: cDiamond };
+            }
+            return { fill: bgRgb, txt: cText, line: cLine, gold: cDiamond };
+        }
+
+        /* =========================================
+           EXTRACTOR DE COLOR FOTOGRÁFICO
+           ========================================= */
+        let activeColorTarget = null;
+        let activeColorCallback = null;
+
+        function openExtractor(inputId, callback) {
+            activeColorTarget = inputId;
+            activeColorCallback = callback;
+            document.getElementById('extractorInput').click();
+        }
+
+        document.getElementById('extractorInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.getElementById('extractorCanvas');
+                    const ctx = canvas.getContext('2d');
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > 300) { h = (300 / w) * h; w = 300; }
+                    canvas.width = w; canvas.height = h;
+                    ctx.drawImage(img, 0, 0, w, h);
+                    document.getElementById('colorExtractorModule').classList.add('active');
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('extractorCanvas').addEventListener('click', function(e) {
+            if(!activeColorTarget) return;
+            const rect = this.getBoundingClientRect();
+            const scaleX = this.width / rect.width;
+            const scaleY = this.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
+            
+            const ctx = this.getContext('2d');
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const hex = "#" + ("000000" + rgbToHexVal(pixel[0], pixel[1], pixel[2])).slice(-6);
+            
+            document.getElementById(activeColorTarget).value = hex;
+            document.getElementById('colorExtractorModule').classList.remove('active');
+            
+            if(activeColorCallback) activeColorCallback();
+        });
+
+        /* =========================================
+           MOTOR DE CONTRASTE YIQ (SLICER)
+           ========================================= */
+        const darkPalettes = ['#00ffff', '#fbbf24', '#34d399', '#f472b6', '#a3e635']; 
+        const lightPalettes = ['#000000', '#1e3a8a', '#064e3b', '#7f1d1d', '#4c1d95']; 
+        let contrastIndexDark = 0;
+        let contrastIndexLight = 0;
+
+        function applyContrast() {
+            window.isAutoContrast = true;
+            contrastIndexDark++;
+            contrastIndexLight++;
+            updateCalc();
         }
 
         async function generatePDF() {
