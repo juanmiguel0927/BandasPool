@@ -274,6 +274,36 @@
         </div>
     </div>
 
+    <!-- Modal Ayuda Slicers -->
+    <div id="slicerHelpModule" class="global-modal-overlay">
+        <div style="background: white; padding: 30px; border-radius: 12px; max-width: 600px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; width: 100%;">
+            <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+                <h2 style="margin: 0; color: #2c3e50; font-family: sans-serif;">📖 Guía de Uso: Generador de Slicers</h2>
+                <button onclick="closeSlicerHelp()" style="background:none; border:none; font-size:24px; cursor:pointer; color: #c0392b;">&times;</button>
+            </div>
+            
+            <div style="font-family: sans-serif; color: #333; font-size: 14px; line-height: 1.6;">
+                <h4 style="color: #2980b9; margin-bottom: 5px;">1. Objetivo de Producción</h4>
+                <p style="margin-top: 0;">Selecciona cuántas tiras necesitas. Puedes usar los botones rápidos (Ej. 1 Mesa = 24 tiras). También escoge el tamaño de tu mesa (10 pies, 9 pies, 8 pies) o elige una medida personalizada en pulgadas.</p>
+                
+                <h4 style="color: #2980b9; margin-bottom: 5px;">2. Formato de Salida</h4>
+                <p style="margin-top: 0;">Elige si imprimirás en hojas sueltas (Paginado) o en un Plotter continuo (Rollo). Ajusta el tamaño de papel de tu impresora y el sistema calculará cuántas páginas o metros necesitas automáticamente.</p>
+                
+                <h4 style="color: #2980b9; margin-bottom: 5px;">3. Personalización y Autocontraste</h4>
+                <ul style="margin-top: 0; padding-left: 20px;">
+                    <li><strong>Etiqueta:</strong> Cambia el texto central para colocar el nombre de tu club.</li>
+                    <li><strong>Color de Mesa:</strong> Puedes poner un color sólido o usar el modo "Transparente". Si usas Transparente o Personalizado, aparecerá un ícono de cámara (📸) para que subas una foto de tu mesa y extraigas su color exacto.</li>
+                    <li><strong>💡 Autocontraste:</strong> Si ya capturaste el color de tu mesa, presiona este botón y el sistema buscará mágicamente colores para las líneas, el diamante y el texto que contrasten perfectamente con la madera.</li>
+                </ul>
+
+                <h4 style="color: #2980b9; margin-bottom: 5px;">4. Descarga</h4>
+                <p style="margin-top: 0;">Una vez estés conforme con la previsualización, haz clic en "Descargar PDF Final". Se generará un archivo vectorial de alta resolución ideal para impresión profesional o corte láser.</p>
+            </div>
+            
+            <button onclick="closeSlicerHelp()" style="margin-top: 20px; background: #2c3e50; color: white; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px;">Entendido</button>
+        </div>
+    </div>
+
     <!-- MENÚ PRINCIPAL PARA ALTERNAR HERRAMIENTAS -->
     <div class="main-system-nav no-print">
         <button class="active" onclick="switchMainApp(event, 'app1')">Generador de Slicers</button>
@@ -377,6 +407,7 @@
                 <!-- GRUPO 3: PERSONALIZACIÓN -->
                 <div class="control-group">
                     <label>3. Personalización</label>
+
                     <div style="margin-bottom:15px;">
                         <label>Etiqueta Central y Color</label>
                         <div style="display:flex; gap: 6px;">
@@ -457,6 +488,10 @@
             
             <button class="btn-guide" onclick="generateGuidePDF()">
                 <span>📘</span> Descargar Guía de Instalación
+            </button>
+            
+            <button class="btn-guide" onclick="openSlicerHelp()" style="background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%); margin-top: 15px;">
+                <span>❓</span> ¿Cómo usar el Generador de Slicers?
             </button>
             
             <label style="margin-top:20px; font-weight:bold; color:white;">Previsualización de Lote:</label>
@@ -545,7 +580,7 @@
                     </div>
 
                     <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; font-weight: bold; border-top: 1px solid #e2e8f0; padding-top: 10px;">
-                        DISEÑADO POR JUAN MIGUEL RIOS REDONDO © 2026 - STROKEMASTER PRO
+                        DISEÑADO POR JUAN MIGUEL RIOS REDONDO © <span id="year-label">2026</span> - STROKEMASTER PRO
                     </div>
                 </div>
             </div>
@@ -696,6 +731,7 @@
         /* =========================================
            CÓDIGO APP 1: GENERADOR ABPC (GOLD)
            ========================================= */
+        document.getElementById('year-label').innerText = new Date().getFullYear();
         document.getElementById('copyright-text').innerText = "© " + new Date().getFullYear();
 
         window.isAutoContrast = false;
@@ -705,7 +741,7 @@
         const GAP_Y = 0.2; 
         const MARGIN = 0.3;
         const LINE_WIDTH_MAX = 0.12; 
-        const DIAMOND_RADIUS = 0.50;   
+        const DIAMOND_RADIUS = 0.50; 
         
         let calc = { paperW: 0, paperH: 0, cols: 0, rowsPerPage: 0, totalPages: 0, stripsPerPage: 0, stripsToPrint: [] };
 
@@ -886,7 +922,7 @@
             
             const theme = getColorTheme(strip.colorCfg);
             
-            // Si el autocontraste está encendido, sincronizamos los inputs visuales con la previsualización actual
+            // Sincronizamos los inputs visuales con la previsualización actual si el autocontraste está encendido
             if (window.isAutoContrast) {
                 document.getElementById('lineColor').value = "#" + ("000000" + rgbToHexVal(theme.line[0], theme.line[1], theme.line[2])).slice(-6);
                 document.getElementById('diamondColor').value = "#" + ("000000" + rgbToHexVal(theme.gold[0], theme.gold[1], theme.gold[2])).slice(-6);
@@ -950,14 +986,13 @@
             let bgRgb = hexToRgb(bgHex);
             let isDarkBg = isDark(bgRgb);
 
-            // Si el autocontraste está activo, calculamos los colores de la línea y el diamante basándonos en EL FONDO DE CADA MESA
             if (window.isAutoContrast) {
                 const yiq = ((bgRgb[0] * 299) + (bgRgb[1] * 587) + (bgRgb[2] * 114)) / 1000;
-                if (yiq < 128) { // Fondo oscuro -> usa paleta neón
+                if (yiq < 128) { 
                     cLine = hexToRgb(darkPalettes[contrastIndexDark % darkPalettes.length]);
                     cDiamond = hexToRgb(darkPalettes[(contrastIndexDark + 1) % darkPalettes.length]);
                     cText = hexToRgb(darkPalettes[(contrastIndexDark + 2) % darkPalettes.length]);
-                } else {         // Fondo claro -> usa paleta sólida/profunda
+                } else {         
                     cLine = hexToRgb(lightPalettes[contrastIndexLight % lightPalettes.length]);
                     cDiamond = hexToRgb(lightPalettes[(contrastIndexLight + 1) % lightPalettes.length]);
                     cText = hexToRgb(lightPalettes[(contrastIndexLight + 2) % lightPalettes.length]);
@@ -974,7 +1009,7 @@
         }
 
         /* =========================================
-           EXTRACTOR DE COLOR FOTOGRÁFICO
+           EXTRACTOR DE COLOR FOTOGRÁFICO Y AYUDA
            ========================================= */
         let activeColorTarget = null;
         let activeColorCallback = null;
@@ -1023,6 +1058,14 @@
             
             if(activeColorCallback) activeColorCallback();
         });
+
+        function openSlicerHelp() {
+            document.getElementById('slicerHelpModule').classList.add('active');
+        }
+
+        function closeSlicerHelp() {
+            document.getElementById('slicerHelpModule').classList.remove('active');
+        }
 
         /* =========================================
            MOTOR DE CONTRASTE YIQ (SLICER)
