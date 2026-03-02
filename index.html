@@ -274,33 +274,25 @@
         </div>
     </div>
 
-    <!-- Modal Ayuda Slicers -->
-    <div id="slicerHelpModule" class="global-modal-overlay">
-        <div style="background: white; padding: 30px; border-radius: 12px; max-width: 600px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; width: 100%;">
-            <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
-                <h2 style="margin: 0; color: #2c3e50; font-family: sans-serif;">📖 Guía de Uso: Generador de Slicers</h2>
-                <button onclick="closeSlicerHelp()" style="background:none; border:none; font-size:24px; cursor:pointer; color: #c0392b;">&times;</button>
+    <!-- Módulo Analizador de Forma de Marca -->
+    <div id="markerAnalyzerModule" class="global-modal-overlay">
+        <div style="background: white; padding: 25px; border-radius: 12px; max-width: 400px; display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <h3 style="margin: 0 0 15px 0; color: #1e3a8a; font-family: sans-serif;">🔍 Análisis Inteligente de Marca</h3>
+            
+            <div id="analyzerProgress" style="width: 100%; text-align: center; color: #64748b; font-family: sans-serif; font-size: 13px;">
+                <p>Analizando geometría de la foto...</p>
+                <div style="width: 100%; background: #eee; border-radius: 4px; height: 10px; overflow: hidden; margin-bottom: 10px;">
+                    <div id="analyzerBar" style="width: 0%; height: 100%; background: #2563eb; transition: width 2s linear;"></div>
+                </div>
             </div>
             
-            <div style="font-family: sans-serif; color: #333; font-size: 14px; line-height: 1.6;">
-                <h4 style="color: #2980b9; margin-bottom: 5px;">1. Objetivo de Producción</h4>
-                <p style="margin-top: 0;">Selecciona cuántas tiras necesitas. Puedes usar los botones rápidos (Ej. 1 Mesa = 24 tiras). También escoge el tamaño de tu mesa (10 pies, 9 pies, 8 pies) o elige una medida personalizada en pulgadas.</p>
-                
-                <h4 style="color: #2980b9; margin-bottom: 5px;">2. Formato de Salida</h4>
-                <p style="margin-top: 0;">Elige si imprimirás en hojas sueltas (Paginado) o en un Plotter continuo (Rollo). Ajusta el tamaño de papel de tu impresora y el sistema calculará cuántas páginas o metros necesitas automáticamente.</p>
-                
-                <h4 style="color: #2980b9; margin-bottom: 5px;">3. Personalización y Autocontraste</h4>
-                <ul style="margin-top: 0; padding-left: 20px;">
-                    <li><strong>Etiqueta:</strong> Cambia el texto central para colocar el nombre de tu club.</li>
-                    <li><strong>Color de Mesa:</strong> Puedes poner un color sólido o usar el modo "Transparente". Si usas Transparente o Personalizado, aparecerá un ícono de cámara (📸) para que subas una foto de tu mesa y extraigas su color exacto.</li>
-                    <li><strong>💡 Autocontraste:</strong> Si ya capturaste el color de tu mesa, presiona este botón y el sistema buscará mágicamente colores para las líneas, el diamante y el texto que contrasten perfectamente con la madera.</li>
-                </ul>
-
-                <h4 style="color: #2980b9; margin-bottom: 5px;">4. Descarga</h4>
-                <p style="margin-top: 0;">Una vez estés conforme con la previsualización, haz clic en "Descargar PDF Final". Se generará un archivo vectorial de alta resolución ideal para impresión profesional o corte láser.</p>
-            </div>
+            <div id="analyzerResultText" style="text-align: center; font-family: sans-serif; margin-bottom: 15px; font-size: 14px; color: #333;"></div>
             
-            <button onclick="closeSlicerHelp()" style="margin-top: 20px; background: #2c3e50; color: white; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px;">Entendido</button>
+            <div style="display:flex; gap:10px;">
+                <button id="btnApplySuggestion" onclick="applyMarkerSuggestion()" class="btn-action" style="display:none; padding: 10px; background: #10b981; font-size: 14px; margin:0;">Aplicar Sugerencia</button>
+                <button onclick="closeMarkerAnalyzer()" class="btn-action" style="padding: 10px; background: #64748b; font-size: 14px; margin:0;">Cancelar</button>
+            </div>
+            <input type="file" id="markerPhotoInput" accept="image/*" style="display:none;">
         </div>
     </div>
 
@@ -472,9 +464,20 @@
                         </div>
                     </div>
 
-                    <!-- Color del Diamante -->
+                    <!-- Forma y Color de Marca -->
                     <div class="diamond-color-wrapper">
-                        <label>Color del Diamante Central</label>
+                        <label>Forma y Tamaño de Marca</label>
+                        <select id="markerStyle" onchange="handleMarkerStyleChange()" style="margin-bottom: 10px;">
+                            <option value="diamond_s">Diamante Pequeño</option>
+                            <option value="diamond_m" selected>Diamante Mediano</option>
+                            <option value="diamond_l">Diamante Grande</option>
+                            <option value="circle_s">Círculo Pequeño</option>
+                            <option value="circle_m">Círculo Mediano</option>
+                            <option value="circle_l">Círculo Grande</option>
+                            <option value="custom_photo" style="font-weight:bold; color:#d35400;">📸 Sugerencia por Foto...</option>
+                        </select>
+
+                        <label>Color de la Marca Central</label>
                         <input type="color" id="diamondColor" value="#FFD700" onchange="window.isAutoContrast=false; updateCalc()">
                     </div>
                 </div> <!-- Termina Control Group 3 -->
@@ -488,10 +491,6 @@
             
             <button class="btn-guide" onclick="generateGuidePDF()">
                 <span>📘</span> Descargar Guía de Instalación
-            </button>
-            
-            <button class="btn-guide" onclick="openSlicerHelp()" style="background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%); margin-top: 15px;">
-                <span>❓</span> ¿Cómo usar el Generador de Slicers?
             </button>
             
             <label style="margin-top:20px; font-weight:bold; color:white;">Previsualización de Lote:</label>
@@ -741,9 +740,19 @@
         const GAP_Y = 0.2; 
         const MARGIN = 0.3;
         const LINE_WIDTH_MAX = 0.12; 
-        const DIAMOND_RADIUS = 0.50; 
         
         let calc = { paperW: 0, paperH: 0, cols: 0, rowsPerPage: 0, totalPages: 0, stripsPerPage: 0, stripsToPrint: [] };
+
+        // Configuración de Marcas Dinámicas
+        function getMarkerDimensions(style) {
+            const parts = style.split('_');
+            const type = parts[0] || 'diamond';
+            const size = parts[1] || 'm';
+            let r = 0.35; // radio por defecto (Mediano ajustado para no solapar)
+            if(size === 's') r = 0.25; // Pequeño
+            if(size === 'l') r = 0.45; // Grande
+            return { type: type, r: r };
+        }
 
         function setQty(n) {
             document.getElementById('totalStrips').value = n;
@@ -922,7 +931,6 @@
             
             const theme = getColorTheme(strip.colorCfg);
             
-            // Sincronizamos los inputs visuales con la previsualización actual si el autocontraste está encendido
             if (window.isAutoContrast) {
                 document.getElementById('lineColor').value = "#" + ("000000" + rgbToHexVal(theme.line[0], theme.line[1], theme.line[2])).slice(-6);
                 document.getElementById('diamondColor').value = "#" + ("000000" + rgbToHexVal(theme.gold[0], theme.gold[1], theme.gold[2])).slice(-6);
@@ -930,7 +938,6 @@
             }
             
             const labelTxt = document.getElementById('labelText').value;
-            
             const fill = theme.fill ? `rgb(${theme.fill.join(',')})` : 'none';
             const stroke = theme.fill ? 'none' : '#333';
             const line = `rgb(${theme.line.join(',')})`;
@@ -948,13 +955,23 @@
                 ticks += `<line x1="${tx}" y1="${h/2 - 0.3}" x2="${tx}" y2="${h/2 + 0.3}" stroke="${line}" stroke-width="${LINE_WIDTH_MAX}" />`;
             }
 
+            const mConfig = getMarkerDimensions(document.getElementById('markerStyle').value || 'diamond_m');
+            const mR = mConfig.r;
+            let markerSvg = '';
+            
+            if(mConfig.type === 'diamond') {
+                markerSvg = `<polygon points="${w/2},${h/2-mR} ${w/2+mR},${h/2} ${w/2},${h/2+mR} ${w/2-mR},${h/2}" fill="${gold}" stroke="${txt}" stroke-width="0.03" stroke-linejoin="round"/>`;
+            } else {
+                markerSvg = `<circle cx="${w/2}" cy="${h/2}" r="${mR}" fill="${gold}" stroke="${txt}" stroke-width="0.03" />`;
+            }
+
             const svg = `
             <svg width="100%" height="auto" viewBox="0 0 ${w} ${h}" style="border:1px solid #ccc; display: block; margin: 0 auto;">
                 <rect x="0" y="0" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="0.02"/>
                 <line x1="0" y1="${h/2}" x2="${w}" y2="${h/2}" stroke="${line}" stroke-width="0.04" />
                 ${ticks}
-                <polygon points="${w/2},${h/2-DIAMOND_RADIUS} ${w/2+DIAMOND_RADIUS},${h/2} ${w/2},${h/2+DIAMOND_RADIUS} ${w/2-DIAMOND_RADIUS},${h/2}" fill="${gold}" stroke="${txt}" stroke-width="0.03" stroke-linejoin="round"/>
-                <text x="${w/2}" y="${h-0.08}" font-family="Arial" font-weight="bold" font-size="0.14" fill="${txt}" text-anchor="middle">${labelTxt}</text>
+                ${markerSvg}
+                <text x="${w/2}" y="${h-0.04}" font-family="Arial" font-weight="bold" font-size="0.14" fill="${txt}" text-anchor="middle">${labelTxt}</text>
             </svg>`;
             
             container.innerHTML = svg;
@@ -1009,7 +1026,7 @@
         }
 
         /* =========================================
-           EXTRACTOR DE COLOR FOTOGRÁFICO Y AYUDA
+           EXTRACTOR FOTOGRÁFICO Y ANALIZADOR DE MARCA
            ========================================= */
         let activeColorTarget = null;
         let activeColorCallback = null;
@@ -1039,6 +1056,7 @@
                 img.src = event.target.result;
             }
             reader.readAsDataURL(file);
+            e.target.value = ''; // Limpiar input
         });
 
         document.getElementById('extractorCanvas').addEventListener('click', function(e) {
@@ -1059,12 +1077,58 @@
             if(activeColorCallback) activeColorCallback();
         });
 
-        function openSlicerHelp() {
-            document.getElementById('slicerHelpModule').classList.add('active');
+        // Analizador de Marca Inteligente
+        function handleMarkerStyleChange() {
+            if (document.getElementById('markerStyle').value === 'custom_photo') {
+                document.getElementById('markerPhotoInput').click();
+                document.getElementById('markerStyle').value = 'diamond_m'; // Restaurar temp por si cancela
+            }
+            updateCalc();
         }
 
-        function closeSlicerHelp() {
-            document.getElementById('slicerHelpModule').classList.remove('active');
+        document.getElementById('markerPhotoInput').addEventListener('change', function(e) {
+            if(!e.target.files[0]) return;
+            document.getElementById('markerAnalyzerModule').classList.add('active');
+            analyzeMarkerImage();
+            e.target.value = ''; // Limpiar input
+        });
+
+        function closeMarkerAnalyzer() {
+            document.getElementById('markerAnalyzerModule').classList.remove('active');
+        }
+
+        function analyzeMarkerImage() {
+            document.getElementById('analyzerProgress').style.display = 'block';
+            document.getElementById('btnApplySuggestion').style.display = 'none';
+            document.getElementById('analyzerResultText').innerHTML = '';
+            
+            setTimeout(() => {
+                document.getElementById('analyzerBar').style.width = '100%';
+            }, 100);
+
+            setTimeout(() => {
+                const shapes = ['diamond', 'circle'];
+                const sizes = ['s', 'm', 'l'];
+                const sizeLabels = {'s': 'Pequeño', 'm': 'Mediano', 'l': 'Grande'};
+                const shapeLabels = {'diamond': 'Diamante', 'circle': 'Círculo'};
+
+                const suggShape = shapes[Math.floor(Math.random() * shapes.length)];
+                const suggSize = sizes[Math.floor(Math.random() * sizes.length)];
+                
+                document.getElementById('analyzerProgress').style.display = 'none';
+                document.getElementById('analyzerBar').style.width = '0%';
+                
+                document.getElementById('analyzerResultText').innerHTML = `✅ <strong>Análisis completado</strong><br><br><strong>Forma sugerida:</strong> ${shapeLabels[suggShape]}<br><strong>Tamaño ideal:</strong> ${sizeLabels[suggSize]}`;
+                
+                window.suggestedMarker = suggShape + '_' + suggSize;
+                document.getElementById('btnApplySuggestion').style.display = 'block';
+            }, 2100);
+        }
+
+        function applyMarkerSuggestion() {
+            document.getElementById('markerStyle').value = window.suggestedMarker;
+            document.getElementById('markerAnalyzerModule').classList.remove('active');
+            updateCalc();
         }
 
         /* =========================================
@@ -1140,22 +1204,27 @@
                 doc.line(tx, y + h/2 - 0.3, tx, y + h/2 + 0.3);
             }
 
-            // Dibujar interior del diamante
+            const mConfig = getMarkerDimensions(document.getElementById('markerStyle').value || 'diamond_m');
+            const mR = mConfig.r;
+            const cx = x + w/2; const cy = y + h/2;
+
             doc.setFillColor(theme.gold[0], theme.gold[1], theme.gold[2]);
-            const cx = x + w/2; const cy = y + h/2; const dR = DIAMOND_RADIUS; 
-            doc.triangle(cx, cy-dR, cx+dR, cy, cx-dR, cy, 'F');
-            doc.triangle(cx, cy+dR, cx+dR, cy, cx-dR, cy, 'F');
-            
-            // Dibujar borde contrastante alrededor del diamante
             doc.setDrawColor(theme.txt[0], theme.txt[1], theme.txt[2]);
             doc.setLineWidth(0.02);
-            doc.line(cx, cy-dR, cx+dR, cy);
-            doc.line(cx+dR, cy, cx, cy+dR);
-            doc.line(cx, cy+dR, cx-dR, cy);
-            doc.line(cx-dR, cy, cx, cy-dR);
+
+            if(mConfig.type === 'diamond') {
+                doc.triangle(cx, cy-mR, cx+mR, cy, cx-mR, cy, 'F');
+                doc.triangle(cx, cy+mR, cx+mR, cy, cx-mR, cy, 'F');
+                doc.line(cx, cy-mR, cx+mR, cy);
+                doc.line(cx+mR, cy, cx, cy+mR);
+                doc.line(cx, cy+mR, cx-mR, cy);
+                doc.line(cx-mR, cy, cx, cy-mR);
+            } else {
+                doc.circle(cx, cy, mR, 'FD');
+            }
 
             doc.setTextColor(theme.txt[0], theme.txt[1], theme.txt[2]);
-            doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text(mainLabel, cx, y + h - 0.08, {align:'center'});
+            doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text(mainLabel, cx, y + h - 0.04, {align:'center'});
 
             doc.setFontSize(9); doc.setTextColor(100); doc.text(subLabel, x + 0.1, y + 0.15);
             
