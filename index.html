@@ -772,7 +772,6 @@
             <div id="modalContent" class="bg-slate-900 border-2 border-solid border-yellow-500 rounded-xl p-6 max-w-3xl w-full relative">
                 <button onclick="window.closePreviewPM()" class="absolute top-4 right-4 text-slate-400 border-none bg-transparent text-xl cursor-pointer">X</button>
                 <h3 id="modalTitle" class="text-2xl font-bold m-0 border-b border-solid border-slate-700 pb-2">Vista Previa</h3>
-                <!-- NOTA: Añadido modalDesc para solucionar el error de Cannot set properties of null -->
                 <p id="modalDesc" class="text-sm text-slate-300 mt-2 mb-4">Descripción del modelo.</p>
                 <div class="bg-felt p-6 rounded-xl flex justify-center items-center border border-solid border-slate-700 min-h-[300px] mt-4 block">
                     <div id="modalSvgContainer" class="w-full flex justify-center m-0 block"></div>
@@ -2003,7 +2002,7 @@
 
                     // Horizontal Crosshair
                     doc.setLineWidth(0.8);
-                    doc.line(x2 + 5, cy2, x2 + w - 5, cy2);
+                    doc.line(cx2 - w/2 + 5, cy2, cx2 + w/2 - 5, cy2);
 
                     // Parallel tracks for Left/Right English (Offset by 12mm)
                     doc.setLineWidth(0.3);
