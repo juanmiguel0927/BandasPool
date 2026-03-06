@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            corePlugins: { preflight: false } // Esto protege los diseños originales de las Apps 1 y 2
+            corePlugins: { preflight: false } // Protege los estilos de las Apps 1 y 2
         }
     </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -511,7 +511,6 @@
                         <ul style="margin:0; padding:0;">
                             <li class="tut-li"><strong>Regla de Oro:</strong> La impresión debe realizarse estrictamente al <strong style="color:red">100% de escala (Tamaño Real)</strong>. Desactive ajustes como "Ajustar a página" o "Fit to printable area".</li>
                             <li class="tut-li"><strong>Modo de Color:</strong> Se recomienda utilizar perfil CMYK (FOGRA39) para garantizar la exactitud de los colores en medios físicos.</li>
-                            <li class="tut-li"><strong>Maquinaria de Corte:</strong> El archivo vectorial A4 está optimizado para corte por láser o plotter, usando las líneas rojas discontinuas como vectores guía de corte.</li>
                         </ul>
                     </div>
                     <div class="row-layout">
@@ -520,38 +519,14 @@
                             <p class="tut-p">Las fichas verticales requieren un material que no se combe. Recomendamos:</p>
                             <ul style="margin:0; padding:0;">
                                 <li class="tut-li"><span class="badge">Acetato Rígido</span> (Grosor 250 - 300 micras).</li>
-                                <li class="tut-li"><span class="badge">PETG Transparente</span> (1mm) impreso en cama plana UV.</li>
                             </ul>
-                            <p class="tut-p" style="margin-top:10px;"><strong>Importante:</strong> El círculo central del objetivo debe quedar 100% transparente.</p>
                         </div>
                         <div class="tut-card col-50">
                             <div class="tut-h3">3. Materiales: Tapete y Bases</div>
-                            <p class="tut-p"><strong>Tapete (60x25cm):</strong></p>
-                            <ul style="margin:0; padding:0;">
-                                <li class="tut-li">Ideal: <span class="badge">Neopreno 3mm</span> (tipo mousepad). Absorbe impactos.</li>
-                                <li class="tut-li">Alternativa: <span class="badge">Lona Vinílica 13oz</span> mate.</li>
-                            </ul>
-                            <p class="tut-p" style="margin-top:10px;"><strong>Bases (8x4cm):</strong> Cortar en Acrílico Negro o Blanco de 3mm para estabilizar la ficha.</p>
+                            <p class="tut-p"><strong>Tapete (60x25cm):</strong> Neopreno 3mm.</p>
                         </div>
                     </div>
-                    <div class="tut-card">
-                        <div class="tut-h3">4. Ensamblaje y Tolerancias de Fabricación</div>
-                        <ul style="margin:0; padding:0;">
-                            <li class="tut-li"><strong>Corte Central:</strong> Utilice un compás de corte o un bisturí de precisión tipo X-Acto. Un agujero irregular generará fricción no deseada en el taco de billar.</li>
-                            <li class="tut-li"><strong>Ranura de la Base (Slot):</strong> El rectángulo interno de la base está marcado como guía. El operador debe ajustar el ancho del corte al grosor exacto del acetato o PETG utilizado (ej. 0.5mm, 1mm).</li>
-                            <li class="tut-li"><strong>Limpieza:</strong> Lije suavemente los bordes del agujero central con lija de agua de grano fino para un deslizamiento fluido del taco.</li>
-                        </ul>
-                    </div>
-                    <div style="margin-top: auto; border: 2px dashed #94a3b8; padding: 15px; border-radius: 10px; text-align: center; background-color: #f8fafc;">
-                        <p style="font-weight: 900; font-size: 13px; margin-bottom: 15px; color: #1e293b; letter-spacing: 0.5px;">CONTROL DE CALIDAD - VERIFICACIÓN DE ESCALA REAL</p>
-                        <svg width="378" height="75" viewBox="0 0 100 20" style="max-width: 100%;">
-                            <text x="50" y="6" text-anchor="middle" font-size="4" font-weight="900" font-family="Arial" fill="#334155">DISTANCIA EXACTA: 50.0 mm / 5.0 cm</text>
-                            <line x1="25" y1="14" x2="75" y2="14" stroke="#000" stroke-width="1"/>
-                            <line x1="25" y1="9" x2="25" y2="19" stroke="#000" stroke-width="1"/>
-                            <line x1="75" y1="9" x2="75" y2="19" stroke="#000" stroke-width="1"/>
-                        </svg>
-                    </div>
-                    <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; font-weight: bold; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+                    <div style="margin-top: auto; text-align: center; font-size: 10px; color: #94a3b8; font-weight: bold; border-top: 1px solid #e2e8f0; padding-top: 10px;">
                         DISEÑADO POR JUAN MIGUEL RIOS REDONDO © <span id="year-label-sm"></span> - STROKEMASTER PRO
                     </div>
                 </div>
@@ -588,9 +563,7 @@
                 <div class="control-group">
                     <span class="label">Diámetro Ø</span>
                     <select id="holeSize" onchange="updatePack()">
-                        <option value="14">Experto (14mm)</option>
                         <option value="16" selected>Pro (16mm)</option>
-                        <option value="18">Base (18mm)</option>
                     </select>
                 </div>
                 <button class="btn-action btn-pdf" onclick="downloadPDF('pack-sheet', 'StrokeMaster_Pro_Pack_A4.pdf')">💾 Guardar Hoja A4</button>
@@ -604,30 +577,12 @@
                             <stop offset="100%" style="stop-color:#0277bd;stop-opacity:0.9" id="stop3" />
                         </radialGradient>
                     </defs>
-                    
-                    <text x="105" y="8" text-anchor="middle" font-family="Arial" font-size="2.5" font-weight="900" fill="#94a3b8">PLANTILLAS DE CORTE - PACK COMPLETO S/M/L</text>
-                    <text x="105" y="11.5" text-anchor="middle" font-family="Arial" font-size="2" fill="#cbd5e1">A4 (210 x 297 mm) | CROP MARKS ENABLED</text>
-
-                    <!-- MARCAS DE REGISTRO (ESQUINAS) -->
-                    <g class="reg-mark" fill="none" stroke="#333" stroke-width="0.5">
-                        <path d="M 5,5 L 15,5 M 5,5 L 5,15" fill="none"/> <path d="M 205,5 L 195,5 M 205,5 L 205,15" fill="none"/>
-                        <path d="M 5,291 L 15,291 M 5,291 L 5,281" fill="none"/> <path d="M 205,291 L 195,291 M 205,291 L 205,281" fill="none"/>
-                    </g>
-
-                    <g transform="translate(15, 15)"><text x="40" y="-2" text-anchor="middle" font-size="3" fill="#666" font-weight="bold">FICHA S</text><g id="packSightS"></g></g>
-                    <g transform="translate(115, 15)"><text x="40" y="-2" text-anchor="middle" font-size="3" fill="#666" font-weight="bold">FICHA M</text><g id="packSightM"></g></g>
-                    <g transform="translate(15, 125)"><text x="40" y="-2" text-anchor="middle" font-size="3" fill="#666" font-weight="bold">FICHA L</text><g id="packSightL"></g></g>
-
+                    <g transform="translate(15, 15)"><g id="packSightS"></g></g>
+                    <g transform="translate(115, 15)"><g id="packSightM"></g></g>
+                    <g transform="translate(15, 125)"><g id="packSightL"></g></g>
                     <g transform="translate(115, 130)"><g id="packBaseS"></g></g>
                     <g transform="translate(15, 235)"><g id="packBaseM"></g></g>
                     <g transform="translate(115, 235)"><g id="packBaseL"></g></g>
-
-                    <g transform="translate(105, 288)">
-                        <path d="M -25,0 L 25,0 M -25,0 L -25,-2 M 25,0 L 25,-2" stroke="black" stroke-width="0.5"/>
-                        <text x="0" y="-4" text-anchor="middle" font-size="3" font-family="Arial" font-weight="900">CALIBRACIÓN: 50.0 mm</text>
-                    </g>
-
-                    <text x="105" y="294" text-anchor="middle" font-family="Arial" font-size="1.8" fill="#cbd5e1" font-weight="bold">DISEÑADO POR JUAN MIGUEL RIOS REDONDO - STROKEMASTER PRO</text>
                 </svg>
             </div>
         </div>
@@ -1390,7 +1345,7 @@
         /* =========================================
            CÓDIGO APP 2: STROKEMASTER PRO
            ========================================= */
-        function switchAppTab(e, tab) {
+        window.switchAppTab = function(e, tab) {
             document.querySelectorAll('#app2-wrapper .workspace').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('#app2-wrapper .tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById('ws-'+tab).classList.add('active');
@@ -1698,7 +1653,7 @@
             },
             foil: {
                 title: '<i class="fa-solid fa-ruler-combined mr-2 text-cyan-400"></i> Vista Previa: Stroke Foils',
-                desc: 'ÚNICA HERRAMIENTA EN ACETATO. Al imprimirlas transparentes, podrás colocarlas bajo la bola blanca para revisar tu mecánica de golpe sin interferir la visión.',
+                desc: 'LAMINA 2 - PRECISION DE IMPACTO: Coloca la bola blanca. Usa las lineas horizontales externas y los rieles paralelos punteados para alinear tu taco al aplicar efectos laterales (English) sin que la bola tape tus referencias.',
                 color: 'border-cyan-500', titleColor: 'text-cyan-400',
                 svg: `
                 <svg viewBox="0 0 240 300" width="100%" style="max-width: 400px; max-height: 400px;" height="auto">
@@ -1712,7 +1667,13 @@
                     <rect x="90" y="10" width="60" height="280" fill="rgba(255,255,255,0.15)" stroke="#cbd5e1" stroke-dasharray="4 4" stroke-width="1" rx="4"/>
                     <line x1="120" y1="30" x2="120" y2="270" stroke="#0f172a" stroke-width="1.5"/>
                     <circle cx="120" cy="240" r="20" fill="none" stroke="#0f172a" stroke-width="1.5"/>
-                    <circle cx="120" cy="240" r="2" fill="#0f172a"/><circle cx="120" cy="226" r="2" fill="#0f172a"/><circle cx="120" cy="254" r="2" fill="#0f172a"/><circle cx="106" cy="240" r="2" fill="#0f172a"/><circle cx="134" cy="240" r="2" fill="#0f172a"/>
+                    
+                    <!-- Horizontal Crosshair -->
+                    <line x1="95" y1="240" x2="145" y2="240" stroke="#0f172a" stroke-width="1.2"/>
+                    <!-- Parallel English tracks -->
+                    <line x1="108" y1="240" x2="108" y2="280" stroke="#0f172a" stroke-width="0.8" stroke-dasharray="2 2"/>
+                    <line x1="132" y1="240" x2="132" y2="280" stroke="#0f172a" stroke-width="0.8" stroke-dasharray="2 2"/>
+                    
                     <circle cx="120" cy="60" r="20" fill="none" stroke="#0f172a" stroke-width="1.5"/>
                     <text x="120" y="64" font-family="sans-serif" font-size="8" font-weight="bold" fill="#0f172a" text-anchor="middle">TARGET</text>
                     
@@ -2021,6 +1982,7 @@
 
                     doc.setDrawColor(0); doc.setTextColor(0);
 
+                    // FOIL 1: CUE/OBJ Line
                     const cx1 = x1 + w/2;
                     doc.setLineWidth(1); doc.line(cx1, y + 20, cx1, y + h - 20); 
                     doc.setLineWidth(0.5);
@@ -2030,16 +1992,30 @@
                     doc.circle(cx1, y + 60, r, 'FD');
                     doc.setTextColor(bw ? 0 : 255); doc.text("OBJ", cx1, y + 62, { align: "center" });
 
+                    // FOIL 2: TARGET / IMPACT PRECISION (Updated with external guides)
                     const cx2 = x2 + w/2;
-                    doc.setDrawColor(0); doc.setLineWidth(1); doc.line(cx2, y + 20, cx2, y + h - 20);
+                    const cy2 = y + h - 50;
+                    doc.setDrawColor(0); doc.setLineWidth(1); 
+                    doc.line(cx2, y + 20, cx2, y + h - 20); // Central line
+                    
                     doc.setLineWidth(0.5);
-                    doc.circle(cx2, y + h - 50, r, 'S');
-                    doc.setFillColor(0);
-                    doc.circle(cx2, y + h - 50, 1.5, 'F'); doc.circle(cx2, y + h - 50 - 15, 1.5, 'F'); doc.circle(cx2, y + h - 50 + 15, 1.5, 'F');
-                    doc.circle(cx2 - 15, y + h - 50, 1.5, 'F'); doc.circle(cx2 + 15, y + h - 50, 1.5, 'F'); 
+                    doc.circle(cx2, cy2, r, 'S'); // Cue Ball
+
+                    // Horizontal Crosshair
+                    doc.setLineWidth(0.8);
+                    doc.line(x2 + 5, cy2, x2 + w - 5, cy2);
+
+                    // Parallel tracks for Left/Right English (Offset by 12mm)
+                    doc.setLineWidth(0.3);
+                    doc.setLineDashPattern([2, 2], 0);
+                    doc.line(cx2 - 12, cy2, cx2 - 12, cy2 + 60);
+                    doc.line(cx2 + 12, cy2, cx2 + 12, cy2 + 60);
+                    doc.setLineDashPattern([], 0);
+
                     doc.circle(cx2, y + 60, r, 'S'); 
                     doc.setTextColor(0); doc.text("TARGET", cx2, y + 62, { align: "center" });
 
+                    // FOIL 3: DELIVERY TUNNEL
                     const cx3 = x3 + w/2;
                     doc.setDrawColor(0); doc.setLineWidth(1);
                     doc.line(cx3 - 6.5, y + 20, cx3 - 6.5, y + h - 20);
@@ -2173,7 +2149,7 @@
                         "Coloca la bola blanca en el circulo 'CUE'. Haz el limaje (calentamiento) asegurandote de que la flecha siga perfectamente la linea central recta.",
                         "",
                         "LAMINA 2 - PRECISION DE IMPACTO:",
-                        "Coloca la bola blanca, apunta tu taco al punto de efecto deseado y verifica desde arriba si tu suela impactara exactamente ahi.",
+                        "Coloca la bola blanca. Usa la linea horizontal externa y los rieles paralelos punteados para alinear tu taco de forma impecable al aplicar efectos laterales (English) sin que la bola tape tus referencias.",
                         "",
                         "LAMINA 3 - GUIA DE TACO (Delivery):",
                         "Al hacer tu tiro, la flecha debe viajar por el medio del 'carril' sin tocar las lineas. Si logras pasar limpio, tu golpe es 100% recto."
