@@ -611,29 +611,8 @@
             <div id="mat-sheet" class="sheet-container" style="width: 250mm; height: 599mm;">
                 <svg width="250mm" height="599mm" viewBox="0 0 250 599" xmlns="http://www.w3.org/2000/svg">
                     <rect id="matBg" width="250" height="599" fill="#2563eb" rx="5" />
-                    <rect x="0" y="450" width="250" height="149" fill="rgba(255,255,255,0.1)" />
-                    <rect x="117.5" y="50" width="15" height="500" fill="#ccff00" opacity="0.9" />
-                    <rect x="117.5" y="550" width="15" height="20" fill="black" /> 
-                    <g transform="translate(125, 520)">
-                        <text x="0" y="0" text-anchor="middle" font-family="Roboto" font-weight="900" font-size="14" fill="white" opacity="0.8">BRIDGE ZONE</text>
-                        <circle cx="0" cy="35" r="12" fill="none" stroke="white" stroke-width="2" opacity="0.6"/>
-                        <circle cx="0" cy="35" r="4" fill="white" opacity="0.8"/>
-                        <text id="matLogoText" x="0" y="62" text-anchor="middle" font-family="Roboto" font-weight="900" font-size="9" fill="white" letter-spacing="1">STROKEMASTER PRO</text>
-                    </g>
-                    <line x1="20" y1="450" x2="230" y2="450" stroke="white" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.4"/>
-                    <text x="50" y="400" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(-90, 50, 400)">SHORT STROKE</text>
-                    <text x="200" y="400" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(90, 200, 400)">SHORT STROKE</text>
-                    <line x1="20" y1="300" x2="230" y2="300" stroke="white" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.4"/>
-                    <text x="50" y="225" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(-90, 50, 225)">MEDIUM STROKE</text>
-                    <text x="200" y="225" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(90, 200, 225)">MEDIUM STROKE</text>
-                    <line x1="20" y1="150" x2="230" y2="150" stroke="white" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.4"/>
-                    <text x="50" y="75" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(-90, 50, 75)">LONG STROKE</text>
-                    <text x="200" y="75" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(90, 200, 75)">LONG STROKE</text>
+                    <g transform="translate(125, 520)"><text id="matLogoText" x="0" y="62" font-family="Roboto" font-weight="900" font-size="9" fill="white">STROKEMASTER PRO</text></g>
                     <g id="matMarkers"></g>
-                    <g stroke="white" stroke-width="0.5" opacity="0.7">
-                        <line x1="25" y1="450" x2="25" y2="50" />
-                        <line x1="225" y1="450" x2="225" y2="50" />
-                    </g>
                     <g id="matRulerTicks"></g>
                 </svg>
             </div>
@@ -667,7 +646,7 @@
                 <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-yellow-700 via-yellow-400 to-yellow-700"></div>
                 <div class="text-center mb-10 block">
                     <h2 class="text-3xl md:text-4xl font-black text-white uppercase tracking-wide mb-3 m-0" style="margin:0 0 10px 0;">Constructor Integral de Zonas</h2>
-                    <p class="text-slate-400 max-w-3xl mx-auto m-0">Teoría avanzada, guía de materiales duraderos de impresión y plantillas gráficas.</p>
+                    <p class="text-slate-400 max-w-3xl mx-auto m-0">Teoría avanzada, guía de materiales duraderos de impresión y plantillas gráficas optimizadas a escala real 1:1 (Centro 57.2mm).</p>
                 </div>
 
                 <div class="bg-black/40 rounded-xl p-6 border border-solid border-slate-700 mb-8 block">
@@ -700,6 +679,8 @@
                         <input type="checkbox" id="chk_track" checked class="peer sr-only">
                         <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
                             <h4 class="text-lg font-bold text-cyan-400 m-0"><i class="fa-solid fa-road mr-2"></i> Pista de Golpeo Larga (Stroke Track)</h4>
+                            <p class="text-xs text-cyan-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-ruler"></i> Medidas: 14 cm de ancho x 30 cm de largo (Por cada tramo)</p>
+                            <br>
                             <button onclick="event.preventDefault(); window.openPreviewPM('track');" class="mt-3 bg-cyan-900 border-none text-cyan-100 px-4 py-2 rounded-lg text-sm cursor-pointer m-0">Vista Previa</button>
                         </div>
                     </label>
@@ -708,6 +689,8 @@
                         <input type="checkbox" id="chk_foil" checked class="peer sr-only">
                         <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
                             <h4 class="text-lg font-bold text-cyan-400 m-0"><i class="fa-solid fa-ruler-combined mr-2"></i> Láminas de Golpeo (Stroke Foils)</h4>
+                            <p class="text-xs text-cyan-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-layer-group"></i> Sistema Modular de 2 Piezas: Arranque y Llegada (CUE & TARGET)</p>
+                            <br>
                             <button onclick="event.preventDefault(); window.openPreviewPM('foil');" class="mt-3 bg-cyan-900 border-none text-cyan-100 px-4 py-2 rounded-lg text-sm cursor-pointer m-0">Ver Modelo</button>
                         </div>
                     </label>
@@ -716,6 +699,8 @@
                         <input type="checkbox" id="chk_center" checked class="peer sr-only">
                         <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
                             <h4 class="text-lg font-bold text-blue-400 m-0"><i class="fa-solid fa-bullseye mr-2"></i> Posicionamiento (Centro)</h4>
+                            <p class="text-xs text-blue-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-ruler"></i> Diámetro total: 27.2 cm | Centro: 57.2mm (Bola Real)</p>
+                            <br>
                             <label class="flex items-center space-x-2 cursor-pointer mt-3 m-0" onclick="event.stopPropagation()">
                                 <input type="checkbox" id="grid_center" checked class="w-4 h-4 m-0">
                                 <span class="text-xs font-bold text-yellow-200">Añadir Cuadrícula</span>
@@ -728,6 +713,8 @@
                         <input type="checkbox" id="chk_rail" checked class="peer sr-only">
                         <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
                             <h4 class="text-lg font-bold text-red-400 m-0"><i class="fa-solid fa-arrows-left-right-to-line mr-2"></i> Posicionamiento (Banda)</h4>
+                            <p class="text-xs text-red-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-ruler"></i> Medida: 27.2 cm ancho x 13.6 cm alto</p>
+                            <br>
                             <label class="flex items-center space-x-2 cursor-pointer mt-3 m-0" onclick="event.stopPropagation()">
                                 <input type="checkbox" id="grid_rail" class="w-4 h-4 m-0">
                                 <span class="text-xs font-bold text-yellow-200">Añadir Cuadrícula</span>
@@ -740,6 +727,8 @@
                         <input type="checkbox" id="chk_rect" checked class="peer sr-only">
                         <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
                             <h4 class="text-lg font-bold text-emerald-400 m-0"><i class="fa-regular fa-square mr-2"></i> Zonas Rectangulares</h4>
+                            <p class="text-xs text-emerald-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-ruler"></i> Medida: 27.2 cm ancho x 35.4 cm largo</p>
+                            <br>
                             <label class="flex items-center space-x-2 cursor-pointer mt-3 m-0" onclick="event.stopPropagation()">
                                 <input type="checkbox" id="grid_rect" checked class="w-4 h-4 m-0">
                                 <span class="text-xs font-bold text-yellow-200">Añadir Cuadrícula</span>
@@ -752,6 +741,8 @@
                         <input type="checkbox" id="chk_ghost" checked class="peer sr-only">
                         <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
                             <h4 class="text-lg font-bold text-purple-400 m-0"><i class="fa-solid fa-scissors mr-2"></i> Bola Fantasma</h4>
+                            <p class="text-xs text-purple-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-ruler"></i> Medidas (Caja): 16 cm de Ancho x 11 cm de Alto</p>
+                            <br>
                             <button onclick="event.preventDefault(); window.openPreviewPM('ghost');" class="mt-3 bg-purple-900 border-none text-purple-100 px-4 py-2 rounded-lg text-sm cursor-pointer m-0">Vista Previa</button>
                         </div>
                     </label>
@@ -759,6 +750,7 @@
 
                 <div id="status-box" class="hidden bg-emerald-900 p-5 rounded-xl border-2 border-solid border-emerald-500 mt-8 text-center block m-0">
                     <h3 class="text-xl font-black text-white m-0">¡LIBRO CREADO CON ÉXITO!</h3>
+                    <p class="text-sm text-emerald-100 mt-2">Imprime todo el documento en tamaño <strong>A3 (o Tabloide) a ESCALA 100%</strong> para mantener el centro del tamaño de una bola real (57.2mm).</p>
                 </div>
             </div>
         </main>
@@ -1627,27 +1619,32 @@
         const previewsPM = {
             track: {
                 title: '<i class="fa-solid fa-road mr-2 text-cyan-400"></i> Vista Previa: Stroke Track System',
-                desc: 'Réplica de la pista larga. El PDF generará un "Tramo Base" y "Tramos de Extensión". <br><strong class="text-cyan-300 font-mono text-xs mt-1 block">MEDIDAS: 14 cm de ancho x 26 cm de largo (Por cada tramo)</strong>',
+                desc: 'Réplica de la pista larga. Módulos perfectamente simétricos para unirse sin dañar la proporción (10cm exactos entre bolas). <br><strong class="text-cyan-300 font-mono text-xs mt-1 block">MEDIDAS: 14 cm de ancho x 30 cm de largo (Por cada tramo)</strong>',
                 color: 'border-cyan-500', titleColor: 'text-cyan-400',
                 svg: `
                 <svg viewBox="0 0 160 400" width="100%" style="max-width: 250px; max-height: 400px;" height="auto">
-                    <rect x="40" y="200" width="80" height="190" fill="#334155" rx="2"/>
-                    <line x1="80" y1="200" x2="80" y2="390" stroke="#ffffff" stroke-width="4"/>
-                    <line x1="80" y1="200" x2="80" y2="390" stroke="#ef4444" stroke-width="1.5"/>
+                    <!-- TRAMO BASE -->
+                    <rect x="40" y="200" width="80" height="180" fill="#334155" rx="2"/>
+                    <line x1="80" y1="200" x2="80" y2="380" stroke="#ffffff" stroke-width="4"/>
+                    <line x1="80" y1="200" x2="80" y2="380" stroke="#ef4444" stroke-width="1.5"/>
                     <circle cx="80" cy="350" r="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
                     <circle cx="80" cy="350" r="2" fill="#ef4444"/>
-                    <circle cx="80" cy="270" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
-                    <circle cx="80" cy="210" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
-                    <text x="80" y="380" font-family="sans-serif" font-size="8" font-weight="bold" fill="#94a3b8" text-anchor="middle">TRAMO BASE</text>
-                    <rect x="40" y="0" width="80" height="198" fill="#334155" rx="2"/>
-                    <line x1="80" y1="0" x2="80" y2="198" stroke="#ffffff" stroke-width="4"/>
-                    <line x1="80" y1="0" x2="80" y2="198" stroke="#ef4444" stroke-width="1.5"/>
-                    <circle cx="80" cy="150" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
-                    <circle cx="80" cy="90" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
-                    <circle cx="80" cy="30" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
-                    <text x="80" y="190" font-family="sans-serif" font-size="8" font-weight="bold" fill="#94a3b8" text-anchor="middle">EXTENSION</text>
-                    <rect x="30" y="196" width="30" height="10" fill="rgba(255,255,255,0.3)" transform="rotate(-15 45 201)"/>
-                    <rect x="100" y="196" width="30" height="10" fill="rgba(255,255,255,0.3)" transform="rotate(15 115 201)"/>
+                    <circle cx="80" cy="290" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <circle cx="80" cy="230" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <text x="80" y="375" font-family="sans-serif" font-size="8" font-weight="bold" fill="#94a3b8" text-anchor="middle">TRAMO BASE</text>
+
+                    <!-- TRAMO EXTENSION -->
+                    <rect x="40" y="20" width="80" height="180" fill="#334155" rx="2"/>
+                    <line x1="80" y1="20" x2="80" y2="200" stroke="#ffffff" stroke-width="4"/>
+                    <line x1="80" y1="20" x2="80" y2="200" stroke="#ef4444" stroke-width="1.5"/>
+                    <circle cx="80" cy="170" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <circle cx="80" cy="110" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <circle cx="80" cy="50" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <text x="80" y="195" font-family="sans-serif" font-size="8" font-weight="bold" fill="#94a3b8" text-anchor="middle">EXTENSION</text>
+
+                    <!-- Cinta Adhesiva -->
+                    <rect x="30" y="195" width="30" height="10" fill="rgba(255,255,255,0.3)" transform="rotate(-15 45 200)"/>
+                    <rect x="100" y="195" width="30" height="10" fill="rgba(255,255,255,0.3)" transform="rotate(15 115 200)"/>
                 </svg>`
             },
             foil: {
@@ -1793,26 +1790,32 @@
                 const theme = document.querySelector('input[name="theme"]:checked').value;
                 const isBw = (theme === 'bw');
 
-                const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "letter" });
-                const centerX = 215.9 / 2; 
-                const centerY = 279.4 / 2; 
-                const maxRadius = 102.5;   
+                // CAMBIO FORMATO A3: Para poder escalar la diana al centro de una bola real 1:1
+                const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a3" });
+                
+                // Coordenadas A3
+                const centerX = 297 / 2; 
+                const centerY = 420 / 2; 
+                
+                // Nueva escala matemática (Punto central diámetro = 57.2mm)
+                // Esto hace que la diana entera mida 272.4 mm (27.2 cm)
+                const maxRadius = 136.2;   
 
                 let pageNum = 1;
 
                 function addHeader(title, subtitle) {
                     doc.addPage(); pageNum++;
-                    doc.setFillColor(15, 23, 42); doc.rect(0, 0, 216, 25, 'F');
+                    doc.setFillColor(15, 23, 42); doc.rect(0, 0, 297, 30, 'F');
                     doc.setFont("helvetica", "bold"); doc.setFontSize(14); doc.setTextColor(250, 204, 21);
-                    doc.text("POSITION MASTER", centerX, 12, { align: "center" });
+                    doc.text("POSITION MASTER", centerX, 15, { align: "center" });
                     doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(255, 255, 255);
-                    doc.text("MANUAL TECNICO - PAGINA " + pageNum, centerX, 18, { align: "center" });
+                    doc.text("MANUAL TECNICO - PAGINA " + pageNum, centerX, 22, { align: "center" });
                     
                     doc.setTextColor(15, 23, 42); doc.setFont("helvetica", "bold"); doc.setFontSize(18);
-                    doc.text(title, 20, 40);
+                    doc.text(title, 20, 45);
                     doc.setFont("helvetica", "normal"); doc.setFontSize(11); doc.setTextColor(100, 116, 139);
-                    doc.text(subtitle, 20, 46);
-                    doc.setDrawColor(250, 204, 21); doc.setLineWidth(1); doc.line(20, 50, 196, 50);
+                    doc.text(subtitle, 20, 52);
+                    doc.setDrawColor(250, 204, 21); doc.setLineWidth(1); doc.line(20, 55, 277, 55);
                     doc.setTextColor(15, 23, 42);
                 }
 
@@ -1822,7 +1825,7 @@
                     doc.setTextColor(color[0], color[1], color[2]);
                     let y = startY;
                     textArray.forEach(line => {
-                        let lines = doc.splitTextToSize(line, 176);
+                        let lines = doc.splitTextToSize(line, 257);
                         doc.text(lines, 20, y);
                         y += (lines.length * (fontSize * 0.45));
                     });
@@ -1832,10 +1835,10 @@
 
                 function drawTrackSection(doc, type, bw, brandName) {
                     const trackWidth = 140; 
-                    const trackHeight = 260; 
+                    const trackHeight = 300; // Altura modificada para cuadrícula perfecta (30cm)
                     const trackX = centerX - (trackWidth/2);
-                    const trackY = 10;
-                    const r = 28.5; 
+                    const trackY = 40; // Centrado en la página A3
+                    const r = 28.6; // Radio matemático exacto (57.2mm diametro)
 
                     if (bw) doc.setFillColor(240, 240, 240);
                     else doc.setFillColor(60, 64, 67); 
@@ -1855,32 +1858,35 @@
                     }
 
                     if(type === 'base') {
-                        let cueCy = trackY + trackHeight - 40;
                         doc.setFillColor(255); doc.setDrawColor(0); doc.setLineWidth(0.5);
-                        doc.circle(centerX, cueCy, r, 'FD');
-                        doc.setFillColor(239, 68, 68); doc.circle(centerX, cueCy, 2.5, 'F'); 
+                        doc.circle(centerX, trackY + 250, r, 'FD'); // Bola Blanca (5cm desde borde inferior)
+                        doc.setFillColor(239, 68, 68); doc.circle(centerX, trackY + 250, 2.5, 'F'); 
                         
                         doc.setDrawColor(255); if(bw) doc.setDrawColor(0);
                         doc.setLineWidth(1.5); doc.setLineDashPattern([4, 4], 0);
                         
-                        doc.circle(centerX, cueCy - 75, r, 'S');
-                        doc.circle(centerX, cueCy - 150, r, 'S');
+                        doc.circle(centerX, trackY + 150, r, 'S'); // Ghost 1 (10cm de distancia)
+                        doc.circle(centerX, trackY + 50, r, 'S');  // Ghost 2 (10cm de distancia, 5cm del borde superior)
                         doc.setLineDashPattern([], 0);
 
                         doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(255); if(bw) doc.setTextColor(0);
-                        doc.text(brandName, centerX, trackY + trackHeight - 5, { align: "center" });
+                        doc.text(brandName, centerX, trackY + 290, { align: "center" });
+
+                        doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(150);
+                        doc.text("↑ UNIR EXTENSIÓN AQUÍ ↑", centerX, trackY - 5, { align: "center" });
 
                     } else if (type === 'ext') {
                         doc.setDrawColor(255); if(bw) doc.setDrawColor(0);
                         doc.setLineWidth(1.5); doc.setLineDashPattern([4, 4], 0);
                         
-                        doc.circle(centerX, trackY + 220, r, 'S');
-                        doc.circle(centerX, trackY + 145, r, 'S');
-                        doc.circle(centerX, trackY + 70, r, 'S');
+                        doc.circle(centerX, trackY + 250, r, 'S'); // Ghost 1
+                        doc.circle(centerX, trackY + 150, r, 'S'); // Ghost 2
+                        doc.circle(centerX, trackY + 50, r, 'S');  // Ghost 3
                         doc.setLineDashPattern([], 0);
 
-                        doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(150);
-                        doc.text("ALINEAR CON EL TRAMO ANTERIOR AQUI", centerX, trackY + 5, { align: "center" });
+                        doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(150);
+                        doc.text("↓ ALINEAR CON EL TRAMO ANTERIOR AQUÍ ↓", centerX, trackY + 305, { align: "center" });
+                        doc.text("↑ UNIR SIGUIENTE EXTENSIÓN AQUÍ ↑", centerX, trackY - 5, { align: "center" });
                     }
                 }
 
@@ -1969,8 +1975,8 @@
                 }
 
                 function drawStrokeFoilsPage(bw) {
-                    const w = 55; const h = 250; const r = 28.5; const y = 15;
-                    const x1 = 15; const x2 = x1 + w + 10; const x3 = x2 + w + 10; 
+                    const w = 55; const h = 250; const r = 28.5; const y = 80;
+                    const x1 = 56; const x2 = x1 + w + 10; const x3 = x2 + w + 10; 
 
                     doc.setDrawColor(150); doc.setLineWidth(0.5); doc.setLineDashPattern([3, 3], 0);
                     doc.rect(x1, y, w, h, 'S'); doc.rect(x2, y, w, h, 'S'); doc.rect(x3, y, w, h, 'S');
@@ -2030,36 +2036,36 @@
                 }
 
                 // PORTADA
-                doc.setFillColor(15, 23, 42); doc.rect(0, 0, 216, 280, 'F');
-                doc.setDrawColor(250, 204, 21); doc.setLineWidth(1.5); doc.rect(10, 10, 196, 259, 'S');
+                doc.setFillColor(15, 23, 42); doc.rect(0, 0, 297, 420, 'F');
+                doc.setDrawColor(250, 204, 21); doc.setLineWidth(1.5); doc.rect(10, 10, 277, 400, 'S');
                 doc.setFont("helvetica", "bold"); doc.setFontSize(32); doc.setTextColor(250, 204, 21);
-                doc.text("POSITION MASTER", centerX, 90, { align: "center" });
+                doc.text("POSITION MASTER", centerX, 130, { align: "center" });
                 doc.setFontSize(14); doc.setTextColor(255, 255, 255);
-                doc.text("BILLIARDS TRAINING SUITE", centerX, 102, { align: "center" });
-                doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.5); doc.line(40, 110, 176, 110);
+                doc.text("BILLIARDS TRAINING SUITE", centerX, 145, { align: "center" });
+                doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.5); doc.line(60, 155, 237, 155);
                 doc.setFontSize(11); doc.setTextColor(148, 163, 184);
-                doc.text("MANUAL TECNICO Y PLANTILLAS DE ENTRENAMIENTO", centerX, 125, { align: "center" });
+                doc.text("MANUAL TECNICO Y PLANTILLAS DE ENTRENAMIENTO", centerX, 175, { align: "center" });
                 doc.setFontSize(12); doc.setTextColor(100, 116, 139);
-                doc.text("LICENCIADO EXCLUSIVAMENTE PARA:", centerX, 155, { align: "center" });
+                doc.text("LICENCIADO EXCLUSIVAMENTE PARA:", centerX, 215, { align: "center" });
                 doc.setFontSize(22); doc.setTextColor(255, 255, 255);
-                doc.text(playerNameVal, centerX, 165, { align: "center" });
+                doc.text(playerNameVal, centerX, 230, { align: "center" });
 
                 doc.setFontSize(10); doc.setTextColor(100, 116, 139); doc.setFont("helvetica", "normal");
-                doc.text("DESARROLLADO POR:", centerX, 258, { align: "center" });
+                doc.text("DESARROLLADO POR:", centerX, 380, { align: "center" });
                 doc.setFont("helvetica", "bold"); doc.setTextColor(250, 204, 21);
-                doc.text("JUAN MIGUEL RIOS REDONDO", centerX, 263, { align: "center" });
+                doc.text("JUAN MIGUEL RIOS REDONDO", centerX, 387, { align: "center" });
 
-                doc.setFillColor(250, 204, 21); doc.rect(20, 215, 176, 25, 'F');
+                doc.setFillColor(250, 204, 21); doc.rect(20, 330, 257, 30, 'F');
                 doc.setFontSize(11); doc.setTextColor(15, 23, 42); doc.setFont("helvetica", "bold");
-                doc.text("ATENCION: INSTRUCCION CRITICA DE IMPRESION", centerX, 223, { align: "center" });
+                doc.text("ATENCION: INSTRUCCION CRITICA DE IMPRESION", centerX, 340, { align: "center" });
                 doc.setFont("helvetica", "normal"); doc.setFontSize(10);
-                doc.text("Configura la impresora a ESCALA 100% o TAMANO REAL.", centerX, 230, { align: "center" });
+                doc.text("Configura la impresora a ESCALA 100% o TAMANO REAL. Documento en Formato A3.", centerX, 348, { align: "center" });
                 doc.setFont("helvetica", "bold");
-                doc.text("Lee la Guia de Materiales en la pagina 2 para la diferencia de la fisica de deslizamiento.", centerX, 235, { align: "center" });
+                doc.text("Lee la Guia de Materiales en la pagina 2 para la diferencia de la fisica de deslizamiento.", centerX, 355, { align: "center" });
 
                 // GUÍA
                 addHeader("Regla de Oro: La Fisica de los Materiales", "Evita que tus plantillas alteren el rodamiento de la bola");
-                let yMat = 60;
+                let yMat = 65;
                 yMat = writeParagraphs(yMat, ["El Peligro del Deslizamiento (Skid)"], 14, true);
                 yMat = writeParagraphs(yMat, ["La friccion es todo en el billar. Si imprimes una herramienta de posicion en un material liso o muy grueso, cuando la bola ruede perdera el agarre del paño, patinara, saltara y alterara tu tiro."]);
                 yMat += 5;
@@ -2074,7 +2080,7 @@
                 yMat = writeParagraphs(yMat, ["Si imprimes en casa las dianas, usa papel bond normal (no fotografico). Cumple la condicion de ser delgado y opaco, pero ten en cuenta que se arrugara o rompera con el uso intensivo."]);
 
                 addHeader("1. El Triangulo del Caos", "Comprendiendo la Deflexion (Squirt, Swerve, Throw)");
-                let y = 60;
+                let y = 65;
                 y = writeParagraphs(y, ["La Fisica del Efecto Lateral"], 14, true);
                 y = writeParagraphs(y, ["Cuando golpeas la bola blanca en el centro, viaja en linea recta. Pero al aplicar efecto lateral (English), entran en juego tres fuerzas fisicas que arruinaran tu tiro si no las comprendes a detalle."]);
                 y += 5;
@@ -2088,7 +2094,7 @@
                 y = writeParagraphs(y, ["La regla: El giro de la blanca empuja (Lanza/Throws) la bola objetivo hacia el lado opuesto al efecto."]);
 
                 addHeader("2. Calibracion de Taco (Punto de Pivote)", "Como compensar matematicamente el error usando BHE");
-                y = 60;
+                y = 65;
                 y = writeParagraphs(y, ["El Metodo BHE (Backhand English)"], 14, true);
                 y = writeParagraphs(y, [
                     "Dado que la deflexion empuja la bola a un lado, tu trabajo es 'apuntar mal a proposito' para que la fisica corrija el tiro automaticamente.",
@@ -2107,8 +2113,8 @@
 
                 if(doTrack) {
                     addHeader("Modulo de Entrenamiento: Pista de Golpeo Larga (Track System)", "Alineacion de brazo y rectitud a larga distancia");
-                    y = 60;
-                    y = writeParagraphs(y, ["MEDIDAS: 14 cm de Ancho x 26 cm de Largo (Por cada tramo generado)."], 12, true, [14, 165, 233]);
+                    y = 65;
+                    y = writeParagraphs(y, ["MEDIDAS: 14 cm de Ancho x 30 cm de Largo (Por cada tramo generado)."], 12, true, [14, 165, 233]);
                     y += 3;
                     y = writeParagraphs(y, ["MATERIAL DE IMPRESION RECOMENDADO: Papel Sintetico Mate (Polipropileno) o Tyvek."], 12, true, [239, 68, 68]);
                     y += 2;
@@ -2118,14 +2124,14 @@
                     y += 6;
                     y = writeParagraphs(y, ["Como ensamblar la Pista:"], 12, true);
                     y = writeParagraphs(y, [
-                        "Esta es la herramienta definitiva para la rectitud. Para hacerla tan larga como desees, el sistema ha generado dos paginas en formato Carta:",
+                        "Esta es la herramienta definitiva para la rectitud. Para hacerla tan larga como desees, el sistema ha generado dos paginas en formato A3:",
                         "",
                         "1. TRAMO BASE: Imprime la primera hoja. Contiene el circulo blanco solido donde siempre colocaras la Bola Blanca (Cue Ball).",
-                        "2. TRAMOS DE EXTENSION: Imprime la segunda hoja tantas veces como largo necesites la pista (1, 2 o 3 veces).",
-                        "3. ENSAMBLE: Recorta los rectangulos grises. Alinealos en la mesa uniendo la linea central blanca-roja a la perfeccion, y unelos usando cinta adhesiva en los bordes.",
+                        "2. TRAMOS DE EXTENSION: Imprime la segunda hoja tantas veces como largo necesites la pista. Al unirlas, los circulos mantendran una cuadricula matematica exacta de 10cm entre cada bola.",
+                        "3. ENSAMBLE: Recorta los rectangulos grises. Alinealos en la mesa uniendo la linea central blanca-roja a la perfeccion, y unelos usando cinta adhesiva en los bordes horizontales.",
                         "",
                         "TRUCO DE FIJACION (Como los profesionales):",
-                        "Usa trozos pequeños de cinta adhesiva en las esquinas y uniones de tu pista ensamblada para fijarla firmemente al paño de la mesa. Esto evitara cualquier deslizamiento durante los impactos y el limaje repetitivo."
+                        "Usa trozos pequeños de cinta adhesiva en las esquinas de tu pista ensamblada para fijarla firmemente al paño de la mesa. Esto evitara deslizamientos durante los impactos."
                     ]);
                     
                     doc.addPage();
@@ -2136,7 +2142,7 @@
 
                 if(doFoil) {
                     addHeader("Modulo de Entrenamiento: Laminas de Golpeo (Stroke Foils)", "Alineacion de taco, mecanica de brazo y golpe recto");
-                    y = 60;
+                    y = 65;
                     y = writeParagraphs(y, ["OBLIGATORIO: IMPRIMIR EN ACETATO TRANSPARENTE"], 12, true, [239, 68, 68]);
                     y += 2;
                     y = writeParagraphs(y, ["Como usar el Set de Laminas de Golpeo:"], 12, true);
@@ -2159,14 +2165,14 @@
 
                 if(doCenter) {
                     addHeader("Modulo de Entrenamiento: Dianas Centrales", "Zonas de aterrizaje en mesa abierta");
-                    y = 60;
-                    y = writeParagraphs(y, ["MEDIDAS: 20.5 cm de Diametro Total."], 12, true, [59, 130, 246]);
+                    y = 65;
+                    y = writeParagraphs(y, ["MEDIDAS: 27.2 cm de Diametro Total (Punto central 1:1 Bola Real)."], 12, true, [59, 130, 246]);
                     y += 3;
                     y = writeParagraphs(y, ["Como usar las Dianas Centrales:"], 12, true);
                     y = writeParagraphs(y, [
                         "1. Recorta la figura circular guiandote por la linea exterior.",
                         "2. Coloca la diana plana sobre el paño de la mesa en el punto exacto deseado.",
-                        "3. Ejecuta tu rutina. El objetivo es que la bola se DETENGA por completo sobre el amarillo."
+                        "3. Ejecuta tu rutina. El objetivo es que la bola se DETENGA por completo tapando el punto amarillo central."
                     ]);
                     doc.addPage();
                     drawStandardTarget(centerX, centerY, maxRadius, isBw, document.getElementById('grid_center').checked);
@@ -2174,8 +2180,8 @@
 
                 if(doRail) {
                     addHeader("Modulo de Entrenamiento: Dianas de Banda", "Tiros defensivos, Safeties y juego perimetral");
-                    y = 60;
-                    y = writeParagraphs(y, ["MEDIDAS: 20.5 cm de Ancho x 10.25 cm de Alto."], 12, true, [239, 68, 68]);
+                    y = 65;
+                    y = writeParagraphs(y, ["MEDIDAS: 27.2 cm de Ancho x 13.6 cm de Alto."], 12, true, [239, 68, 68]);
                     y += 3;
                     y = writeParagraphs(y, ["Como usar las Dianas de Banda (Forma de 'D'):"], 12, true);
                     y = writeParagraphs(y, [
@@ -2185,14 +2191,14 @@
                     ]);
                     doc.addPage();
                     let useGrid = document.getElementById('grid_rail').checked;
-                    drawRailTarget(centerX, 120, maxRadius, isBw, useGrid);
-                    drawRailTarget(centerX, 260, maxRadius, isBw, useGrid);
+                    drawRailTarget(centerX, 150, maxRadius, isBw, useGrid);
+                    drawRailTarget(centerX, 310, maxRadius, isBw, useGrid);
                 }
 
                 if(doRect) {
                     addHeader("Modulo de Entrenamiento: Zona Rectangular Pro", "Aterrizaje en areas para Tres Bandas");
-                    y = 60;
-                    y = writeParagraphs(y, ["MEDIDAS: 20 cm de Ancho x 26 cm de Largo."], 12, true, [34, 197, 94]);
+                    y = 65;
+                    y = writeParagraphs(y, ["MEDIDAS: 27.2 cm de Ancho x 35.4 cm de Largo."], 12, true, [34, 197, 94]);
                     y += 3;
                     y = writeParagraphs(y, ["Como usar la Zona Rectangular:"], 12, true);
                     y = writeParagraphs(y, [
@@ -2200,12 +2206,12 @@
                         "2. En el billar a tres bandas, predecir el punto exacto despues de varios recorridos es imposible. Los profesionales apuntan a una 'Zona de la Mesa'. Si la bola cae aqui, tendras garantizado un tiro facil."
                     ]);
                     doc.addPage();
-                    drawRectangularZone(centerX, centerY, 200, 260, isBw, document.getElementById('grid_rect').checked);
+                    drawRectangularZone(centerX, centerY, 272.4, 354.1, isBw, document.getElementById('grid_rect').checked);
                 }
 
                 if(doGhost) {
                     addHeader("Modulo de Entrenamiento: Ghost Ball Target", "Teoria visual de cortes a 45 grados");
-                    y = 60;
+                    y = 65;
                     y = writeParagraphs(y, ["MEDIDAS (Caja de Recorte): 16 cm de Ancho x 11 cm de Alto."], 12, true, [168, 85, 247]);
                     y += 3;
                     y = writeParagraphs(y, ["Como usar la plantilla de Bola Fantasma:"], 12, true);
@@ -2219,8 +2225,8 @@
                         "Agachate. OLVIDA la existencia de la bola real. Tu unica mision es golpear la bola blanca para que TAPE EXACTAMENTE el circulo punteado 'GHOST'. El corte ocurrira por magia matematica."
                     ]);
                     doc.addPage();
-                    drawOptimizedGhostBall(centerX, 75, isBw);
-                    drawOptimizedGhostBall(centerX, 205, isBw);
+                    drawOptimizedGhostBall(centerX, 110, isBw);
+                    drawOptimizedGhostBall(centerX, 280, isBw);
                 }
 
                 let safeName = playerNameInput ? playerNameInput.replace(/[^a-z0-9]/gi, '_').toLowerCase() : "pro";
