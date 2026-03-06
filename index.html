@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herrameintas Para El Billar</title>
+    <title>Herramientas Para El Billar</title>
     
     <!-- Librerías de las herramientas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            corePlugins: { preflight: false }
+            corePlugins: { preflight: false } // Esto protege los diseños originales de las Apps 1 y 2
         }
     </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -77,7 +77,7 @@
             display: flex; 
         }
 
-        /* ESTILOS GLOBALES DEL MODAL EXTRACTOR */
+        /* ESTILOS GLOBALES DEL MODAL EXTRACTOR Y ANALIZADOR */
         .global-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.85); z-index: 10000;
@@ -241,19 +241,16 @@
     <div id="markerAnalyzerModule" class="global-modal-overlay no-print">
         <div style="background: white; padding: 25px; border-radius: 12px; max-width: 400px; display: flex; flex-direction: column; align-items: center; width: 100%;">
             <h3 style="margin: 0 0 15px 0; color: #1e3a8a; font-family: sans-serif;">🔍 Análisis Inteligente de Marca</h3>
-            
             <div id="analyzerProgress" style="width: 100%; text-align: center; color: #64748b; font-family: sans-serif; font-size: 13px;">
                 <p>Analizando geometría de la foto...</p>
                 <div style="width: 100%; background: #eee; border-radius: 4px; height: 10px; overflow: hidden; margin-bottom: 10px;">
                     <div id="analyzerBar" style="width: 0%; height: 100%; background: #2563eb; transition: width 2s linear;"></div>
                 </div>
             </div>
-            
             <div id="analyzerResultText" style="text-align: center; font-family: sans-serif; margin-bottom: 15px; font-size: 14px; color: #333;"></div>
-            
             <div style="display:flex; gap:10px;">
-                <button id="btnApplySuggestion" onclick="applyMarkerSuggestion()" class="btn-action" style="display:none; padding: 10px; background: #10b981; font-size: 14px; margin:0;">Aplicar Sugerencia</button>
-                <button onclick="closeMarkerAnalyzer()" class="btn-action" style="padding: 10px; background: #64748b; font-size: 14px; margin:0;">Cancelar</button>
+                <button id="btnApplySuggestion" onclick="applyMarkerSuggestion()" style="display:none; padding: 10px; background: #10b981; color: white; border-radius: 6px; border:none; cursor:pointer; font-weight:bold; font-size: 14px; margin:0;">Aplicar Sugerencia</button>
+                <button onclick="closeMarkerAnalyzer()" style="padding: 10px; background: #64748b; color: white; border-radius: 6px; border:none; cursor:pointer; font-weight:bold; font-size: 14px; margin:0;">Cancelar</button>
             </div>
             <input type="file" id="markerPhotoInput" accept="image/*" style="display:none;">
         </div>
@@ -266,25 +263,20 @@
                 <h2 style="margin: 0; color: #2c3e50; font-family: sans-serif;">📖 Guía de Uso: Generador de Slicers</h2>
                 <button onclick="closeSlicerHelp()" style="background:none; border:none; font-size:24px; cursor:pointer; color: #c0392b;">&times;</button>
             </div>
-            
             <div style="font-family: sans-serif; color: #333; font-size: 14px; line-height: 1.6;">
-                <h4 style="color: #2980b9; margin-bottom: 5px;">1. Objetivo de Producción</h4>
+                <h4 style="color: #2980b9; margin-bottom: 5px; margin-top:0;">1. Objetivo de Producción</h4>
                 <p style="margin-top: 0;">Selecciona cuántas tiras necesitas. Puedes usar los botones rápidos (Ej. 1 Mesa = 24 tiras). También escoge el tamaño de tu mesa (10 pies, 9 pies, 8 pies) o elige una medida personalizada en pulgadas.</p>
-                
                 <h4 style="color: #2980b9; margin-bottom: 5px;">2. Formato de Salida</h4>
                 <p style="margin-top: 0;">Elige si imprimirás en hojas sueltas (Paginado) o en un Plotter continuo (Rollo). Ajusta el tamaño de papel de tu impresora y el sistema calculará cuántas páginas o metros necesitas automáticamente.</p>
-                
                 <h4 style="color: #2980b9; margin-bottom: 5px;">3. Personalización y Autocontraste</h4>
                 <ul style="margin-top: 0; padding-left: 20px;">
                     <li><strong>Etiqueta:</strong> Cambia el texto central para colocar el nombre de tu club.</li>
                     <li><strong>Color de Mesa:</strong> Puedes poner un color sólido o usar el modo "Transparente". Si usas Transparente o Personalizado, aparecerá un ícono de cámara (📸) para que subas una foto de tu mesa y extraigas su color exacto.</li>
                     <li><strong>💡 Autocontraste:</strong> Si ya capturaste el color de tu mesa, presiona este botón y el sistema buscará mágicamente colores para las líneas, el diamante y el texto que contrasten perfectamente con la madera.</li>
                 </ul>
-
                 <h4 style="color: #2980b9; margin-bottom: 5px;">4. Descarga</h4>
                 <p style="margin-top: 0;">Una vez estés conforme con la previsualización, haz clic en "Descargar PDF Final". Se generará un archivo vectorial de alta resolución ideal para impresión profesional o corte láser.</p>
             </div>
-            
             <button onclick="closeSlicerHelp()" style="margin-top: 20px; background: #2c3e50; color: white; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px;">Entendido</button>
         </div>
     </div>
@@ -306,10 +298,10 @@
                 <div style="font-size:12px; color:#777; margin-top:5px;">Gold Master</div>
             </div>
 
-            <!-- Previsualización con selector agregado -->
+            <!-- Previsualización -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; width: 100%;">
                 <span class="live-label" style="margin-bottom: 0;">👁️ Previsualización del Diseño</span>
-                <select id="previewSelect" onchange="updateLivePreview()" style="display:none; width: auto; padding: 4px; font-size: 11px; border-radius: 4px; border: 1px solid #bdc3c7;">
+                <select id="previewSelect" onchange="updateCalc()" style="display:none; width: auto; padding: 4px; font-size: 11px; border-radius: 4px; border: 1px solid #bdc3c7;">
                     <option value="10">Mesa 10 Pies</option>
                     <option value="9">Mesa 9 Pies</option>
                     <option value="8">Mesa 8 Pies</option>
@@ -365,7 +357,6 @@
                             <option value="letter" style="color:#c0392b;">Carta (11" x 8.5") - [PRUEBA]</option>
                             <option value="legal" style="color:#c0392b;">Oficio (14" x 8.5") - [PRUEBA]</option>
                         </select>
-                        
                         <div id="customSheetContainer" class="custom-sheet-container">
                             <div class="custom-sheet-row">
                                 <div style="flex:1;"><label>Ancho</label><input type="number" id="customSheetW" value="50" step="0.1" onchange="updateCalc()"></div>
@@ -402,7 +393,6 @@
                         </div>
                     </div>
                     
-                    <!-- Color de Líneas y Contraste -->
                     <div style="margin-bottom:15px; border-bottom: 1px dashed #ccc; padding-bottom: 15px;">
                         <label>Color de Líneas</label>
                         <div style="display:flex; gap: 6px;">
@@ -412,8 +402,6 @@
                     </div>
 
                     <label>Colores de Fondo (Mesa)</label>
-                    
-                    <!-- Single Color Mode -->
                     <div id="singleColorControl" style="display:flex; gap: 6px; align-items: center; margin-bottom: 10px;">
                         <select id="bgMode" onchange="updateCalc()" style="flex: 1;">
                             <option value="transparent" selected>Transparente</option>
@@ -424,7 +412,6 @@
                         <button class="btn-action" id="btnCamGlobal" onclick="openExtractor('colorGlobal', () => { if(document.getElementById('bgMode').value !== 'transparent') document.getElementById('bgMode').value='custom'; updateCalc(); })" style="display:none; padding: 0 10px; margin: 0; background: #475569; width: auto;" title="Extraer Color de la Mesa">📸</button>
                     </div>
 
-                    <!-- Mix Color Mode -->
                     <div id="mixColorControl" style="display:none;">
                         <div class="mix-row">
                             <label>10 Pies:</label>
@@ -458,7 +445,6 @@
                         </div>
                     </div>
 
-                    <!-- Forma y Color de Marca -->
                     <div class="diamond-color-wrapper">
                         <label>Forma y Tamaño de Marca</label>
                         <select id="markerStyle" onchange="handleMarkerStyleChange()" style="margin-bottom: 10px;">
@@ -470,11 +456,10 @@
                             <option value="circle_l">Círculo Grande</option>
                             <option value="custom_photo" style="font-weight:bold; color:#d35400;">📸 Sugerencia por Foto...</option>
                         </select>
-
                         <label>Color de la Marca Central</label>
                         <input type="color" id="diamondColor" value="#FFD700" onchange="window.isAutoContrast=false; updateCalc()">
                     </div>
-                </div> <!-- Termina Control Group 3 -->
+                </div>
             </div>
 
             <div class="info-box" id="statusMsg"></div>
@@ -482,11 +467,9 @@
             <button class="btn-action" onclick="generatePDF()">
                 <span>⬇</span> Descargar PDF Final
             </button>
-            
             <button class="btn-guide" onclick="generateGuidePDF()">
                 <span>📘</span> Descargar Guía de Instalación
             </button>
-            
             <button class="btn-guide" onclick="openSlicerHelp()" style="background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%); margin-top: 15px;">
                 <span>❓</span> ¿Cómo usar el Generador de Slicers?
             </button>
@@ -494,7 +477,6 @@
             <label style="margin-top:20px; font-weight:bold; color:white;">Previsualización de Lote:</label>
             <div class="visual-preview" id="previewGrid"></div>
         </div>
-
         <div class="footer-cr">
             Herramienta desarrollada por <strong>Juan Miguel Rios Redondo</strong><br>
             <span id="copyright-text"></span>
@@ -519,13 +501,11 @@
                     <button class="btn-action btn-pdf" onclick="downloadTutorialPDF()">💾 Guardar en PDF</button>
                     <button class="btn-action" style="background: #64748b; color: white;" onclick="closeTutorialModal()">❌ Cerrar</button>
                 </div>
-                
                 <div id="tutorial-sheet">
                     <div style="border-bottom: 4px solid #2563eb; padding-bottom: 12px; margin-bottom: 20px; text-align: center;">
                         <h1 style="color: #1e3a8a; font-size: 24px; margin: 0; font-weight: 900; letter-spacing: 1px;">ESPECIFICACIONES TÉCNICAS Y MONTAJE</h1>
                         <p style="margin: 6px 0 0 0; font-weight: 800; color: #64748b; font-size: 11px; letter-spacing: 0.5px;">DOCUMENTO OFICIAL DE PRODUCCIÓN - FORMATO DIN A4 (210 x 297 mm)</p>
                     </div>
-
                     <div class="tut-card">
                         <div class="tut-h3">1. Requisitos de Impresión y Hardware</div>
                         <ul style="margin:0; padding:0;">
@@ -534,7 +514,6 @@
                             <li class="tut-li"><strong>Maquinaria de Corte:</strong> El archivo vectorial A4 está optimizado para corte por láser o plotter, usando las líneas rojas discontinuas como vectores guía de corte.</li>
                         </ul>
                     </div>
-
                     <div class="row-layout">
                         <div class="tut-card col-50">
                             <div class="tut-h3">2. Materiales: Plantillas (Fichas)</div>
@@ -545,7 +524,6 @@
                             </ul>
                             <p class="tut-p" style="margin-top:10px;"><strong>Importante:</strong> El círculo central del objetivo debe quedar 100% transparente.</p>
                         </div>
-
                         <div class="tut-card col-50">
                             <div class="tut-h3">3. Materiales: Tapete y Bases</div>
                             <p class="tut-p"><strong>Tapete (60x25cm):</strong></p>
@@ -556,7 +534,6 @@
                             <p class="tut-p" style="margin-top:10px;"><strong>Bases (8x4cm):</strong> Cortar en Acrílico Negro o Blanco de 3mm para estabilizar la ficha.</p>
                         </div>
                     </div>
-
                     <div class="tut-card">
                         <div class="tut-h3">4. Ensamblaje y Tolerancias de Fabricación</div>
                         <ul style="margin:0; padding:0;">
@@ -565,7 +542,6 @@
                             <li class="tut-li"><strong>Limpieza:</strong> Lije suavemente los bordes del agujero central con lija de agua de grano fino para un deslizamiento fluido del taco.</li>
                         </ul>
                     </div>
-
                     <div style="margin-top: auto; border: 2px dashed #94a3b8; padding: 15px; border-radius: 10px; text-align: center; background-color: #f8fafc;">
                         <p style="font-weight: 900; font-size: 13px; margin-bottom: 15px; color: #1e293b; letter-spacing: 0.5px;">CONTROL DE CALIDAD - VERIFICACIÓN DE ESCALA REAL</p>
                         <svg width="378" height="75" viewBox="0 0 100 20" style="max-width: 100%;">
@@ -575,15 +551,13 @@
                             <line x1="75" y1="9" x2="75" y2="19" stroke="#000" stroke-width="1"/>
                         </svg>
                     </div>
-
                     <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; font-weight: bold; border-top: 1px solid #e2e8f0; padding-top: 10px;">
-                        DISEÑADO POR JUAN MIGUEL RIOS REDONDO © <span id="year-label">2026</span> - STROKEMASTER PRO
+                        DISEÑADO POR JUAN MIGUEL RIOS REDONDO © <span id="year-label-sm"></span> - STROKEMASTER PRO
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- TABS INTERNOS -->
         <div class="tabs no-print">
             <button class="tab-btn active" onclick="switchAppTab(event, 'pack')">1. Pack Producción A4</button>
             <button class="tab-btn" onclick="switchAppTab(event, 'mat')">2. Tapete Profesional</button>
@@ -621,7 +595,6 @@
                 </div>
                 <button class="btn-action btn-pdf" onclick="downloadPDF('pack-sheet', 'StrokeMaster_Pro_Pack_A4.pdf')">💾 Guardar Hoja A4</button>
             </div>
-
             <div id="pack-sheet" class="sheet-container" style="width: 210mm; height: 296mm;">
                 <svg width="210mm" height="296mm" viewBox="0 0 210 296" xmlns="http://www.w3.org/2000/svg">
                     <defs id="svgDefs">
@@ -680,7 +653,6 @@
                 </div>
                 <button class="btn-action btn-pdf" onclick="downloadPDF('mat-sheet', 'StrokeMaster_Pro_Tapete_60x25.pdf')">💾 Guardar Tapete (PDF)</button>
             </div>
-
             <div id="mat-sheet" class="sheet-container" style="width: 250mm; height: 599mm;">
                 <svg width="250mm" height="599mm" viewBox="0 0 250 599" xmlns="http://www.w3.org/2000/svg">
                     <rect id="matBg" width="250" height="599" fill="#2563eb" rx="5" />
@@ -768,7 +740,16 @@
 
                 <h3 class="text-yellow-400 font-bold mb-4 border-b border-solid border-slate-700 pb-2 text-lg uppercase m-0 block"><i class="fa-solid fa-book mr-2"></i> 2. Módulos y Plantillas</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-4">
+                    
                     <label class="cursor-pointer relative tool-card col-span-1 md:col-span-2 block m-0">
+                        <input type="checkbox" id="chk_track" checked class="peer sr-only">
+                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
+                            <h4 class="text-lg font-bold text-cyan-400 m-0"><i class="fa-solid fa-road mr-2"></i> Pista de Golpeo Larga (Stroke Track)</h4>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('track');" class="mt-3 bg-cyan-900 border-none text-cyan-100 px-4 py-2 rounded-lg text-sm cursor-pointer m-0">Vista Previa</button>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer relative tool-card block m-0">
                         <input type="checkbox" id="chk_foil" checked class="peer sr-only">
                         <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
                             <h4 class="text-lg font-bold text-cyan-400 m-0"><i class="fa-solid fa-ruler-combined mr-2"></i> Láminas de Golpeo (Stroke Foils)</h4>
@@ -836,6 +817,8 @@
             <div id="modalContent" class="bg-slate-900 border-2 border-solid border-yellow-500 rounded-xl p-6 max-w-3xl w-full relative">
                 <button onclick="window.closePreviewPM()" class="absolute top-4 right-4 text-slate-400 border-none bg-transparent text-xl cursor-pointer">X</button>
                 <h3 id="modalTitle" class="text-2xl font-bold m-0 border-b border-solid border-slate-700 pb-2">Vista Previa</h3>
+                <!-- NOTA: Añadido modalDesc para solucionar el error de Cannot set properties of null -->
+                <p id="modalDesc" class="text-sm text-slate-300 mt-2 mb-4">Descripción del modelo.</p>
                 <div class="bg-felt p-6 rounded-xl flex justify-center items-center border border-solid border-slate-700 min-h-[300px] mt-4 block">
                     <div id="modalSvgContainer" class="w-full flex justify-center m-0 block"></div>
                 </div>
@@ -858,8 +841,9 @@
         /* =========================================
            UTILIDADES GLOBALES Y MODALES
            ========================================= */
-        document.getElementById('year-label').innerText = new Date().getFullYear();
-        document.getElementById('copyright-text').innerText = "© " + new Date().getFullYear();
+        if(document.getElementById('year-label')) document.getElementById('year-label').innerText = new Date().getFullYear();
+        if(document.getElementById('year-label-sm')) document.getElementById('year-label-sm').innerText = new Date().getFullYear();
+        if(document.getElementById('copyright-text')) document.getElementById('copyright-text').innerText = "© " + new Date().getFullYear();
         if(document.getElementById('currentYearPM')) document.getElementById('currentYearPM').innerText = new Date().getFullYear();
 
         function hexToRgb(hex) {
@@ -1205,7 +1189,6 @@
             return { fill: bgRgb, txt: cText, line: cLine, gold: cDiamond };
         }
 
-        // Analizador de Marca Inteligente
         function handleMarkerStyleChange() {
             if (document.getElementById('markerStyle').value === 'custom_photo') {
                 document.getElementById('markerPhotoInput').click();
@@ -1403,9 +1386,19 @@
             doc.save("Guia_Instalacion_Slicers.pdf");
         }
 
+
         /* =========================================
            CÓDIGO APP 2: STROKEMASTER PRO
            ========================================= */
+        function switchAppTab(e, tab) {
+            document.querySelectorAll('#app2-wrapper .workspace').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('#app2-wrapper .tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('ws-'+tab).classList.add('active');
+            e.currentTarget.classList.add('active');
+            if(tab === 'pack') updatePack();
+            if(tab === 'mat') updateMat();
+        }
+
         const themesPack = {
             blue: { s1: '#e0f7fa', s2: '#29b6f6', s3: '#0277bd' },
             green: { s1: '#f1f8e9', s2: '#66bb6a', s3: '#2e7d32' },
@@ -1674,34 +1667,35 @@
             html2pdf().set(opt).from(element).save();
         }
 
-        function switchAppTab(e, tab) {
-            document.querySelectorAll('#app2-wrapper .workspace').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('#app2-wrapper .tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById('ws-'+tab).classList.add('active');
-            e.currentTarget.classList.add('active');
-            if(tab === 'pack') updatePack();
-            if(tab === 'mat') updateMat();
-        }
-
         /* =========================================
            CÓDIGO APP 3: POSITION MASTER
            ========================================= */
-        document.querySelectorAll('#app3-wrapper input[type="checkbox"]').forEach(box => {
-            box.addEventListener('change', function() {
-                if(this.id.startsWith('chk_')) {
-                    const div = this.nextElementSibling;
-                    if(this.checked) {
-                        div.classList.add('bg-yellow-900/20', 'border-yellow-400');
-                        div.classList.remove('bg-slate-800', 'border-slate-600');
-                    } else {
-                        div.classList.remove('bg-yellow-900/20', 'border-yellow-400');
-                        div.classList.add('bg-slate-800', 'border-slate-600');
-                    }
-                }
-            });
-        });
-
         const previewsPM = {
+            track: {
+                title: '<i class="fa-solid fa-road mr-2 text-cyan-400"></i> Vista Previa: Stroke Track System',
+                desc: 'Réplica de la pista larga. El PDF generará un "Tramo Base" y "Tramos de Extensión". <br><strong class="text-cyan-300 font-mono text-xs mt-1 block">MEDIDAS: 14 cm de ancho x 26 cm de largo (Por cada tramo)</strong>',
+                color: 'border-cyan-500', titleColor: 'text-cyan-400',
+                svg: `
+                <svg viewBox="0 0 160 400" width="100%" style="max-width: 250px; max-height: 400px;" height="auto">
+                    <rect x="40" y="200" width="80" height="190" fill="#334155" rx="2"/>
+                    <line x1="80" y1="200" x2="80" y2="390" stroke="#ffffff" stroke-width="4"/>
+                    <line x1="80" y1="200" x2="80" y2="390" stroke="#ef4444" stroke-width="1.5"/>
+                    <circle cx="80" cy="350" r="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+                    <circle cx="80" cy="350" r="2" fill="#ef4444"/>
+                    <circle cx="80" cy="270" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <circle cx="80" cy="210" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <text x="80" y="380" font-family="sans-serif" font-size="8" font-weight="bold" fill="#94a3b8" text-anchor="middle">TRAMO BASE</text>
+                    <rect x="40" y="0" width="80" height="198" fill="#334155" rx="2"/>
+                    <line x1="80" y1="0" x2="80" y2="198" stroke="#ffffff" stroke-width="4"/>
+                    <line x1="80" y1="0" x2="80" y2="198" stroke="#ef4444" stroke-width="1.5"/>
+                    <circle cx="80" cy="150" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <circle cx="80" cy="90" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <circle cx="80" cy="30" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <text x="80" y="190" font-family="sans-serif" font-size="8" font-weight="bold" fill="#94a3b8" text-anchor="middle">EXTENSION</text>
+                    <rect x="30" y="196" width="30" height="10" fill="rgba(255,255,255,0.3)" transform="rotate(-15 45 201)"/>
+                    <rect x="100" y="196" width="30" height="10" fill="rgba(255,255,255,0.3)" transform="rotate(15 115 201)"/>
+                </svg>`
+            },
             foil: {
                 title: '<i class="fa-solid fa-ruler-combined mr-2 text-cyan-400"></i> Vista Previa: Stroke Foils',
                 desc: 'ÚNICA HERRAMIENTA EN ACETATO. Al imprimirlas transparentes, podrás colocarlas bajo la bola blanca para revisar tu mecánica de golpe sin interferir la visión.',
@@ -1714,12 +1708,14 @@
                     <text x="40" y="244" font-family="sans-serif" font-size="10" font-weight="bold" fill="#0f172a" text-anchor="middle">CUE</text>
                     <circle cx="40" cy="60" r="20" fill="#ef4444" stroke="#0f172a" stroke-width="1.5"/>
                     <text x="40" y="64" font-family="sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">OBJ</text>
+                    
                     <rect x="90" y="10" width="60" height="280" fill="rgba(255,255,255,0.15)" stroke="#cbd5e1" stroke-dasharray="4 4" stroke-width="1" rx="4"/>
                     <line x1="120" y1="30" x2="120" y2="270" stroke="#0f172a" stroke-width="1.5"/>
                     <circle cx="120" cy="240" r="20" fill="none" stroke="#0f172a" stroke-width="1.5"/>
                     <circle cx="120" cy="240" r="2" fill="#0f172a"/><circle cx="120" cy="226" r="2" fill="#0f172a"/><circle cx="120" cy="254" r="2" fill="#0f172a"/><circle cx="106" cy="240" r="2" fill="#0f172a"/><circle cx="134" cy="240" r="2" fill="#0f172a"/>
                     <circle cx="120" cy="60" r="20" fill="none" stroke="#0f172a" stroke-width="1.5"/>
                     <text x="120" y="64" font-family="sans-serif" font-size="8" font-weight="bold" fill="#0f172a" text-anchor="middle">TARGET</text>
+                    
                     <rect x="170" y="10" width="60" height="280" fill="rgba(255,255,255,0.15)" stroke="#cbd5e1" stroke-dasharray="4 4" stroke-width="1" rx="4"/>
                     <line x1="192" y1="30" x2="192" y2="270" stroke="#0f172a" stroke-width="1.5"/>
                     <line x1="208" y1="30" x2="208" y2="270" stroke="#0f172a" stroke-width="1.5"/>
@@ -1798,10 +1794,16 @@
         window.openPreviewPM = function(type) {
             document.getElementById('modalTitle').innerHTML = previewsPM[type].title;
             document.getElementById('modalTitle').className = `text-2xl font-bold m-0 border-b border-solid border-slate-700 pb-2 ${previewsPM[type].color}`;
+            
+            const modalDescElem = document.getElementById('modalDesc');
+            if (modalDescElem) {
+                modalDescElem.innerHTML = previewsPM[type].desc;
+            }
+            
             document.getElementById('modalSvgContainer').innerHTML = previewsPM[type].svg;
             document.getElementById('previewModal').classList.remove('hidden');
         };
-        
+
         window.closePreviewPM = function() {
             document.getElementById('previewModal').classList.add('hidden');
         };
@@ -1812,8 +1814,9 @@
             const doRect = document.getElementById('chk_rect').checked;
             const doGhost = document.getElementById('chk_ghost').checked;
             const doFoil = document.getElementById('chk_foil').checked;
+            const doTrack = document.getElementById('chk_track').checked;
 
-            if(!doCenter && !doRail && !doRect && !doGhost && !doFoil) {
+            if(!doCenter && !doRail && !doRect && !doGhost && !doFoil && !doTrack) {
                 alert("Selecciona al menos una herramienta para armar el libro.");
                 return;
             }
@@ -1865,6 +1868,60 @@
                     });
                     doc.setTextColor(15, 23, 42); 
                     return y + 4;
+                }
+
+                function drawTrackSection(doc, type, bw, brandName) {
+                    const trackWidth = 140; 
+                    const trackHeight = 260; 
+                    const trackX = centerX - (trackWidth/2);
+                    const trackY = 10;
+                    const r = 28.5; 
+
+                    if (bw) doc.setFillColor(240, 240, 240);
+                    else doc.setFillColor(60, 64, 67); 
+                    
+                    doc.setDrawColor(0); doc.setLineWidth(0.5);
+                    doc.rect(trackX, trackY, trackWidth, trackHeight, 'FD');
+
+                    doc.setDrawColor(255, 255, 255);
+                    if (bw) doc.setDrawColor(100);
+                    doc.setLineWidth(3);
+                    doc.line(centerX, trackY, centerX, trackY + trackHeight);
+                    
+                    if (!bw) {
+                        doc.setDrawColor(239, 68, 68);
+                        doc.setLineWidth(0.8);
+                        doc.line(centerX, trackY, centerX, trackY + trackHeight);
+                    }
+
+                    if(type === 'base') {
+                        let cueCy = trackY + trackHeight - 40;
+                        doc.setFillColor(255); doc.setDrawColor(0); doc.setLineWidth(0.5);
+                        doc.circle(centerX, cueCy, r, 'FD');
+                        doc.setFillColor(239, 68, 68); doc.circle(centerX, cueCy, 2.5, 'F'); 
+                        
+                        doc.setDrawColor(255); if(bw) doc.setDrawColor(0);
+                        doc.setLineWidth(1.5); doc.setLineDashPattern([4, 4], 0);
+                        
+                        doc.circle(centerX, cueCy - 75, r, 'S');
+                        doc.circle(centerX, cueCy - 150, r, 'S');
+                        doc.setLineDashPattern([], 0);
+
+                        doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(255); if(bw) doc.setTextColor(0);
+                        doc.text(brandName, centerX, trackY + trackHeight - 5, { align: "center" });
+
+                    } else if (type === 'ext') {
+                        doc.setDrawColor(255); if(bw) doc.setDrawColor(0);
+                        doc.setLineWidth(1.5); doc.setLineDashPattern([4, 4], 0);
+                        
+                        doc.circle(centerX, trackY + 220, r, 'S');
+                        doc.circle(centerX, trackY + 145, r, 'S');
+                        doc.circle(centerX, trackY + 70, r, 'S');
+                        doc.setLineDashPattern([], 0);
+
+                        doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(150);
+                        doc.text("ALINEAR CON EL TRAMO ANTERIOR AQUI", centerX, trackY + 5, { align: "center" });
+                    }
                 }
 
                 function drawGridOverlay(cx, cy, w, h) {
@@ -2000,17 +2057,13 @@
                 // PORTADA
                 doc.setFillColor(15, 23, 42); doc.rect(0, 0, 216, 280, 'F');
                 doc.setDrawColor(250, 204, 21); doc.setLineWidth(1.5); doc.rect(10, 10, 196, 259, 'S');
-                
                 doc.setFont("helvetica", "bold"); doc.setFontSize(32); doc.setTextColor(250, 204, 21);
                 doc.text("POSITION MASTER", centerX, 90, { align: "center" });
                 doc.setFontSize(14); doc.setTextColor(255, 255, 255);
                 doc.text("BILLIARDS TRAINING SUITE", centerX, 102, { align: "center" });
-                
                 doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.5); doc.line(40, 110, 176, 110);
-                
                 doc.setFontSize(11); doc.setTextColor(148, 163, 184);
                 doc.text("MANUAL TECNICO Y PLANTILLAS DE ENTRENAMIENTO", centerX, 125, { align: "center" });
-                
                 doc.setFontSize(12); doc.setTextColor(100, 116, 139);
                 doc.text("LICENCIADO EXCLUSIVAMENTE PARA:", centerX, 155, { align: "center" });
                 doc.setFontSize(22); doc.setTextColor(255, 255, 255);
@@ -2033,21 +2086,17 @@
                 addHeader("Regla de Oro: La Fisica de los Materiales", "Evita que tus plantillas alteren el rodamiento de la bola");
                 let yMat = 60;
                 yMat = writeParagraphs(yMat, ["El Peligro del Deslizamiento (Skid)"], 14, true);
-                yMat = writeParagraphs(yMat, ["La friccion es todo en el billar. Si imprimes una Diana de Llegada en un plastico (como el acetato), cuando la bola blanca ruede hacia ella perdera el agarre del paño, patinara como si estuviera en hielo y alterara por completo tu medicion de velocidad y fuerza."]);
+                yMat = writeParagraphs(yMat, ["La friccion es todo en el billar. Si imprimes una herramienta de posicion en un material liso o muy grueso, cuando la bola ruede perdera el agarre del paño, patinara, saltara y alterara tu tiro."]);
                 yMat += 5;
-                yMat = writeParagraphs(yMat, ["Reglas de Impresion por Tipo de Herramienta:"], 13, true, [239, 68, 68]);
-                yMat += 3;
-                
-                yMat = writeParagraphs(yMat, ["1. Acetato Transparente -> [EXCLUSIVO PARA STROKE FOILS]"], 12, true, [14, 165, 233]);
-                yMat = writeParagraphs(yMat, ["Las Laminas de Golpeo son la UNICA herramienta que debe imprimirse en acetato. ¿Por que? Porque en este ejercicio la bola blanca ARRANCA encima del acetato y lo abandona inmediatamente al ser golpeada. Tu objetivo aqui es ver tu taco (la flecha) pasando por las lineas transparentes sobre el paño, no medir la llegada."]);
+                yMat = writeParagraphs(yMat, ["Material Recomendado (Pidelos en tu litografia local):"], 13, true, [239, 68, 68]);
                 yMat += 3;
 
-                yMat = writeParagraphs(yMat, ["2. Papel Sintetico (Tyvek) mate -> [PARA TODAS LAS DIANAS DE LLEGADA Y BOLA FANTASMA]"], 12, true, [34, 197, 94]);
-                yMat = writeParagraphs(yMat, ["Es el santo grial de las dianas de posicionamiento (Centro, Banda, Rectangulo). Es virtualmente imposible de rasgar y es sumamente delgado y mate. La bola pasara por encima o se detendra sobre el sin patinar."]);
+                yMat = writeParagraphs(yMat, ["1. Papel Sintetico (Polipropileno) Mate o Papel Tyvek oscuro"], 12, true, [34, 197, 94]);
+                yMat = writeParagraphs(yMat, ["Es el santo grial de estas plantillas. Ideal para todas las Dianas, Bola Fantasma y especialmente para el STROKE TRACK SYSTEM. Es virtualmente imposible de rasgar, es sumamente delgado y mate. La bola pasara por encima sin patinar."]);
                 yMat += 3;
 
-                yMat = writeParagraphs(yMat, ["3. Papel Bond Estandar (75g) -> [OPCION CASERA]"], 12, true, [245, 158, 11]);
-                yMat = writeParagraphs(yMat, ["Si imprimes en casa las dianas, usa papel bond normal. Cumple perfectamente con la condicion de ser delgado y opaco, pero se arrugara o rompera despues de varios impactos directos."]);
+                yMat = writeParagraphs(yMat, ["2. Papel Bond Estandar (75g) -> [OPCION CASERA]"], 12, true, [245, 158, 11]);
+                yMat = writeParagraphs(yMat, ["Si imprimes en casa las dianas, usa papel bond normal (no fotografico). Cumple la condicion de ser delgado y opaco, pero ten en cuenta que se arrugara o rompera con el uso intensivo."]);
 
                 addHeader("1. El Triangulo del Caos", "Comprendiendo la Deflexion (Squirt, Swerve, Throw)");
                 let y = 60;
@@ -2081,6 +2130,35 @@
                     "- En el CENTRO (5 Pts): ¡Encontraste el Punto de Pivote exacto de tu taco!"
                 ]);
 
+                if(doTrack) {
+                    addHeader("Modulo de Entrenamiento: Pista de Golpeo Larga (Track System)", "Alineacion de brazo y rectitud a larga distancia");
+                    y = 60;
+                    y = writeParagraphs(y, ["MEDIDAS: 14 cm de Ancho x 26 cm de Largo (Por cada tramo generado)."], 12, true, [14, 165, 233]);
+                    y += 3;
+                    y = writeParagraphs(y, ["MATERIAL DE IMPRESION RECOMENDADO: Papel Sintetico Mate (Polipropileno) o Tyvek."], 12, true, [239, 68, 68]);
+                    y += 2;
+                    y = writeParagraphs(y, [
+                        "¿Por que? 1. Acabado Mate: Evita que las luces de la mesa te deslumbren al apuntar. 2. Indestructible: Resiste la friccion constante de tu mano de puente y el roce de la flecha del taco sin rasgarse. 3. Ultra-delgado: Evita que la bola salte al abandonar la pista."
+                    ]);
+                    y += 6;
+                    y = writeParagraphs(y, ["Como ensamblar la Pista:"], 12, true);
+                    y = writeParagraphs(y, [
+                        "Esta es la herramienta definitiva para la rectitud. Para hacerla tan larga como desees, el sistema ha generado dos paginas en formato Carta:",
+                        "",
+                        "1. TRAMO BASE: Imprime la primera hoja. Contiene el circulo blanco solido donde siempre colocaras la Bola Blanca (Cue Ball).",
+                        "2. TRAMOS DE EXTENSION: Imprime la segunda hoja tantas veces como largo necesites la pista (1, 2 o 3 veces).",
+                        "3. ENSAMBLE: Recorta los rectangulos grises. Alinealos en la mesa uniendo la linea central blanca-roja a la perfeccion, y unelos usando cinta adhesiva en los bordes.",
+                        "",
+                        "TRUCO DE FIJACION (Como los profesionales):",
+                        "Usa trozos pequeños de cinta adhesiva en las esquinas y uniones de tu pista ensamblada para fijarla firmemente al paño de la mesa. Esto evitara cualquier deslizamiento durante los impactos y el limaje repetitivo."
+                    ]);
+                    
+                    doc.addPage();
+                    drawTrackSection(doc, 'base', isBw, playerNameVal);
+                    doc.addPage();
+                    drawTrackSection(doc, 'ext', isBw, playerNameVal);
+                }
+
                 if(doFoil) {
                     addHeader("Modulo de Entrenamiento: Laminas de Golpeo (Stroke Foils)", "Alineacion de taco, mecanica de brazo y golpe recto");
                     y = 60;
@@ -2107,8 +2185,8 @@
                 if(doCenter) {
                     addHeader("Modulo de Entrenamiento: Dianas Centrales", "Zonas de aterrizaje en mesa abierta");
                     y = 60;
-                    y = writeParagraphs(y, ["PROHIBIDO USAR ACETATO. IMPRIMIR EN PAPEL MATE (TYVEK)."], 12, true, [239, 68, 68]);
-                    y += 2;
+                    y = writeParagraphs(y, ["MEDIDAS: 20.5 cm de Diametro Total."], 12, true, [59, 130, 246]);
+                    y += 3;
                     y = writeParagraphs(y, ["Como usar las Dianas Centrales:"], 12, true);
                     y = writeParagraphs(y, [
                         "1. Recorta la figura circular guiandote por la linea exterior.",
@@ -2122,11 +2200,11 @@
                 if(doRail) {
                     addHeader("Modulo de Entrenamiento: Dianas de Banda", "Tiros defensivos, Safeties y juego perimetral");
                     y = 60;
-                    y = writeParagraphs(y, ["PROHIBIDO USAR ACETATO. IMPRIMIR EN PAPEL MATE (TYVEK)."], 12, true, [239, 68, 68]);
-                    y += 2;
+                    y = writeParagraphs(y, ["MEDIDAS: 20.5 cm de Ancho x 10.25 cm de Alto."], 12, true, [239, 68, 68]);
+                    y += 3;
                     y = writeParagraphs(y, ["Como usar las Dianas de Banda (Forma de 'D'):"], 12, true);
                     y = writeParagraphs(y, [
-                        "1. Recorta los medios circulos gigante.",
+                        "1. Recorta los medios circulos gigantes.",
                         "2. Coloca la linea recta negra haciendo TOPE FISICO contra la goma de la banda.",
                         "3. El objetivo de un Safety es dejar la bola 'pegada' (frozen) a la banda, deteniendose en el semicirculo amarillo central."
                     ]);
@@ -2139,8 +2217,8 @@
                 if(doRect) {
                     addHeader("Modulo de Entrenamiento: Zona Rectangular Pro", "Aterrizaje en areas para Tres Bandas");
                     y = 60;
-                    y = writeParagraphs(y, ["PROHIBIDO USAR ACETATO. IMPRIMIR EN PAPEL MATE (TYVEK)."], 12, true, [239, 68, 68]);
-                    y += 2;
+                    y = writeParagraphs(y, ["MEDIDAS: 20 cm de Ancho x 26 cm de Largo."], 12, true, [34, 197, 94]);
+                    y += 3;
                     y = writeParagraphs(y, ["Como usar la Zona Rectangular:"], 12, true);
                     y = writeParagraphs(y, [
                         "1. Recorta el rectangulo gigante. Establecera un area visible masiva en el paño.",
@@ -2153,8 +2231,8 @@
                 if(doGhost) {
                     addHeader("Modulo de Entrenamiento: Ghost Ball Target", "Teoria visual de cortes a 45 grados");
                     y = 60;
-                    y = writeParagraphs(y, ["PROHIBIDO USAR ACETATO. IMPRIMIR EN PAPEL MATE (TYVEK)."], 12, true, [239, 68, 68]);
-                    y += 2;
+                    y = writeParagraphs(y, ["MEDIDAS (Caja de Recorte): 16 cm de Ancho x 11 cm de Alto."], 12, true, [168, 85, 247]);
+                    y += 3;
                     y = writeParagraphs(y, ["Como usar la plantilla de Bola Fantasma:"], 12, true);
                     y = writeParagraphs(y, [
                         "1. Corta por las lineas punteadas.",
@@ -2185,4 +2263,4 @@
         syncMatColor();
     </script>
 </body>
-                                </html>
+</html>
