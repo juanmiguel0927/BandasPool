@@ -702,13 +702,19 @@
                         <p class="text-[10px] md:text-xs text-emerald-400 font-mono tracking-widest m-0">BILLIARDS TRAINING SUITE</p>
                     </div>
                 </div>
-                <!-- BOTONES DE DESCARGA SEPARADOS POR FORMATO -->
-                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto mt-3 md:mt-0">
+                <!-- BOTONES DE DESCARGA SEPARADOS POR FORMATO Y MANUAL -->
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto mt-3 md:mt-0 flex-wrap justify-end">
+                    <button onclick="generarManualPDF()" class="flex-1 md:flex-none bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-black py-2.5 px-4 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all flex items-center justify-center gap-2 transform hover:scale-105 border-none m-0 text-xs cursor-pointer">
+                        <i class="fa-solid fa-book text-base"></i> Manual de Uso
+                    </button>
+                    <button onclick="generarTestCalibracion()" class="flex-1 md:flex-none bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-black py-2.5 px-4 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.5)] transition-all flex items-center justify-center gap-2 transform hover:scale-105 border-none m-0 text-xs cursor-pointer">
+                        <i class="fa-solid fa-print text-base"></i> Test Calibración
+                    </button>
                     <button id="btn-descargar-a4" onclick="generarLibroCompleto('a4')" class="flex-1 md:flex-none bg-gradient-to-r from-blue-500 to-blue-400 hover:from-blue-400 hover:to-blue-300 text-white font-black py-2.5 px-5 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-all flex items-center justify-center gap-2 transform hover:scale-105 border-none m-0 text-sm cursor-pointer">
-                        <i class="fa-solid fa-file-pdf text-lg"></i> PDF Plantillas (A4)
+                        <i class="fa-solid fa-file-pdf text-lg"></i> Plantillas (A4)
                     </button>
                     <button id="btn-descargar-a3" onclick="generarLibroCompleto('a3')" class="flex-1 md:flex-none bg-gradient-to-r from-yellow-500 to-yellow-400 hover:from-yellow-400 hover:to-yellow-300 text-black font-black py-2.5 px-5 rounded-full shadow-[0_0_15px_rgba(250,204,21,0.5)] transition-all flex items-center justify-center gap-2 transform hover:scale-105 border-none m-0 text-sm cursor-pointer">
-                        <i class="fa-solid fa-file-pdf text-lg"></i> PDF Dianas (A3)
+                        <i class="fa-solid fa-file-pdf text-lg"></i> Dianas/Pista (A3)
                     </button>
                 </div>
             </div>
@@ -719,7 +725,7 @@
                 <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-yellow-700 via-yellow-400 to-yellow-700"></div>
                 <div class="text-center mb-8 block">
                     <h2 class="text-2xl md:text-4xl font-black text-white uppercase tracking-wide mb-3 m-0" style="margin:0 0 10px 0;">Constructor Integral de Zonas</h2>
-                    <p class="text-sm md:text-base text-slate-400 max-w-3xl mx-auto m-0">Teoría avanzada, guía de materiales duraderos de impresión y plantillas gráficas optimizadas a escala real 1:1 (Centro 57.2mm).</p>
+                    <p class="text-sm md:text-base text-slate-400 max-w-3xl mx-auto m-0">Teoría avanzada, guía de materiales y plantillas optimizadas a escala real 1:1.</p>
                 </div>
 
                 <div class="bg-black/40 rounded-xl p-4 md:p-6 border border-solid border-slate-700 mb-8 block">
@@ -786,9 +792,31 @@
                         <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-4 md:p-5 block min-h-[140px] relative">
                             <span class="bg-blue-500 text-white text-[10px] font-black px-2 py-0.5 rounded absolute top-3 right-3">PDF A4</span>
                             <h4 class="text-base md:text-lg font-bold text-purple-400 m-0 pr-10"><i class="fa-solid fa-scissors mr-2"></i> Calculadora Bola Fantasma</h4>
-                            <p class="text-[10px] md:text-xs text-purple-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-ruler"></i> Simulador de corte (30° / Media Bola). 2 Calculadoras por hoja A4.</p>
+                            <p class="text-[10px] md:text-xs text-purple-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-ruler"></i> El PDF generará automáticamente los 4 cortes fundamentales marcados (15°, 30°, 45° y 60°). 2 calculadoras por hoja A4.</p>
                             <br>
-                            <button onclick="event.preventDefault(); window.openPreviewPM('ghost');" class="mt-2 bg-purple-900 border-none text-purple-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Vista Previa</button>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('ghost');" class="mt-1 bg-purple-900 border-none text-purple-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Vista Previa</button>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer relative tool-card block m-0">
+                        <input type="checkbox" id="chk_pivot" checked class="peer sr-only">
+                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-4 md:p-5 block min-h-[140px] relative">
+                            <span class="bg-blue-500 text-white text-[10px] font-black px-2 py-0.5 rounded absolute top-3 right-3">PDF A4</span>
+                            <h4 class="text-base md:text-lg font-bold text-emerald-400 m-0 pr-10"><i class="fa-solid fa-ruler-horizontal mr-2"></i> Regla Calibradora de Deflexión</h4>
+                            <p class="text-[10px] md:text-xs text-emerald-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-ruler"></i> Encuentra el punto de pivote (BHE) de tu taco. Mide 25cm de largo. 2 por hoja A4.</p>
+                            <br>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('pivot');" class="mt-2 bg-emerald-900 border-none text-emerald-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Vista Previa</button>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer relative tool-card block m-0">
+                        <input type="checkbox" id="chk_system" checked class="peer sr-only">
+                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-4 md:p-5 block min-h-[140px] relative">
+                            <span class="bg-blue-500 text-white text-[10px] font-black px-2 py-0.5 rounded absolute top-3 right-3">PDF A4</span>
+                            <h4 class="text-base md:text-lg font-bold text-pink-400 m-0 pr-10"><i class="fa-solid fa-fan mr-2"></i> Guías de Sistema Diamante</h4>
+                            <p class="text-[10px] md:text-xs text-pink-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-clone"></i> Visualizador de abanico para llegada/salida a bandas. 2 por hoja A4.</p>
+                            <br>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('system');" class="mt-2 bg-pink-900 border-none text-pink-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Vista Previa</button>
                         </div>
                     </label>
 
@@ -839,7 +867,7 @@
                 </div>
 
                 <div id="status-box" class="hidden bg-emerald-900 p-5 rounded-xl border-2 border-solid border-emerald-500 mt-8 text-center block m-0">
-                    <h3 class="text-xl font-black text-white m-0">¡LIBRO CREADO CON ÉXITO!</h3>
+                    <h3 class="text-xl font-black text-white m-0">¡DOCUMENTO CREADO CON ÉXITO!</h3>
                     <p class="text-sm text-emerald-100 mt-2 leading-relaxed">Imprime tus archivos cuidando mantener siempre la <strong>ESCALA 100% (Tamaño Real)</strong> para garantizar la física milimétrica.</p>
                 </div>
             </div>
@@ -1707,6 +1735,182 @@
         /* =========================================
            CÓDIGO APP 3: POSITION MASTER
            ========================================= */
+        window.generarManualPDF = function() {
+            const btn = document.querySelector('button[onclick="generarManualPDF()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-base"></i> Generando...';
+
+            setTimeout(() => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "letter" });
+
+                let y = 20;
+                const margin = 20;
+                const pageWidth = 215.9;
+                const usableWidth = pageWidth - (margin * 2);
+                const pageHeight = 279.4;
+
+                function checkPageBreak(neededSpace) {
+                    if (y + neededSpace > pageHeight - margin) {
+                        doc.addPage();
+                        y = margin;
+                    }
+                }
+
+                function addH1(text) {
+                    checkPageBreak(15);
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(16);
+                    doc.setTextColor(15, 23, 42);
+                    const lines = doc.splitTextToSize(text, usableWidth);
+                    doc.text(lines, margin, y);
+                    y += (lines.length * 7) + 2;
+                }
+
+                function addH2(text) {
+                    checkPageBreak(12);
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(13);
+                    doc.setTextColor(37, 99, 235);
+                    const lines = doc.splitTextToSize(text, usableWidth);
+                    doc.text(lines, margin, y);
+                    y += (lines.length * 6) + 1;
+                }
+
+                function addP(text, isBold = false) {
+                    doc.setFont("helvetica", isBold ? "bold" : "normal");
+                    doc.setFontSize(11);
+                    doc.setTextColor(51, 65, 85);
+                    const lines = doc.splitTextToSize(text, usableWidth);
+                    checkPageBreak(lines.length * 5);
+                    doc.text(lines, margin, y);
+                    y += (lines.length * 5) + 2;
+                }
+
+                function addBullet(text) {
+                    doc.setFont("helvetica", "normal");
+                    doc.setFontSize(11);
+                    doc.setTextColor(51, 65, 85);
+                    const lines = doc.splitTextToSize("• " + text, usableWidth - 5);
+                    checkPageBreak(lines.length * 5);
+                    doc.text(lines, margin + 5, y);
+                    y += (lines.length * 5) + 2;
+                }
+
+                // --- PORTADA MANUAL ---
+                doc.setFillColor(15, 23, 42);
+                doc.rect(0, 0, pageWidth, pageHeight, 'F');
+                doc.setDrawColor(16, 185, 129); // Emerald
+                doc.setLineWidth(1.5);
+                doc.rect(10, 10, pageWidth - 20, pageHeight - 20, 'S');
+
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(32);
+                doc.setTextColor(250, 204, 21); // Yellow
+                doc.text("POSITION MASTER", pageWidth/2, 90, { align: "center" });
+
+                doc.setFontSize(14);
+                doc.setTextColor(255, 255, 255);
+                doc.text("MANUAL OPERATIVO Y GUÍA DE ENTRENAMIENTO", pageWidth/2, 105, { align: "center" });
+
+                doc.setLineWidth(0.5);
+                doc.setDrawColor(255,255,255);
+                doc.line(pageWidth*0.15, 115, pageWidth*0.85, 115);
+
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(12);
+                doc.setTextColor(148, 163, 184);
+                doc.text("Documento Oficial para Instructores y Academias", pageWidth/2, 125, { align: "center" });
+
+                let playerNameInput = document.getElementById('playerNamePM').value.trim();
+                let playerNameVal = playerNameInput ? playerNameInput.toUpperCase() : "JUGADOR PRO";
+
+                doc.text("LICENCIADO EXCLUSIVAMENTE PARA:", pageWidth/2, 170, { align: "center" });
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(22);
+                doc.setTextColor(255,255,255);
+                doc.text(playerNameVal, pageWidth/2, 180, { align: "center" });
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                doc.setTextColor(148, 163, 184);
+                doc.text("DESARROLLADO POR: JUAN MIGUEL RIOS REDONDO", pageWidth/2, 260, { align: "center" });
+
+                doc.addPage();
+                y = margin;
+
+                // --- CONTENIDO ---
+                addH1("REGLA DE ORO: EL PELIGRO DEL 'SKID' Y LOS MATERIALES");
+                addP("Antes de usar cualquier plantilla, es crucial entender la fricción. La bola de billar necesita agarrarse al paño para rotar. Si colocas un papel grueso o brillante debajo de ella, la bola patinará (skid), saltará y su física se alterará.");
+                addBullet("Para Pistas, Dianas y Bola Fantasma (Láminas Opacas): Deben imprimirse obligatoriamente en Papel Sintético Mate (Polipropileno) o Papel Tyvek. Estos materiales son ultra delgados y mate. Opción casera: Papel Bond común.");
+                addBullet("Para Láminas Foils, 30/90 y Guías de Sistema (Láminas Transparentes): Deben imprimirse obligatoriamente en Acetato Transparente. El objetivo aquí no es rodar sobre ellos grandes distancias, sino mirar el paño verde a través de las marcas.");
+                y += 5;
+
+                addH1("MÓDULOS DE FORMATO A3 (Plantillas Gigantes de Aterrizaje)");
+                
+                addH2("1. Pista de Golpeo Larga (Stroke Track System)");
+                addP("Qué es: Una réplica de la famosa carretera de entrenamiento para calibrar el limaje recto.", true);
+                addBullet("Impresión: Papel Tyvek/Sintético en Formato A3.");
+                addBullet("Cómo armarlo: Recorta los tramos grises. Pega el 'Tramo Base' en la mesa con cinta en las esquinas. Pega los 'Tramos de Extensión' a continuación. La cuadrícula mantendrá 10 cm exactos entre marcas.");
+                addBullet("El Ejercicio (Ejemplo de uso): Coloca la bola blanca en el círculo inferior. Golpea con centro continuo (Stun/Follow) logrando que ruede perfectamente sobre la línea blanca central de 12 mm a lo largo de 1 metro. Corrige codo caído o muñeca torcida.");
+                y += 5;
+
+                addH2("2. Dianas Centrales, de Banda y Zonas Rectangulares");
+                addP("Qué son: Objetivos de aterrizaje para posicionamiento de bola blanca.", true);
+                addBullet("Impresión: Papel Tyvek/Sintético en Formato A3.");
+                addBullet("Cómo armarlo: Recorta las figuras y fíjalas al paño con cinta en las esquinas.");
+                addBullet("El Ejercicio (Ejemplo de uso): Coloca la 'Diana de Banda' pegada a la goma de la banda corta. Ejecuta un Safety (tiro defensivo) a dos bandas. El reto es que la bola muera exactamente en el círculo amarillo central.");
+                y += 5;
+
+                addH1("MÓDULOS DE FORMATO A4 (Plantillas de Precisión Milimétrica)");
+
+                addH2("3. Láminas de Golpeo (Stroke Foils Modulares)");
+                addP("Qué es: Un escáner láser físico para la flecha del taco y aplicación de English.", true);
+                addBullet("Impresión: ESTRICTAMENTE Acetato Transparente en Formato A4.");
+                addBullet("Cómo armarlo: Recorta la lámina CUE y la lámina TARGET. Fíjalas al paño.");
+                addBullet("El Ejercicio: Pon la lámina 'CUE' con la blanca. Pon 'TARGET' a 1 metro. Aplica 'Efecto 2 a la Derecha'. Gracias al acetato, verás los carriles punteados. Alinea el taco paralelo a esa guía. La flecha debe llegar a la lámina TARGET y aterrizar sobre la línea central.");
+                y += 5;
+
+                addH2("4. Calculadora de Bola Fantasma (Ghost Ball)");
+                addP("Qué es: Simulador visual de cortes fundamentales (15°, 30°, 45°, 60°).", true);
+                addBullet("Impresión: Papel Tyvek/Sintético o Bond en Formato A4.");
+                addBullet("El Ejercicio: Pones la plantilla de 'Corte 45°'. Colocas la bola real sobre el círculo rojo. Ignora la bola roja. Golpea la blanca viajando ÚNICAMENTE sobre la gruesa línea central hasta tapar el círculo punteado de la 'Ghost Ball'.");
+                y += 5;
+
+                addH2("5. Referencia 30° / 90° Tangente");
+                addP("Qué es: Predictor de la ruta de la bola blanca después del impacto.", true);
+                addBullet("Impresión: ESTRICTAMENTE Acetato Transparente en Formato A4.");
+                addBullet("El Ejercicio: Coloca el acetato bajo la bola objetivo, con la flecha azul a la tronera. Si tiras 'Stun', la blanca saldrá por la línea ROJA (90°). Si tiras 'Follow', la blanca tomará la ruta de la línea VERDE (30° Natural).");
+                y += 5;
+
+                addH2("6. Regla Calibradora de Deflexión (Punto de Pivote)");
+                addP("Qué es: Herramienta para descubrir el puente ideal (BHE).", true);
+                addBullet("Impresión: Papel normal (Bond) o Tyvek en Formato A4.");
+                addBullet("El Ejercicio: Haz puente en '15 cm' y tira con efecto máximo derecho. Si falla a la izquierda, aleja el puente (ej. 20cm). Cuando la bola vaya recta a pesar del efecto extremo, encontraste tu Punto de Pivote matemático.");
+                y += 10;
+
+                // Footer Box
+                doc.setFillColor(248, 250, 252);
+                doc.setDrawColor(203, 213, 225);
+                doc.setLineWidth(0.5);
+                doc.roundedRect(margin, y, usableWidth, 25, 3, 3, 'FD');
+                y += 8;
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(10);
+                doc.setTextColor(220, 38, 38);
+                doc.text("NOTA FINAL PARA EL INSTRUCTOR:", margin + 5, y);
+                y += 6;
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(51, 65, 85);
+                const nota = doc.splitTextToSize("Todas las plantillas están renderizadas matemáticamente (Bolas 57.2mm). Exija siempre a la litografía imprimir a ESCALA 100% (Tamaño Real) sin ajustar a la página. Puede usar el PDF de 'Test Calibración' para verificar la escala antes de imprimir.", usableWidth - 10);
+                doc.text(nota, margin + 5, y);
+
+                doc.save(`PositionMaster_MANUAL_USO_${playerNameVal.replace(/[^a-z0-9]/gi, '_')}.pdf`);
+
+                btn.innerHTML = originalText;
+            }, 500);
+        };
+
         const previewsPM = {
             track: {
                 title: '<i class="fa-solid fa-road mr-2 text-cyan-400"></i> Vista Previa: Stroke Track System',
@@ -1784,7 +1988,7 @@
             },
             ghost: {
                 title: '<i class="fa-solid fa-scissors mr-2 text-purple-400"></i> Vista Previa: Bola Fantasma Avanzada',
-                desc: 'Calculadora de corte a 30° / Media Bola. Muestra el contacto exacto y líneas divisorias proporcionales a la escala 1:1. Caben 2 por hoja A4.',
+                desc: 'Calculadora dinámica. El PDF generará automáticamente los 4 cortes fundamentales marcados (15°, 30°, 45° y 60°). 2 calculadoras por hoja A4.',
                 color: 'border-purple-500', titleColor: 'text-purple-400',
                 svg: `
                 <svg viewBox="0 0 200 200" width="100%" style="max-width: 350px; max-height: 350px;" height="auto" class="bg-white rounded-lg p-2">
@@ -1809,7 +2013,42 @@
                     <line x1="115" y1="22" x2="115" y2="74" stroke="#ffffff" stroke-width="0.8"/>
                     <line x1="145" y1="22" x2="145" y2="74" stroke="#ffffff" stroke-width="0.8"/>
                     
-                    <text x="100" y="185" font-family="sans-serif" font-size="8" font-weight="bold" fill="#64748b" text-anchor="middle">CORTE 30° / 1/2 BOLA</text>
+                    <text x="100" y="185" font-family="sans-serif" font-size="8" font-weight="bold" fill="#64748b" text-anchor="middle">CORTE 30° / IMPACTO MEDIO (1/2 BOLA)</text>
+                </svg>`
+            },
+            pivot: {
+                title: '<i class="fa-solid fa-ruler-horizontal mr-2 text-emerald-400"></i> Vista Previa: Regla de Deflexión',
+                desc: 'Para encontrar tu Backhand English (BHE). Marcas milimétricas precisas para ubicar el puente.',
+                color: 'border-emerald-500', titleColor: 'text-emerald-400',
+                svg: `
+                <svg viewBox="0 0 100 400" width="100%" style="max-width: 100px; max-height: 400px;" height="auto" class="bg-white rounded-lg p-2">
+                    <rect x="20" y="10" width="60" height="380" fill="none" stroke="#cbd5e1" stroke-dasharray="4 4"/>
+                    <line x1="50" y1="20" x2="50" y2="380" stroke="#1e293b" stroke-width="2"/>
+                    <line x1="40" y1="80" x2="60" y2="80" stroke="#1e293b" stroke-width="2"/>
+                    <text x="50" y="75" font-family="sans-serif" font-size="8" font-weight="bold" fill="#1e293b" text-anchor="middle">30 CM</text>
+                    <line x1="40" y1="180" x2="60" y2="180" stroke="#1e293b" stroke-width="2"/>
+                    <text x="50" y="175" font-family="sans-serif" font-size="8" font-weight="bold" fill="#1e293b" text-anchor="middle">20 CM</text>
+                    <line x1="40" y1="280" x2="60" y2="280" stroke="#1e293b" stroke-width="2"/>
+                    <text x="50" y="275" font-family="sans-serif" font-size="8" font-weight="bold" fill="#1e293b" text-anchor="middle">10 CM</text>
+                    <circle cx="50" cy="360" r="15" fill="#ef4444"/>
+                    <text x="50" y="363" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff" text-anchor="middle">BOLA</text>
+                </svg>`
+            },
+            system: {
+                title: '<i class="fa-solid fa-fan mr-2 text-pink-400"></i> Vista Previa: Guías de Sistema Diamante',
+                desc: 'Abanico para visualizar ángulos de banda a banda (Corner 5, Mirror).',
+                color: 'border-pink-500', titleColor: 'text-pink-400',
+                svg: `
+                <svg viewBox="0 0 200 120" width="100%" style="max-width: 300px; max-height: 180px;" height="auto" class="bg-white rounded-lg p-2">
+                    <rect x="10" y="10" width="180" height="100" fill="none" stroke="#cbd5e1" stroke-dasharray="4 4"/>
+                    <line x1="10" y1="100" x2="190" y2="100" stroke="#1e293b" stroke-width="4"/>
+                    <text x="100" y="110" font-family="sans-serif" font-size="8" font-weight="bold" fill="#64748b" text-anchor="middle">BORDE DE LA BANDA</text>
+                    <path d="M 100 100 L 100 20" stroke="#ec4899" stroke-width="2" fill="none"/>
+                    <path d="M 100 100 L 140 20" stroke="#ec4899" stroke-width="1.5" fill="none" stroke-dasharray="2 2"/>
+                    <path d="M 100 100 L 170 40" stroke="#ec4899" stroke-width="1.5" fill="none" stroke-dasharray="2 2"/>
+                    <path d="M 100 100 L 60 20" stroke="#ec4899" stroke-width="1.5" fill="none" stroke-dasharray="2 2"/>
+                    <path d="M 100 100 L 30 40" stroke="#ec4899" stroke-width="1.5" fill="none" stroke-dasharray="2 2"/>
+                    <circle cx="100" cy="100" r="3" fill="#1e293b"/>
                 </svg>`
             },
             center: {
@@ -1879,6 +2118,53 @@
             document.getElementById('previewModal').classList.add('hidden');
         };
 
+        window.generarTestCalibracion = function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+            
+            doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 30, 'F');
+            doc.setFont("helvetica", "bold"); doc.setFontSize(14); doc.setTextColor(250, 204, 21);
+            doc.text("POSITION MASTER - TEST DE IMPRESIÓN", 105, 18, { align: "center" });
+
+            doc.setTextColor(15, 23, 42);
+            doc.setFontSize(16);
+            doc.text("HOJA DE CALIBRACIÓN DE ESCALA 1:1", 105, 50, { align: "center" });
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+            doc.text("Instrucciones para la Litografía / Impresor:", 105, 65, { align: "center" });
+            doc.setFontSize(10);
+            doc.text("1. Imprima esta hoja en Papel Bond normal a ESCALA 100% (No ajustar a página).", 105, 72, { align: "center" });
+            doc.text("2. Tome una regla física y mida el cuadrado negro de abajo.", 105, 78, { align: "center" });
+            doc.text("3. Si el cuadrado no mide EXACTAMENTE 10.0 cm x 10.0 cm, hay un error en la configuración.", 105, 84, { align: "center" });
+
+            // El cuadrado de 100x100mm
+            doc.setLineWidth(0.5);
+            doc.setDrawColor(0);
+            doc.setFillColor(245, 245, 245);
+            doc.rect(55, 110, 100, 100, 'FD');
+
+            doc.setDrawColor(239, 68, 68);
+            doc.setLineWidth(1);
+            doc.line(55, 105, 155, 105);
+            doc.line(55, 103, 55, 107);
+            doc.line(155, 103, 155, 107);
+            
+            doc.line(45, 110, 45, 210);
+            doc.line(43, 110, 47, 110);
+            doc.line(43, 210, 47, 210);
+
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(239, 68, 68);
+            doc.text("10 cm (100 mm)", 105, 102, { align: "center" });
+            doc.text("10 cm", 40, 160, { angle: 90, align: "center" });
+
+            doc.setTextColor(0);
+            doc.text("ÁREA DE PRUEBA FÍSICA", 105, 160, { align: "center" });
+
+            doc.save("Test_Calibracion_Impresion.pdf");
+        };
+
         window.generarLibroCompleto = function(formato) {
             const doCenter = document.getElementById('chk_center').checked;
             const doRail = document.getElementById('chk_rail').checked;
@@ -1887,9 +2173,11 @@
             const doGhost = document.getElementById('chk_ghost').checked;
             const doFoil = document.getElementById('chk_foil').checked;
             const doRef = document.getElementById('chk_ref3090').checked;
+            const doPivot = document.getElementById('chk_pivot').checked;
+            const doSystem = document.getElementById('chk_system').checked;
 
-            if (formato === 'a4' && !doGhost && !doFoil && !doRef) {
-                alert("Selecciona al menos una herramienta de Formato A4 (Láminas, 30/90 o Bola Fantasma).");
+            if (formato === 'a4' && !doGhost && !doFoil && !doRef && !doPivot && !doSystem) {
+                alert("Selecciona al menos una herramienta de Formato A4 (Láminas, 30/90, Bola Fantasma, Regla o Guías).");
                 return;
             }
             if (formato === 'a3' && !doCenter && !doRail && !doRect && !doTrack) {
@@ -2069,20 +2357,20 @@
                     doc.text(playerNameVal, cx, cy - h/2 - 4, { align: "center" });
                 }
 
-                function drawAdvancedGhostBall(cx, cy, bw, playerName) {
-                    // CAJA COMPRIMIDA A 12x13.5cm PARA PERMITIR 2 POR HOJA A4
+                function drawAdvancedGhostBall(cx, cy, bw, playerName, angleDeg) {
                     const boxW = 120; const boxH = 135;
                     const r = 28.6;
+                    const rad = angleDeg * Math.PI / 180;
                     
                     doc.setLineWidth(0.5); doc.setDrawColor(100); doc.setLineDashPattern([4,4], 0);
                     doc.rect(cx - boxW/2, cy - boxH/2, boxW, boxH, 'S'); doc.setLineDashPattern([], 0);
                     
-                    // Ghost Ball (Movida hacia arriba para aprovechar el espacio)
-                    const ghostX = cx; const ghostY = cy + 25;
-                    // Object Ball at 30° cut (half-ball hit): offset X = r, offset Y = r*sqrt(3)
-                    const objX = cx + r; const objY = ghostY - 49.53;
+                    const ghostX = cx; const ghostY = cy + 30;
                     
-                    // Cue ball path (Aiming line)
+                    // Cálculo matemático real del offset basado en el ángulo seleccionado
+                    const objX = cx + 2 * r * Math.sin(rad); 
+                    const objY = ghostY - 2 * r * Math.cos(rad);
+                    
                     doc.setLineWidth(12);
                     if(bw) doc.setDrawColor(200); else doc.setDrawColor(180, 220, 255);
                     doc.line(ghostX, ghostY + 30, ghostX, ghostY); 
@@ -2090,34 +2378,117 @@
                     doc.setLineWidth(0.5); doc.setDrawColor(0);
                     doc.line(ghostX, ghostY + 30, ghostX, ghostY);
                     
-                    // Ghost Ball Circle
                     doc.setDrawColor(0); doc.setLineWidth(0.8); doc.setLineDashPattern([3,3], 0);
                     doc.circle(ghostX, ghostY, r, 'S'); doc.setLineDashPattern([], 0);
                     doc.setFillColor(0); doc.circle(ghostX, ghostY, 1, 'F');
                     doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.text("GHOST", ghostX, ghostY + r + 8, {align:"center"});
                     
-                    // Object Ball Circle
                     if(bw) doc.setFillColor(240); else doc.setFillColor(239, 68, 68);
                     doc.circle(objX, objY, r, 'FD');
                     doc.setTextColor(bw ? 0 : 255); doc.text("OBJ", objX, objY - r - 4, {align:"center"});
                     
-                    // Line of centers
                     doc.setLineWidth(0.5); doc.setDrawColor(0); doc.setLineDashPattern([2,2], 0);
                     doc.line(ghostX, ghostY, objX, objY);
                     
-                    // Fractional lines on Object Ball
                     doc.setLineDashPattern([], 0); doc.setLineWidth(0.3);
                     if(!bw) doc.setDrawColor(255,255,255); else doc.setDrawColor(100);
-                    // Center (1/2)
                     doc.line(objX, objY - r, objX, objY + r);
-                    // Left (3/4 hit)
                     doc.line(objX - r/2, objY - Math.sqrt(r*r - (r/2)*(r/2)), objX - r/2, objY + Math.sqrt(r*r - (r/2)*(r/2)));
-                    // Right (1/4 hit)
                     doc.line(objX + r/2, objY - Math.sqrt(r*r - (r/2)*(r/2)), objX + r/2, objY + Math.sqrt(r*r - (r/2)*(r/2)));
                     
+                    let fractionText = "";
+                    if(angleDeg === 15) fractionText = "CORTE 15° / IMPACTO LLENO (3/4 BOLA)";
+                    else if(angleDeg === 30) fractionText = "CORTE 30° / IMPACTO MEDIO (1/2 BOLA)";
+                    else if(angleDeg === 45) fractionText = "CORTE 45° / IMPACTO FINO (1/4 BOLA)";
+                    else if(angleDeg === 60) fractionText = "CORTE 60° / IMPACTO MUY FINO (1/8 BOLA)";
+
                     doc.setTextColor(0); doc.setFontSize(7);
-                    doc.text("CORTE 30° / IMPACTO 1/2 BOLA", cx, cy - boxH/2 + 8, {align:"center"});
+                    doc.text(fractionText, cx, cy - boxH/2 + 8, {align:"center"});
                     doc.text(playerName, cx, cy + boxH/2 - 4, {align:"center"});
+                }
+
+                function drawPivotRuler(cx, cy, bw, playerName) {
+                    const boxW = 50; const boxH = 260;
+                    
+                    doc.setLineWidth(0.5); doc.setDrawColor(150); doc.setLineDashPattern([3,3], 0);
+                    doc.rect(cx - boxW/2, cy - boxH/2, boxW, boxH, 'S');
+                    doc.setLineDashPattern([], 0);
+
+                    // Linea de flecha
+                    doc.setLineWidth(12);
+                    if(bw) doc.setDrawColor(230); else doc.setDrawColor(200, 240, 200);
+                    doc.line(cx, cy - boxH/2 + 10, cx, cy + boxH/2 - 10);
+                    doc.setLineWidth(1.5); doc.setDrawColor(0);
+                    doc.line(cx, cy - boxH/2 + 10, cx, cy + boxH/2 - 10);
+
+                    // Marcas mm y cm
+                    doc.setDrawColor(0);
+                    for(let i=100; i<=300; i+=10) {
+                        let yTick = cy + boxH/2 - 20 - (i - 100); 
+                        if(yTick < cy - boxH/2 + 20) break;
+                        
+                        doc.setLineWidth(0.5);
+                        doc.line(cx - 10, yTick, cx + 10, yTick);
+                        
+                        if(i % 50 === 0) {
+                            doc.setLineWidth(1);
+                            doc.line(cx - 15, yTick, cx + 15, yTick);
+                            doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(0);
+                            doc.text((i/10) + " CM", cx - 18, yTick + 1, {align:"right"});
+                        }
+                    }
+
+                    // Representación bola
+                    doc.setFillColor(239, 68, 68); doc.circle(cx, cy + boxH/2 - 20, 15, 'F');
+                    doc.setFontSize(7); doc.setTextColor(255); doc.text("BOLA", cx, cy + boxH/2 - 19, {align:"center"});
+                    
+                    doc.setFontSize(6); doc.setTextColor(100);
+                    doc.text("PUNTO DE PIVOTE (BHE)", cx, cy - boxH/2 + 5, {align:"center"});
+                    doc.text(playerName, cx, cy + boxH/2 - 5, {align:"center"});
+                }
+
+                function drawSystemGuides(cx, cy, bw, playerName) {
+                    const boxW = 180; const boxH = 120;
+                    
+                    doc.setLineWidth(0.5); doc.setDrawColor(150); doc.setLineDashPattern([3,3], 0);
+                    doc.rect(cx - boxW/2, cy - boxH/2, boxW, boxH, 'S');
+                    doc.setLineDashPattern([], 0);
+
+                    const originY = cy + boxH/2 - 15;
+                    
+                    // Borde Banda
+                    doc.setLineWidth(4); doc.setDrawColor(0);
+                    doc.line(cx - boxW/2 + 10, originY, cx + boxW/2 - 10, originY);
+                    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(150);
+                    doc.text("BORDE DE LA BANDA (RAIL)", cx, originY + 6, {align:"center"});
+
+                    // Centro Diamante
+                    doc.setFillColor(0); doc.circle(cx, originY, 3, 'F');
+
+                    doc.setLineWidth(2);
+                    if(bw) doc.setDrawColor(100); else doc.setDrawColor(236, 72, 153);
+                    
+                    // Linea 0 (Recto)
+                    doc.line(cx, originY, cx, originY - 90);
+                    doc.setFontSize(7); doc.text("0 DIAMANTES", cx, originY - 95, {align:"center"});
+
+                    // Diamantes 1, 2, 3... Usando arctan(x/4)
+                    doc.setLineWidth(1.5); doc.setLineDashPattern([2,2], 0);
+                    const angles = [14.03, 26.56, 36.87];
+                    const labels = ["1 DIA", "2 DIA", "3 DIA"];
+
+                    angles.forEach((ang, idx) => {
+                        let rad = ang * Math.PI / 180;
+                        let len = 90;
+                        doc.line(cx, originY, cx + len*Math.sin(rad), originY - len*Math.cos(rad));
+                        doc.line(cx, originY, cx - len*Math.sin(rad), originY - len*Math.cos(rad));
+                        doc.text(labels[idx], cx + len*Math.sin(rad), originY - len*Math.cos(rad) - 3, {align:"center"});
+                        doc.text(labels[idx], cx - len*Math.sin(rad), originY - len*Math.cos(rad) - 3, {align:"center"});
+                    });
+                    
+                    doc.setLineDashPattern([], 0);
+                    doc.setFontSize(6); doc.setTextColor(0);
+                    doc.text(playerName, cx, cy - boxH/2 + 6, {align:"center"});
                 }
 
                 function drawRef3090Tool(cx, cy, bw, playerName) {
@@ -2200,11 +2571,11 @@
                 yMat += 3;
 
                 yMat = writeParagraphs(yMat, ["1. Papel Sintetico (Polipropileno) Mate o Papel Tyvek oscuro"], 12, true, [34, 197, 94]);
-                yMat = writeParagraphs(yMat, ["Es el santo grial de estas plantillas. Ideal para todas las Dianas, Bola Fantasma y especialmente para el STROKE TRACK SYSTEM. Es virtualmente imposible de rasgar, es sumamente delgado y mate. La bola pasara por encima sin patinar."]);
+                yMat = writeParagraphs(yMat, ["Es el santo grial de estas plantillas. Ideal para todas las Dianas, Bola Fantasma Avanzada y Pistas (Track). Es virtualmente imposible de rasgar, es sumamente delgado y mate. La bola pasara por encima sin patinar."]);
                 yMat += 3;
 
-                yMat = writeParagraphs(yMat, ["2. Papel Bond Estandar (75g) -> [OPCION CASERA]"], 12, true, [245, 158, 11]);
-                yMat = writeParagraphs(yMat, ["Si imprimes en casa las dianas, usa papel bond normal (no fotografico). Cumple la condicion de ser delgado y opaco, pero ten en cuenta que se arrugara o rompera con el uso intensivo."]);
+                yMat = writeParagraphs(yMat, ["2. Acetato Transparente Rígido"], 12, true, [59, 130, 246]);
+                yMat = writeParagraphs(yMat, ["Uso estricto para las Láminas de Golpeo (Foils), Guías de Sistema y Referencia 30/90. Te permite ver el paño de la mesa a traves del material."]);
 
                 addHeader("1. El Triangulo del Caos", "Comprendiendo la Deflexion (Squirt, Swerve, Throw)");
                 let y = 65;
@@ -2254,14 +2625,9 @@
                         y += 6;
                         y = writeParagraphs(y, ["Como ensamblar la Pista:"], 12, true);
                         y = writeParagraphs(y, [
-                            "Esta es la herramienta definitiva para la rectitud. Para hacerla tan larga como desees, el sistema ha generado dos paginas en formato A3:",
-                            "",
                             "1. TRAMO BASE: Imprime la primera hoja. Contiene el circulo blanco solido donde siempre colocaras la Bola Blanca (Cue Ball).",
                             "2. TRAMOS DE EXTENSION: Imprime la segunda hoja tantas veces como largo necesites la pista. Al unirlas, los circulos mantendran una cuadricula matematica exacta de 10cm entre cada bola.",
-                            "3. ENSAMBLE: Recorta los rectangulos grises. Alinealos en la mesa uniendo la linea central blanca-roja a la perfeccion, y unelos usando cinta adhesiva en los bordes horizontales.",
-                            "",
-                            "TRUCO DE FIJACION (Como los profesionales):",
-                            "Usa trozos pequeños de cinta adhesiva en las esquinas de tu pista ensamblada para fijarla firmemente al paño de la mesa. Esto evitara deslizamientos durante los impactos."
+                            "3. ENSAMBLE: Recorta los rectangulos grises. Alinealos en la mesa uniendo la linea central (grosor 12mm real) a la perfeccion, y unelos usando cinta adhesiva en los bordes horizontales."
                         ]);
                         
                         doc.addPage();
@@ -2329,50 +2695,47 @@
                             "El sistema ha generado 4 laminas independientes en la siguiente pagina (A4) para simular cualquier distancia de tiro real en la mesa.",
                             "",
                             "TRUCO PROFESIONAL (Fijacion):",
-                            "Fija las esquinas de la lamina al paño de la mesa usando pequeños trozos de cinta adhesiva transparente. Como el acetato es liso, esto evitara que la plantilla resbale al apoyar tu puente o golpear la bola.",
+                            "Fija las esquinas de la lamina al paño de la mesa usando pequeños trozos de cinta adhesiva transparente.",
                             "",
                             "LAMINA 1 - ZONA DE ARRANQUE (CUE):",
-                            "Coloca la bola blanca aqui. Usa la linea horizontal externa y los rieles paralelos punteados para alinear tu taco de forma impecable al aplicar efectos laterales (English) sin que la bola tape tus referencias.",
+                            "Coloca la bola blanca aqui. Usa la linea horizontal externa y los rieles paralelos punteados para alinear tu taco de forma impecable al aplicar efectos.",
                             "",
                             "LAMINA 2 - ZONA DE LLEGADA (TARGET):",
-                            "Ponla a la distancia que quieras (10cm o 2 metros). Al hacer tu tiro, la flecha debe viajar apuntando a la gruesa linea central de este segundo modulo (12mm de grosor, igual a tu flecha). Si logras alinear ambas laminas visualmente, tu golpe es 100% recto."
+                            "Ponla a la distancia que quieras. Al hacer tu tiro, la flecha debe viajar apuntando a la gruesa linea central de este segundo modulo (12mm de grosor, igual a tu flecha)."
                         ]);
                         
-                        // Generamos 2 páginas de foils para entregar 4 plantillas (2 cue, 2 target)
-                        for(let p = 0; p < 2; p++) {
-                            doc.addPage();
-                            const boxWidth = 90; const boxHeight = 160; const r = 28.6; const shaftWidth = 12; 
-                            const yBase = 80;
+                        doc.addPage();
+                        const boxWidth = 90; const boxHeight = 160; const r = 28.6; const shaftWidth = 12; 
+                        const yBase = 80;
 
-                            doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(150);
-                            doc.text("CORTAR CADA LÁMINA POR LA LÍNEA PUNTEADA", centerX, 60, { align: "center" });
+                        doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(150);
+                        doc.text("CORTAR CADA LÁMINA POR LA LÍNEA PUNTEADA", centerX, 60, { align: "center" });
 
-                            // CUE (Izq)
-                            const xCue = 63 - boxWidth/2; const cxCue = 63; const cyCue = yBase + boxHeight - 40;
-                            doc.setDrawColor(150); doc.setLineWidth(0.5); doc.setLineDashPattern([3, 3], 0); doc.rect(xCue, yBase, boxWidth, boxHeight, 'S'); doc.setLineDashPattern([], 0);
-                            doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(150); doc.text("✂️ CUE", xCue + 2, yBase + 4);
-                            if(isBw) { doc.setDrawColor(200); } else { doc.setDrawColor(180, 220, 255); }
-                            doc.setLineWidth(shaftWidth); doc.line(cxCue, yBase + 10, cxCue, yBase + boxHeight - 10); 
-                            doc.setDrawColor(0); doc.setLineWidth(0.5); doc.line(cxCue, yBase + 10, cxCue, yBase + boxHeight - 10);
-                            doc.setDrawColor(0); doc.setLineWidth(0.5); doc.circle(cxCue, cyCue, r, 'S'); 
-                            doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("CUE", cxCue, cyCue - r - 5, { align: "center" });
-                            doc.setLineWidth(0.3); doc.setLineDashPattern([2, 2], 0); doc.line(cxCue - 12, cyCue, cxCue - 12, yBase + 10); doc.line(cxCue + 12, cyCue, cxCue + 12, yBase + 10);
-                            doc.setLineDashPattern([], 0); doc.setLineWidth(0.8); doc.line(cxCue - r - 10, cyCue, cxCue + r + 10, cyCue);
-                            doc.setFontSize(6); doc.setTextColor(0); doc.text(playerNameVal, cxCue, yBase + boxHeight - 3, { align: "center" });
+                        // CUE (Izq)
+                        const xCue = 63 - boxWidth/2; const cxCue = 63; const cyCue = yBase + boxHeight - 40;
+                        doc.setDrawColor(150); doc.setLineWidth(0.5); doc.setLineDashPattern([3, 3], 0); doc.rect(xCue, yBase, boxWidth, boxHeight, 'S'); doc.setLineDashPattern([], 0);
+                        doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(150); doc.text("✂️ CUE", xCue + 2, yBase + 4);
+                        if(isBw) { doc.setDrawColor(200); } else { doc.setDrawColor(180, 220, 255); }
+                        doc.setLineWidth(shaftWidth); doc.line(cxCue, yBase + 10, cxCue, yBase + boxHeight - 10); 
+                        doc.setDrawColor(0); doc.setLineWidth(0.5); doc.line(cxCue, yBase + 10, cxCue, yBase + boxHeight - 10);
+                        doc.setDrawColor(0); doc.setLineWidth(0.5); doc.circle(cxCue, cyCue, r, 'S'); 
+                        doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("CUE", cxCue, cyCue - r - 5, { align: "center" });
+                        doc.setLineWidth(0.3); doc.setLineDashPattern([2, 2], 0); doc.line(cxCue - 12, cyCue, cxCue - 12, yBase + 10); doc.line(cxCue + 12, cyCue, cxCue + 12, yBase + 10);
+                        doc.setLineDashPattern([], 0); doc.setLineWidth(0.8); doc.line(cxCue - r - 10, cyCue, cxCue + r + 10, cyCue);
+                        doc.setFontSize(6); doc.setTextColor(0); doc.text(playerNameVal, cxCue, yBase + boxHeight - 3, { align: "center" });
 
-                            // TARGET (Der)
-                            const xObj = 147 - boxWidth/2; const cxObj = 147; const cyObj = yBase + 40;
-                            doc.setDrawColor(150); doc.setLineWidth(0.5); doc.setLineDashPattern([3, 3], 0); doc.rect(xObj, yBase, boxWidth, boxHeight, 'S'); doc.setLineDashPattern([], 0);
-                            doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(150); doc.text("✂️ TARGET", xObj + 2, yBase + 4);
-                            if(isBw) { doc.setDrawColor(200); } else { doc.setDrawColor(180, 220, 255); }
-                            doc.setLineWidth(shaftWidth); doc.line(cxObj, yBase + 10, cxObj, yBase + boxHeight - 10); 
-                            doc.setDrawColor(0); doc.setLineWidth(0.5); doc.line(cxObj, yBase + 10, cxObj, yBase + boxHeight - 10);
-                            if(isBw) { doc.setDrawColor(0); doc.setFillColor(240); } else { doc.setDrawColor(239, 68, 68); doc.setFillColor(239, 68, 68); }
-                            doc.circle(cxObj, cyObj, r, 'FD'); 
-                            doc.setTextColor(isBw ? 0 : 255); doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("TARGET", cxObj, cyObj + r + 5, { align: "center" });
-                            doc.setDrawColor(0); doc.setLineWidth(0.3); doc.setLineDashPattern([2, 2], 0); doc.line(cxObj - 12, cyObj, cxObj - 12, yBase + boxHeight - 10); doc.line(cxObj + 12, cyObj, cxObj + 12, yBase + boxHeight - 10); doc.setLineDashPattern([], 0);
-                            doc.setFontSize(6); doc.setTextColor(0); doc.text(playerNameVal, cxObj, yBase + boxHeight - 3, { align: "center" });
-                        }
+                        // TARGET (Der)
+                        const xObj = 147 - boxWidth/2; const cxObj = 147; const cyObj = yBase + 40;
+                        doc.setDrawColor(150); doc.setLineWidth(0.5); doc.setLineDashPattern([3, 3], 0); doc.rect(xObj, yBase, boxWidth, boxHeight, 'S'); doc.setLineDashPattern([], 0);
+                        doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(150); doc.text("✂️ TARGET", xObj + 2, yBase + 4);
+                        if(isBw) { doc.setDrawColor(200); } else { doc.setDrawColor(180, 220, 255); }
+                        doc.setLineWidth(shaftWidth); doc.line(cxObj, yBase + 10, cxObj, yBase + boxHeight - 10); 
+                        doc.setDrawColor(0); doc.setLineWidth(0.5); doc.line(cxObj, yBase + 10, cxObj, yBase + boxHeight - 10);
+                        if(isBw) { doc.setDrawColor(0); doc.setFillColor(240); } else { doc.setDrawColor(239, 68, 68); doc.setFillColor(239, 68, 68); }
+                        doc.circle(cxObj, cyObj, r, 'FD'); 
+                        doc.setTextColor(isBw ? 0 : 255); doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("TARGET", cxObj, cyObj + r + 5, { align: "center" });
+                        doc.setDrawColor(0); doc.setLineWidth(0.3); doc.setLineDashPattern([2, 2], 0); doc.line(cxObj - 12, cyObj, cxObj - 12, yBase + boxHeight - 10); doc.line(cxObj + 12, cyObj, cxObj + 12, yBase + boxHeight - 10); doc.setLineDashPattern([], 0);
+                        doc.setFontSize(6); doc.setTextColor(0); doc.text(playerNameVal, cxObj, yBase + boxHeight - 3, { align: "center" });
                     }
 
                     if(doRef) {
@@ -2397,25 +2760,66 @@
                     }
 
                     if(doGhost) {
-                        addHeader("Modulo de Entrenamiento: Bola Fantasma Avanzada", "Calculadora visual de fracciones a 30 grados");
+                        addHeader("Modulo de Entrenamiento: Bola Fantasma Avanzada", "Calculadora visual de los 4 cortes clasicos");
                         y = 65;
                         y = writeParagraphs(y, ["MEDIDAS (Caja de Recorte): 12 cm de Ancho x 13.5 cm de Alto."], 12, true, [168, 85, 247]);
                         y += 3;
-                        y = writeParagraphs(y, ["Como usar la Calculadora de Bola Fantasma:"], 12, true);
+                        y = writeParagraphs(y, ["Como usar las Calculadoras de Bola Fantasma:"], 12, true);
                         y = writeParagraphs(y, [
-                            "El sistema ha generado 2 calculadoras en la pagina siguiente (Formato A4).",
+                            "El sistema ha generado los 4 cortes clasicos en las paginas siguientes (15°, 30°, 45° y 60°).",
                             "1. Corta por las lineas punteadas grises.",
                             "2. Coloca la bola REAL sobre el circulo ROJO (OBJ).",
-                            "3. Este diseño simula el corte mas famoso del billar: El corte a 30° / Impacto Media Bola.",
                             "",
                             "MECANICA VISUAL AVANZADA:",
-                            "• La Linea de Centros: Mira la linea diagonal que une el centro imaginario (Ghost) con el centro rojo. Esa NO es tu linea de tiro.",
-                            "• Las Fracciones: Sobre el circulo rojo hay lineas divisorias. Nota como el borde derecho de la bola blanca (tu linea gruesa de tiro) pasa EXACTAMENTE por el centro de la bola roja. Por eso se llama 'Media Bola'.",
-                            "• Tu Objetivo Físico: Olvida la bola roja. Golpea la blanca viajando exclusivamente a traves de la gruesa linea central para que estacione milimetricamente sobre el circulo punteado."
+                            "• La Linea de Centros: Mira la linea punteada que une el centro imaginario (Ghost) con el centro rojo. Esa NO es tu linea de tiro.",
+                            "• Tu Objetivo Fisico: Olvida la bola roja. Golpea la blanca viajando exclusivamente a traves de la gruesa linea central (flecha real) para que estacione milimetricamente sobre el circulo punteado (Ghost)."
+                        ]);
+                        
+                        doc.addPage();
+                        drawAdvancedGhostBall(centerX, 80, isBw, playerNameVal, 15);
+                        drawAdvancedGhostBall(centerX, 217, isBw, playerNameVal, 30);
+                        
+                        doc.addPage();
+                        drawAdvancedGhostBall(centerX, 80, isBw, playerNameVal, 45);
+                        drawAdvancedGhostBall(centerX, 217, isBw, playerNameVal, 60);
+                    }
+
+                    if(doPivot) {
+                        addHeader("Modulo de Entrenamiento: Calibrador de Deflexion", "Encuentra tu Punto de Pivote (BHE)");
+                        y = 65;
+                        y = writeParagraphs(y, ["MATERIAL: Imprimir en papel normal (Bond) o Tyvek."], 12, true, [16, 185, 129]);
+                        y += 3;
+                        y = writeParagraphs(y, ["Como usar el Calibrador:"], 12, true);
+                        y = writeParagraphs(y, [
+                            "La deflexion (squirt) hace que la blanca se desvie cuando aplicas efecto lateral. Para compensar esto, debes colocar tu mano de puente a una distancia especifica donde el desvio se cancele matematicamente (Backhand English).",
+                            "",
+                            "1. Coloca la regla sobre el paño.",
+                            "2. Pon la bola blanca en el circulo rojo base.",
+                            "3. Apunta por la linea gruesa (centro de la bola) hacia la otra esquina de la mesa.",
+                            "4. Planta tu mano de puente exactamente en la marca de '20 CM'.",
+                            "5. Pivota (Mueve solo tu mano trasera) para aplicar maximo efecto derecho. Tu taco quedara cruzado.",
+                            "6. Dispara. Si la blanca llega directo a la esquina sin desvio, tu puente ideal es 20cm. Si falla a la izquierda, aleja el puente (ej. 25cm). Si falla a la derecha, acercate (ej. 15cm)."
                         ]);
                         doc.addPage();
-                        drawAdvancedGhostBall(centerX, 85, isBw, playerNameVal);
-                        drawAdvancedGhostBall(centerX, 220, isBw, playerNameVal);
+                        drawPivotRuler(60, centerY, isBw, playerNameVal);
+                        drawPivotRuler(150, centerY, isBw, playerNameVal);
+                    }
+
+                    if(doSystem) {
+                        addHeader("Modulo de Entrenamiento: Guias de Sistema Diamante", "Visualizador de angulos de llegada y salida");
+                        y = 65;
+                        y = writeParagraphs(y, ["OBLIGATORIO: IMPRIMIR EN ACETATO TRANSPARENTE"], 12, true, [239, 68, 68]);
+                        y += 3;
+                        y = writeParagraphs(y, ["Como usar las Guias de Sistema:"], 12, true);
+                        y = writeParagraphs(y, [
+                            "Este abanico te permite visualizar los trayectos perfectos desde la banda hacia los diamantes.",
+                            "1. Coloca la linea gruesa negra haciendo tope exacto con el borde de la goma de la banda.",
+                            "2. El punto negro debe coincidir con el centro del diamante en la madera.",
+                            "3. Cada linea marca el angulo de salida perfecto para cruzar la mesa hacia 1 diamante, 2 diamantes o 3 diamantes de distancia en la banda opuesta."
+                        ]);
+                        doc.addPage();
+                        drawSystemGuides(centerX, 80, isBw, playerNameVal);
+                        drawSystemGuides(centerX, 220, isBw, playerNameVal);
                     }
                 }
 
