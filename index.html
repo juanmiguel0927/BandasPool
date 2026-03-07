@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Herramientas Para El Billar</title>
     
     <!-- Librerías de las herramientas -->
@@ -27,34 +27,38 @@
             padding: 0;
             background-color: #111827; 
             font-family: system-ui, -apple-system, sans-serif;
+            -webkit-text-size-adjust: 100%;
         }
 
         .main-system-nav {
             background-color: #1f2937;
             padding: 12px 20px;
             display: flex;
-            gap: 15px;
+            gap: 10px;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             position: sticky;
             top: 0;
             z-index: 9999;
             border-bottom: 2px solid #374151;
-            flex-wrap: wrap;
+            flex-wrap: wrap; 
         }
 
         .main-system-nav button {
             background-color: #374151;
             color: #9ca3af;
             border: none;
-            padding: 10px 24px;
+            padding: 10px 16px;
             border-radius: 6px;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            flex: 1 1 auto; 
+            text-align: center;
+            min-height: 44px; 
         }
 
         .main-system-nav button:hover {
@@ -77,12 +81,22 @@
             display: flex; 
         }
 
-        /* ESTILOS GLOBALES DEL MODAL EXTRACTOR Y ANALIZADOR */
+        .responsive-scroll-wrapper {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            background-color: transparent;
+        }
+
         .global-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.85); z-index: 10000;
             display: none; justify-content: center; align-items: center;
-            padding: 20px; box-sizing: border-box; backdrop-filter: blur(4px);
+            padding: 15px; box-sizing: border-box; backdrop-filter: blur(4px);
         }
         .global-modal-overlay.active { display: flex; }
 
@@ -91,6 +105,32 @@
             #app1-wrapper, #app2-wrapper, #app3-wrapper { background: white !important; padding: 0 !important; }
             .sheet-container { box-shadow: none !important; border: none !important; }
             body { background: white !important; }
+            .responsive-scroll-wrapper { overflow: visible !important; }
+        }
+
+        /* =========================================
+           MEDIA QUERIES PARA MÓVILES (GLOBALES)
+           ========================================= */
+        @media (max-width: 768px) {
+            #app1-wrapper .main-panel { padding: 15px; width: 100%; border-radius: 8px; }
+            #app1-wrapper h1 { font-size: 22px; }
+            #app1-wrapper .controls-grid { grid-template-columns: 1fr; gap: 15px; } 
+            #app1-wrapper .btn-action, #app1-wrapper .btn-guide { font-size: 15px; padding: 15px; }
+            
+            #app2-wrapper .controls { flex-direction: column; align-items: stretch; padding: 15px; }
+            #app2-wrapper .control-group { width: 100%; }
+            #app2-wrapper select, #app2-wrapper input[type="text"] { width: 100%; height: 44px; }
+            #app2-wrapper .tabs { flex-direction: column; width: 100%; }
+            #app2-wrapper .tab-btn { width: 100%; text-align: center; }
+
+            #app2-wrapper .modal-content-wrapper { width: 100%; }
+            #app2-wrapper .modal-toolbar { flex-direction: column; }
+            #app2-wrapper .modal-toolbar button { width: 100%; }
+            #app2-wrapper #tutorial-sheet { width: 100% !important; height: auto !important; padding: 20px !important; }
+            #app2-wrapper .row-layout { flex-direction: column; }
+            #app2-wrapper .col-50 { width: 100% !important; margin-bottom: 15px; }
+
+            #colorExtractorModule > div, #markerAnalyzerModule > div, #slicerHelpModule > div { width: 100%; max-width: 100%; }
         }
 
         /* =========================================
@@ -113,35 +153,31 @@
         #app1-wrapper .main-panel { background-color: var(--glass); padding: 30px; border-radius: 16px; width: 95%; max-width: 1000px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border-top: 8px solid var(--accent); }
         #app1-wrapper .header { text-align: center; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
         #app1-wrapper h1 { margin: 0; font-size: 28px; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
-        #app1-wrapper .live-preview-container { background: #fff; border: 2px solid #bdc3c7; border-radius: 10px; padding: 20px; margin-bottom: 25px; text-align: center; overflow-x: auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.05); }
+        #app1-wrapper .live-preview-container { background: #fff; border: 2px solid #bdc3c7; border-radius: 10px; padding: 20px; margin-bottom: 25px; text-align: center; overflow-x: auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.05); -webkit-overflow-scrolling: touch; }
         #app1-wrapper .live-label { font-size: 12px; font-weight: bold; color: #7f8c8d; text-transform: uppercase; margin-bottom: 10px; display: block; }
-        #app1-wrapper .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        #app1-wrapper .control-group { background: white; padding: 20px; border-radius: 10px; border: 1px solid #e0e0e0; transition: transform 0.2s; }
-        #app1-wrapper .control-group:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        #app1-wrapper .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        #app1-wrapper .control-group { background: white; padding: 20px; border-radius: 10px; border: 1px solid #e0e0e0; transition: transform 0.2s; box-sizing: border-box; }
         #app1-wrapper label { display: block; font-weight: 800; font-size: 12px; margin-bottom: 8px; color: #555; text-transform: uppercase; }
-        #app1-wrapper select, #app1-wrapper input[type="number"], #app1-wrapper input[type="text"] { width: 100%; padding: 10px; border: 2px solid #eee; border-radius: 6px; font-size: 14px; background: #f9f9f9; box-sizing: border-box; }
-        #app1-wrapper input[type="color"] { -webkit-appearance: none; border: none; width: 100%; height: 38px; padding: 0; background: none; cursor: pointer; border-radius: 4px; overflow: hidden; margin-top: 5px; }
+        #app1-wrapper select, #app1-wrapper input[type="number"], #app1-wrapper input[type="text"] { width: 100%; padding: 10px; border: 2px solid #eee; border-radius: 6px; font-size: 14px; background: #f9f9f9; box-sizing: border-box; min-height: 44px; }
+        #app1-wrapper input[type="color"] { -webkit-appearance: none; border: none; width: 100%; height: 44px; padding: 0; background: none; cursor: pointer; border-radius: 4px; overflow: hidden; margin-top: 5px; }
         #app1-wrapper .quick-qty { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;}
-        #app1-wrapper .q-btn { flex: 1; background: #dfe6e9; border: none; padding: 8px; font-size: 11px; border-radius: 4px; cursor: pointer; color: #2d3436; font-weight: bold; transition: background 0.2s; min-width: 60px; }
+        #app1-wrapper .q-btn { flex: 1 1 calc(50% - 8px); background: #dfe6e9; border: none; padding: 10px; font-size: 12px; border-radius: 4px; cursor: pointer; color: #2d3436; font-weight: bold; transition: background 0.2s; min-width: 60px; min-height: 44px; }
         #app1-wrapper .q-btn.active { background: var(--primary); color: white; }
         #app1-wrapper #btnTestQty { display: none; background-color: #f1c40f; color: #333; flex: 0 0 auto; width: auto;} 
         #app1-wrapper .toggle-container { display: flex; background: #eee; border-radius: 6px; padding: 4px; margin-bottom: 15px; }
-        #app1-wrapper .toggle-btn { flex: 1; text-align: center; padding: 8px; font-size: 12px; font-weight: bold; cursor: pointer; border-radius: 4px; color: #777; }
+        #app1-wrapper .toggle-btn { flex: 1; text-align: center; padding: 12px 8px; font-size: 12px; font-weight: bold; cursor: pointer; border-radius: 4px; color: #777; min-height: 44px; display: flex; align-items: center; justify-content: center;}
         #app1-wrapper .toggle-btn.active { background: white; color: #e67e22; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         #app1-wrapper .btn-action { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); color: white; border: none; padding: 20px; width: 100%; font-size: 18px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
         #app1-wrapper .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
-        #app1-wrapper .btn-guide { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none; padding: 15px; width: 100%; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; }
-        #app1-wrapper .btn-guide:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(52, 152, 219, 0.4); }
+        #app1-wrapper .btn-guide { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none; padding: 15px; width: 100%; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px; }
         #app1-wrapper .info-box { background: #fadbd8; color: #922b21; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 4px solid #c0392b; font-weight: 600; }
-        #app1-wrapper .footer-cr { text-align: center; margin-top: 30px; font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.5; }
-        #app1-wrapper .custom-strip-input { display: none; margin-top:10px; padding:10px; background:#fef9e7; border:1px dashed #f39c12; border-radius:6px; }
+        #app1-wrapper .footer-cr { text-align: center; margin-top: 30px; font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.5; padding-bottom: 20px; }
+        #app1-wrapper .custom-strip-input, #app1-wrapper .custom-sheet-container { display: none; margin-top:10px; padding:10px; border-radius:6px; box-sizing: border-box; width: 100%; }
+        #app1-wrapper .custom-strip-input { background:#fef9e7; border:1px dashed #f39c12; }
+        #app1-wrapper .custom-sheet-container { background:#e8f6f3; border:1px dashed #1abc9c; }
+        #app1-wrapper .custom-sheet-row { display: flex; gap: 10px; flex-wrap: wrap; }
         #app1-wrapper .diamond-color-wrapper { margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px; }
-        #app1-wrapper .custom-sheet-container { display: none; margin-top:10px; padding:10px; background:#e8f6f3; border:1px dashed #1abc9c; border-radius:6px; }
-        #app1-wrapper .custom-sheet-row { display: flex; gap: 10px; align-items: flex-end; }
         #app1-wrapper .mix-row { display: grid; grid-template-columns: 60px 1fr 40px 40px; gap: 5px; margin-bottom: 8px; background: #f8f9fa; padding: 8px; border-radius: 6px; align-items: center; }
-        #app1-wrapper .mix-row label { margin: 0; font-size: 11px; }
-        #app1-wrapper .mix-row select { padding: 6px; font-size: 12px; }
-        #app1-wrapper .mix-row input[type="color"] { margin-top: 0; height: 30px; }
 
         /* =========================================
            ESTILOS APP 2: STROKEMASTER PRO
@@ -162,42 +198,39 @@
         }
         #app2-wrapper .header-container { text-align: center; margin-bottom: 25px; }
         #app2-wrapper .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
-        #app2-wrapper .tab-btn { padding: 10px 20px; border: none; background: #fff; cursor: pointer; font-weight: bold; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: 0.2s; color: #64748b; }
+        #app2-wrapper .tab-btn { padding: 12px 20px; border: none; background: #fff; cursor: pointer; font-weight: bold; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: 0.2s; color: #64748b; min-height: 44px; }
         #app2-wrapper .tab-btn.active { background: var(--primary); color: white; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
         #app2-wrapper .workspace { display: none; flex-direction: column; align-items: center; width: 100%; }
         #app2-wrapper .workspace.active { display: flex; }
-        #app2-wrapper .controls { background: white; padding: 20px; border-radius: 12px; margin-bottom: 25px; display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; justify-content: center; border: 1px solid #e2e8f0; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        #app2-wrapper .control-group { display: flex; flex-direction: column; gap: 4px; }
+        #app2-wrapper .controls { background: white; padding: 20px; border-radius: 12px; margin-bottom: 25px; display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; justify-content: center; border: 1px solid #e2e8f0; box-shadow: 0 2px 10px rgba(0,0,0,0.02); width: 100%; box-sizing: border-box; }
+        #app2-wrapper .control-group { display: flex; flex-direction: column; gap: 4px; flex: 1 1 200px; }
         #app2-wrapper .label { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.5px; }
-        #app2-wrapper select, #app2-wrapper input[type="text"], #app2-wrapper input[type="color"] { padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #334155; height: 38px; box-sizing: border-box; }
-        #app2-wrapper input[type="color"] { padding: 2px 6px; width: 50px; cursor: pointer; }
-        #app2-wrapper .btn-action { padding: 10px 20px; border: none; border-radius: 6px; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; height: 38px; text-transform: uppercase; font-size: 12px; }
+        #app2-wrapper select, #app2-wrapper input[type="text"], #app2-wrapper input[type="color"] { padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #334155; height: 44px; box-sizing: border-box; }
+        #app2-wrapper input[type="color"] { padding: 2px 6px; width: 60px; cursor: pointer; }
+        #app2-wrapper .btn-action { padding: 12px 20px; border: none; border-radius: 6px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; min-height: 44px; text-transform: uppercase; font-size: 12px; flex: 1 1 100%; }
         #app2-wrapper .btn-pdf { background: #ef4444; color: white; }
-        #app2-wrapper .btn-info { background: #0ea5e9; color: white; }
-        #app2-wrapper .sheet-container { background: white; margin: 0 auto; position: relative; overflow: hidden; box-shadow: 0 0 50px rgba(0,0,0,0.08); border: 1px solid #eee; }
+        #app2-wrapper .btn-info { background: #0ea5e9; color: white; margin-bottom: 15px; width: auto; }
+        
+        #app2-wrapper .sheet-container { background: white; margin: 0 auto; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.08); border: 1px solid #eee; display: inline-block; }
         #app2-wrapper .hairline { fill: none; stroke: #000; stroke-width: 0.12mm; }
         #app2-wrapper .cut-line { fill: none; stroke: #ff0000; stroke-width: 0.25mm; stroke-dasharray: 4 2; }
         #app2-wrapper .reg-mark { stroke: #333; stroke-width: 0.1mm; }
         #app2-wrapper .zone-label { font-family: 'Roboto', sans-serif; font-weight: 900; fill: rgba(255,255,255,0.15); text-transform: uppercase; }
         
-        #app2-wrapper .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.85); z-index: 10000;
-            display: none; justify-content: center; align-items: flex-start;
-            overflow-y: auto; overflow-x: auto; padding: 40px 20px; box-sizing: border-box;
-            backdrop-filter: blur(4px);
-        }
+        #app2-wrapper .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); z-index: 10000; display: none; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 20px; box-sizing: border-box; backdrop-filter: blur(4px); -webkit-overflow-scrolling: touch; }
         #app2-wrapper .modal-overlay.active { display: flex; }
-        #app2-wrapper .modal-content-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; margin: auto; }
-        #app2-wrapper .modal-toolbar { display: flex; gap: 15px; width: 100%; max-width: 794px; justify-content: flex-end; position: sticky; top: 0px; z-index: 100; }
-        #app2-wrapper #tutorial-sheet { width: 794px; height: 1123px; background: white; padding: 85px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border-radius: 4px; }
+        #app2-wrapper .modal-content-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; margin: auto; width: 100%; max-width: 794px; }
+        #app2-wrapper .modal-toolbar { display: flex; gap: 10px; width: 100%; justify-content: flex-end; position: sticky; top: 0px; z-index: 100; flex-wrap: wrap; }
+        
+        #app2-wrapper .doc-scroll-area { width: 100%; overflow-x: auto; background: transparent; -webkit-overflow-scrolling: touch; padding-bottom: 10px; }
+        #app2-wrapper #tutorial-sheet { width: 794px; height: 1123px; background: white; padding: 85px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border-radius: 4px; margin: 0 auto; }
         #app2-wrapper .tut-card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 20px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box; margin-bottom: 12px; width: 100%; word-wrap: break-word; }
         #app2-wrapper .tut-h3 { font-size: 13px; font-weight: 900; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; letter-spacing: 0.5px; }
         #app2-wrapper .tut-p { font-size: 11px; line-height: 1.5; margin: 0 0 6px 0; color: #334155; text-align: justify; }
         #app2-wrapper .tut-li { font-size: 11px; line-height: 1.5; margin-bottom: 5px; margin-left: 15px; color: #334155; text-align: justify; }
         #app2-wrapper .badge { color: #1d4ed8; background: #eff6ff; padding: 3px 6px; border-radius: 4px; font-weight: 800; border: 1px solid #bfdbfe; font-size: 10px; }
-        #app2-wrapper .row-layout { display: flex; justify-content: space-between; margin-bottom: 12px; width: 100%; box-sizing: border-box; }
-        #app2-wrapper .col-50 { width: 48%; margin-bottom: 0; }
+        #app2-wrapper .row-layout { display: flex; justify-content: space-between; margin-bottom: 12px; width: 100%; box-sizing: border-box; gap: 10px; flex-wrap: wrap;}
+        #app2-wrapper .col-50 { flex: 1 1 300px; margin-bottom: 0; }
 
         /* =========================================
            ESTILOS APP 3: POSITION MASTER
@@ -216,7 +249,7 @@
             background-color: rgba(250, 204, 21, 0.15);
             border-color: #facc15;
         }
-        #app3-wrapper ::-webkit-scrollbar { width: 8px; }
+        #app3-wrapper ::-webkit-scrollbar { width: 8px; height: 8px;}
         #app3-wrapper ::-webkit-scrollbar-track { background: #0f172a; }
         #app3-wrapper ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 4px; }
         #previewModal { transition: opacity 0.3s ease; }
@@ -226,31 +259,33 @@
 
     <!-- Módulo Oculto Extractor de Color -->
     <div id="colorExtractorModule" class="global-modal-overlay no-print">
-        <div style="background: white; padding: 20px; border-radius: 12px; max-width: 400px; display: flex; flex-direction: column; align-items: center; width: 100%;">
+        <div style="background: white; padding: 20px; border-radius: 12px; max-width: 400px; display: flex; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box;">
             <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 15px;">
-                <h3 style="margin: 0; color: #1e3a8a; font-family: sans-serif;">📸 Extractor de Color</h3>
-                <button onclick="document.getElementById('colorExtractorModule').classList.remove('active')" style="background:none; border:none; font-size:18px; cursor:pointer;">❌</button>
+                <h3 style="margin: 0; color: #1e3a8a; font-family: sans-serif; font-size: 18px;">📸 Extractor</h3>
+                <button onclick="document.getElementById('colorExtractorModule').classList.remove('active')" style="background:none; border:none; font-size:24px; cursor:pointer; padding: 0 10px;">&times;</button>
             </div>
-            <span style="display:block; text-align:center; margin-bottom:10px; color:#64748b; font-size:12px; font-weight:bold; font-family: sans-serif;">Toque la imagen para extraer el color exacto de la mesa</span>
-            <canvas id="extractorCanvas" style="max-width:300px; max-height:300px; border:1px dashed #94a3b8; cursor:crosshair; display:block; margin:0 auto;"></canvas>
+            <span style="display:block; text-align:center; margin-bottom:10px; color:#64748b; font-size:12px; font-weight:bold; font-family: sans-serif;">Toque la imagen para extraer el color</span>
+            <div style="width: 100%; overflow: hidden; display: flex; justify-content: center;">
+                <canvas id="extractorCanvas" style="max-width:100%; height:auto; border:1px dashed #94a3b8; cursor:crosshair; display:block;"></canvas>
+            </div>
             <input type="file" id="extractorInput" accept="image/*" style="display:none;">
         </div>
     </div>
 
     <!-- Módulo Analizador de Forma de Marca -->
     <div id="markerAnalyzerModule" class="global-modal-overlay no-print">
-        <div style="background: white; padding: 25px; border-radius: 12px; max-width: 400px; display: flex; flex-direction: column; align-items: center; width: 100%;">
-            <h3 style="margin: 0 0 15px 0; color: #1e3a8a; font-family: sans-serif;">🔍 Análisis Inteligente de Marca</h3>
+        <div style="background: white; padding: 25px; border-radius: 12px; max-width: 400px; display: flex; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box;">
+            <h3 style="margin: 0 0 15px 0; color: #1e3a8a; font-family: sans-serif; text-align: center;">🔍 Análisis de Marca</h3>
             <div id="analyzerProgress" style="width: 100%; text-align: center; color: #64748b; font-family: sans-serif; font-size: 13px;">
-                <p>Analizando geometría de la foto...</p>
+                <p>Analizando geometría...</p>
                 <div style="width: 100%; background: #eee; border-radius: 4px; height: 10px; overflow: hidden; margin-bottom: 10px;">
                     <div id="analyzerBar" style="width: 0%; height: 100%; background: #2563eb; transition: width 2s linear;"></div>
                 </div>
             </div>
             <div id="analyzerResultText" style="text-align: center; font-family: sans-serif; margin-bottom: 15px; font-size: 14px; color: #333;"></div>
-            <div style="display:flex; gap:10px;">
-                <button id="btnApplySuggestion" onclick="applyMarkerSuggestion()" style="display:none; padding: 10px; background: #10b981; color: white; border-radius: 6px; border:none; cursor:pointer; font-weight:bold; font-size: 14px; margin:0;">Aplicar Sugerencia</button>
-                <button onclick="closeMarkerAnalyzer()" style="padding: 10px; background: #64748b; color: white; border-radius: 6px; border:none; cursor:pointer; font-weight:bold; font-size: 14px; margin:0;">Cancelar</button>
+            <div style="display:flex; gap:10px; width: 100%; flex-direction: column;">
+                <button id="btnApplySuggestion" onclick="applyMarkerSuggestion()" style="display:none; padding: 12px; background: #10b981; color: white; border-radius: 6px; border:none; cursor:pointer; font-weight:bold; font-size: 14px; width: 100%;">Aplicar Sugerencia</button>
+                <button onclick="closeMarkerAnalyzer()" style="padding: 12px; background: #64748b; color: white; border-radius: 6px; border:none; cursor:pointer; font-weight:bold; font-size: 14px; width: 100%;">Cancelar</button>
             </div>
             <input type="file" id="markerPhotoInput" accept="image/*" style="display:none;">
         </div>
@@ -258,33 +293,33 @@
 
     <!-- Modal Ayuda Slicers -->
     <div id="slicerHelpModule" class="global-modal-overlay no-print">
-        <div style="background: white; padding: 30px; border-radius: 12px; max-width: 600px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; width: 100%;">
-            <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
-                <h2 style="margin: 0; color: #2c3e50; font-family: sans-serif;">📖 Guía de Uso: Generador de Slicers</h2>
-                <button onclick="closeSlicerHelp()" style="background:none; border:none; font-size:24px; cursor:pointer; color: #c0392b;">&times;</button>
+        <div style="background: white; padding: 20px; border-radius: 12px; max-width: 600px; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; width: 100%; box-sizing: border-box; -webkit-overflow-scrolling: touch;">
+            <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; align-items: center;">
+                <h2 style="margin: 0; color: #2c3e50; font-family: sans-serif; font-size: 18px;">📖 Guía de Slicers</h2>
+                <button onclick="closeSlicerHelp()" style="background:none; border:none; font-size:28px; cursor:pointer; color: #c0392b; padding: 0 10px;">&times;</button>
             </div>
-            <div style="font-family: sans-serif; color: #333; font-size: 14px; line-height: 1.6;">
+            <div style="font-family: sans-serif; color: #333; font-size: 13px; line-height: 1.6;">
                 <h4 style="color: #2980b9; margin-bottom: 5px; margin-top:0;">1. Objetivo de Producción</h4>
-                <p style="margin-top: 0;">Selecciona cuántas tiras necesitas. Puedes usar los botones rápidos (Ej. 1 Mesa = 24 tiras). También escoge el tamaño de tu mesa (10 pies, 9 pies, 8 pies) o elige una medida personalizada en pulgadas.</p>
+                <p style="margin-top: 0;">Selecciona cuántas tiras necesitas o usa los botones rápidos. Escoge el tamaño de tu mesa o personalízalo.</p>
                 <h4 style="color: #2980b9; margin-bottom: 5px;">2. Formato de Salida</h4>
-                <p style="margin-top: 0;">Elige si imprimirás en hojas sueltas (Paginado) o en un Plotter continuo (Rollo). Ajusta el tamaño de papel de tu impresora y el sistema calculará cuántas páginas o metros necesitas automáticamente.</p>
-                <h4 style="color: #2980b9; margin-bottom: 5px;">3. Personalización y Autocontraste</h4>
+                <p style="margin-top: 0;">Imprime en hojas sueltas (Paginado) o en un Plotter continuo (Rollo). El sistema calcula todo automáticamente.</p>
+                <h4 style="color: #2980b9; margin-bottom: 5px;">3. Personalización y Contraste</h4>
                 <ul style="margin-top: 0; padding-left: 20px;">
-                    <li><strong>Etiqueta:</strong> Cambia el texto central para colocar el nombre de tu club.</li>
-                    <li><strong>Color de Mesa:</strong> Puedes poner un color sólido o usar el modo "Transparente". Si usas Transparente o Personalizado, aparecerá un ícono de cámara (📸) para que subas una foto de tu mesa y extraigas su color exacto.</li>
-                    <li><strong>💡 Autocontraste:</strong> Si ya capturaste el color de tu mesa, presiona este botón y el sistema buscará mágicamente colores para las líneas, el diamante y el texto que contrasten perfectamente con la madera.</li>
+                    <li><strong>Etiqueta:</strong> Cambia el texto para tu club.</li>
+                    <li><strong>Color de Mesa:</strong> Sube una foto (📸) para extraer el color exacto.</li>
+                    <li><strong>💡 Autocontraste:</strong> Genera colores que contrasten perfecto con la madera.</li>
                 </ul>
                 <h4 style="color: #2980b9; margin-bottom: 5px;">4. Descarga</h4>
-                <p style="margin-top: 0;">Una vez estés conforme con la previsualización, haz clic en "Descargar PDF Final". Se generará un archivo vectorial de alta resolución ideal para impresión profesional o corte láser.</p>
+                <p style="margin-top: 0;">Descarga el PDF final, un archivo vectorial de alta resolución ideal para corte láser.</p>
             </div>
-            <button onclick="closeSlicerHelp()" style="margin-top: 20px; background: #2c3e50; color: white; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px;">Entendido</button>
+            <button onclick="closeSlicerHelp()" style="margin-top: 15px; background: #2c3e50; color: white; padding: 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; width: 100%;">Entendido</button>
         </div>
     </div>
 
     <!-- MENÚ PRINCIPAL PARA ALTERNAR HERRAMIENTAS -->
     <div class="main-system-nav no-print">
-        <button class="active" onclick="switchMainApp(event, 'app1')">Generador de Slicers</button>
-        <button onclick="switchMainApp(event, 'app2')">StrokeMaster Pro</button>
+        <button class="active" onclick="switchMainApp(event, 'app1')">Slicers</button>
+        <button onclick="switchMainApp(event, 'app2')">StrokeMaster</button>
         <button onclick="switchMainApp(event, 'app3')">Position Master</button>
     </div>
 
@@ -299,9 +334,9 @@
             </div>
 
             <!-- Previsualización -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; width: 100%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; width: 100%; flex-wrap: wrap; gap: 10px;">
                 <span class="live-label" style="margin-bottom: 0;">👁️ Previsualización del Diseño</span>
-                <select id="previewSelect" onchange="updateCalc()" style="display:none; width: auto; padding: 4px; font-size: 11px; border-radius: 4px; border: 1px solid #bdc3c7;">
+                <select id="previewSelect" onchange="updateCalc()" style="display:none; width: auto; padding: 6px; font-size: 12px; border-radius: 4px; border: 1px solid #bdc3c7;">
                     <option value="10">Mesa 10 Pies</option>
                     <option value="9">Mesa 9 Pies</option>
                     <option value="8">Mesa 8 Pies</option>
@@ -342,8 +377,8 @@
                 <div class="control-group">
                     <label>2. Formato de Salida</label>
                     <div class="toggle-container">
-                        <div class="toggle-btn active" id="btnSheet" onclick="setMode('sheet')">HOJAS (PAGINADO)</div>
-                        <div class="toggle-btn" id="btnRoll" onclick="setMode('roll')">ROLLO (PLOTTER)</div>
+                        <div class="toggle-btn active" id="btnSheet" onclick="setMode('sheet')">HOJAS</div>
+                        <div class="toggle-btn" id="btnRoll" onclick="setMode('roll')">ROLLO</div>
                     </div>
                     
                     <div id="panelSheet">
@@ -353,15 +388,15 @@
                             <option value="superTabloid">Super Tabloide (12" x 18")</option>
                             <option value="a3">A3 (29.7cm x 42cm)</option>
                             <option value="a3plus">A3+ / Super B (33cm x 48cm)</option>
-                            <option value="custom_sheet" style="color:#16a085; font-weight:bold;">★ TAMAÑO PERSONALIZADO...</option>
+                            <option value="custom_sheet" style="color:#16a085; font-weight:bold;">★ PERSONALIZADO...</option>
                             <option value="letter" style="color:#c0392b;">Carta (11" x 8.5") - [PRUEBA]</option>
                             <option value="legal" style="color:#c0392b;">Oficio (14" x 8.5") - [PRUEBA]</option>
                         </select>
                         <div id="customSheetContainer" class="custom-sheet-container">
                             <div class="custom-sheet-row">
-                                <div style="flex:1;"><label>Ancho</label><input type="number" id="customSheetW" value="50" step="0.1" onchange="updateCalc()"></div>
-                                <div style="flex:1;"><label>Alto</label><input type="number" id="customSheetH" value="35" step="0.1" onchange="updateCalc()"></div>
-                                <div style="flex:0.6;"><label>Unidad</label><select id="customSheetUnit" onchange="updateCalc()"><option value="cm">cm</option><option value="in">in</option></select></div>
+                                <div style="flex:1; min-width:80px;"><label>Ancho</label><input type="number" id="customSheetW" value="50" step="0.1" onchange="updateCalc()"></div>
+                                <div style="flex:1; min-width:80px;"><label>Alto</label><input type="number" id="customSheetH" value="35" step="0.1" onchange="updateCalc()"></div>
+                                <div style="flex:0.6; min-width:60px;"><label>Unidad</label><select id="customSheetUnit" onchange="updateCalc()"><option value="cm">cm</option><option value="in">in</option></select></div>
                             </div>
                         </div>
                     </div>
@@ -369,7 +404,7 @@
                     <div id="panelRoll" style="display:none;">
                         <label>Ancho del Rollo (cm)</label>
                         <input type="number" id="rollWidth" value="60" onchange="updateCalc()">
-                        <small style="color:#888;">El largo se calculará automáticamente.</small>
+                        <small style="color:#888; display:block; margin-top:5px;">El largo se calcula automático.</small>
                     </div>
                     
                     <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
@@ -397,7 +432,7 @@
                         <label>Color de Líneas</label>
                         <div style="display:flex; gap: 6px;">
                             <input type="color" id="lineColor" value="#00ffff" onchange="window.isAutoContrast=false; updateCalc()" style="flex: 1;">
-                            <button class="btn-action" style="padding: 0 10px; margin: 0; background: #f59e0b; width: auto; font-size: 14px;" onclick="applyContrast()" title="Sugerir Color de Contraste Inteligente (YIQ)">💡 Autocontraste</button>
+                            <button class="btn-action" style="padding: 0 15px; margin: 0; background: #f59e0b; width: auto; font-size: 14px;" onclick="applyContrast()" title="Sugerir Color de Contraste Inteligente (YIQ)">💡</button>
                         </div>
                     </div>
 
@@ -409,7 +444,7 @@
                             <option value="custom">Personalizado</option>
                         </select>
                         <input type="color" id="colorGlobal" value="#3498db" onchange="updateCalc()" style="display:none; width: 60px;">
-                        <button class="btn-action" id="btnCamGlobal" onclick="openExtractor('colorGlobal', () => { if(document.getElementById('bgMode').value !== 'transparent') document.getElementById('bgMode').value='custom'; updateCalc(); })" style="display:none; padding: 0 10px; margin: 0; background: #475569; width: auto;" title="Extraer Color de la Mesa">📸</button>
+                        <button class="btn-action" id="btnCamGlobal" onclick="openExtractor('colorGlobal', () => { if(document.getElementById('bgMode').value !== 'transparent') document.getElementById('bgMode').value='custom'; updateCalc(); })" style="display:none; padding: 0 15px; margin: 0; background: #475569; width: auto;" title="Extraer Color de la Mesa">📸</button>
                     </div>
 
                     <div id="mixColorControl" style="display:none;">
@@ -421,7 +456,7 @@
                                 <option value="custom">Personalizado</option>
                             </select>
                             <input type="color" id="colorMix10" value="#e74c3c" onchange="updateCalc()" style="display:none; width: 100%;">
-                            <button class="btn-action" id="btnCamMix10" onclick="openExtractor('colorMix10', () => { if(document.getElementById('bgMix10').value !== 'transparent') document.getElementById('bgMix10').value='custom'; updateCalc(); })" style="display:none; padding: 0 10px; margin: 0; background: #475569; width: auto;" title="Extraer Color de la Mesa">📸</button>
+                            <button class="btn-action" id="btnCamMix10" onclick="openExtractor('colorMix10', () => { if(document.getElementById('bgMix10').value !== 'transparent') document.getElementById('bgMix10').value='custom'; updateCalc(); })" style="display:none; padding: 0 15px; margin: 0; background: #475569; width: auto;" title="Extraer Color">📸</button>
                         </div>
                         <div class="mix-row">
                             <label>9 Pies:</label>
@@ -431,7 +466,7 @@
                                 <option value="custom">Personalizado</option>
                             </select>
                             <input type="color" id="colorMix9" value="#2ecc71" onchange="updateCalc()" style="display:none; width: 100%;">
-                            <button class="btn-action" id="btnCamMix9" onclick="openExtractor('colorMix9', () => { if(document.getElementById('bgMix9').value !== 'transparent') document.getElementById('bgMix9').value='custom'; updateCalc(); })" style="display:none; padding: 0 10px; margin: 0; background: #475569; width: auto;" title="Extraer Color de la Mesa">📸</button>
+                            <button class="btn-action" id="btnCamMix9" onclick="openExtractor('colorMix9', () => { if(document.getElementById('bgMix9').value !== 'transparent') document.getElementById('bgMix9').value='custom'; updateCalc(); })" style="display:none; padding: 0 15px; margin: 0; background: #475569; width: auto;" title="Extraer Color">📸</button>
                         </div>
                         <div class="mix-row">
                             <label>8 Pies:</label>
@@ -441,7 +476,7 @@
                                 <option value="custom" selected>Personalizado</option>
                             </select>
                             <input type="color" id="colorMix8" value="#3498db" onchange="updateCalc()" style="width: 100%;">
-                            <button class="btn-action" id="btnCamMix8" onclick="openExtractor('colorMix8', () => { if(document.getElementById('bgMix8').value !== 'transparent') document.getElementById('bgMix8').value='custom'; updateCalc(); })" style="display:block; padding: 0 10px; margin: 0; background: #475569; width: auto;" title="Extraer Color de la Mesa">📸</button>
+                            <button class="btn-action" id="btnCamMix8" onclick="openExtractor('colorMix8', () => { if(document.getElementById('bgMix8').value !== 'transparent') document.getElementById('bgMix8').value='custom'; updateCalc(); })" style="display:flex; padding: 0 15px; margin: 0; background: #475569; width: auto;" title="Extraer Color">📸</button>
                         </div>
                     </div>
 
@@ -470,8 +505,8 @@
             <button class="btn-guide" onclick="generateGuidePDF()">
                 <span>📘</span> Descargar Guía de Instalación
             </button>
-            <button class="btn-guide" onclick="openSlicerHelp()" style="background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%); margin-top: 15px;">
-                <span>❓</span> ¿Cómo usar el Generador de Slicers?
+            <button class="btn-guide" onclick="openSlicerHelp()" style="background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%); margin-top: 10px;">
+                <span>❓</span> ¿Cómo usar el Generador?
             </button>
             
             <label style="margin-top:20px; font-weight:bold; color:white;">Previsualización de Lote:</label>
@@ -501,33 +536,37 @@
                     <button class="btn-action btn-pdf" onclick="downloadTutorialPDF()">💾 Guardar en PDF</button>
                     <button class="btn-action" style="background: #64748b; color: white;" onclick="closeTutorialModal()">❌ Cerrar</button>
                 </div>
-                <div id="tutorial-sheet">
-                    <div style="border-bottom: 4px solid #2563eb; padding-bottom: 12px; margin-bottom: 20px; text-align: center;">
-                        <h1 style="color: #1e3a8a; font-size: 24px; margin: 0; font-weight: 900; letter-spacing: 1px;">ESPECIFICACIONES TÉCNICAS Y MONTAJE</h1>
-                        <p style="margin: 6px 0 0 0; font-weight: 800; color: #64748b; font-size: 11px; letter-spacing: 0.5px;">DOCUMENTO OFICIAL DE PRODUCCIÓN - FORMATO DIN A4 (210 x 297 mm)</p>
-                    </div>
-                    <div class="tut-card">
-                        <div class="tut-h3">1. Requisitos de Impresión y Hardware</div>
-                        <ul style="margin:0; padding:0;">
-                            <li class="tut-li"><strong>Regla de Oro:</strong> La impresión debe realizarse estrictamente al <strong style="color:red">100% de escala (Tamaño Real)</strong>. Desactive ajustes como "Ajustar a página" o "Fit to printable area".</li>
-                            <li class="tut-li"><strong>Modo de Color:</strong> Se recomienda utilizar perfil CMYK (FOGRA39) para garantizar la exactitud de los colores en medios físicos.</li>
-                        </ul>
-                    </div>
-                    <div class="row-layout">
-                        <div class="tut-card col-50">
-                            <div class="tut-h3">2. Materiales: Plantillas (Fichas)</div>
-                            <p class="tut-p">Las fichas verticales requieren un material que no se combe. Recomendamos:</p>
+                
+                <!-- Wrapper responsivo para documentos fijos -->
+                <div class="doc-scroll-area">
+                    <div id="tutorial-sheet">
+                        <div style="border-bottom: 4px solid #2563eb; padding-bottom: 12px; margin-bottom: 20px; text-align: center;">
+                            <h1 style="color: #1e3a8a; font-size: 24px; margin: 0; font-weight: 900; letter-spacing: 1px;">ESPECIFICACIONES TÉCNICAS Y MONTAJE</h1>
+                            <p style="margin: 6px 0 0 0; font-weight: 800; color: #64748b; font-size: 11px; letter-spacing: 0.5px;">DOCUMENTO OFICIAL DE PRODUCCIÓN - FORMATO DIN A4 (210 x 297 mm)</p>
+                        </div>
+                        <div class="tut-card">
+                            <div class="tut-h3">1. Requisitos de Impresión y Hardware</div>
                             <ul style="margin:0; padding:0;">
-                                <li class="tut-li"><span class="badge">Acetato Rígido</span> (Grosor 250 - 300 micras).</li>
+                                <li class="tut-li"><strong>Regla de Oro:</strong> La impresión debe realizarse estrictamente al <strong style="color:red">100% de escala (Tamaño Real)</strong>. Desactive ajustes como "Ajustar a página" o "Fit to printable area".</li>
+                                <li class="tut-li"><strong>Modo de Color:</strong> Se recomienda utilizar perfil CMYK (FOGRA39) para garantizar la exactitud de los colores en medios físicos.</li>
                             </ul>
                         </div>
-                        <div class="tut-card col-50">
-                            <div class="tut-h3">3. Materiales: Tapete y Bases</div>
-                            <p class="tut-p"><strong>Tapete (60x25cm):</strong> Neopreno 3mm.</p>
+                        <div class="row-layout">
+                            <div class="tut-card col-50">
+                                <div class="tut-h3">2. Materiales: Plantillas (Fichas)</div>
+                                <p class="tut-p">Las fichas verticales requieren un material que no se combe. Recomendamos:</p>
+                                <ul style="margin:0; padding:0;">
+                                    <li class="tut-li"><span class="badge">Acetato Rígido</span> (Grosor 250 - 300 micras).</li>
+                                </ul>
+                            </div>
+                            <div class="tut-card col-50">
+                                <div class="tut-h3">3. Materiales: Tapete y Bases</div>
+                                <p class="tut-p"><strong>Tapete (60x25cm):</strong> Neopreno 3mm.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div style="margin-top: auto; text-align: center; font-size: 10px; color: #94a3b8; font-weight: bold; border-top: 1px solid #e2e8f0; padding-top: 10px;">
-                        DISEÑADO POR JUAN MIGUEL RIOS REDONDO © <span id="year-label-sm"></span> - STROKEMASTER PRO
+                        <div style="margin-top: auto; text-align: center; font-size: 10px; color: #94a3b8; font-weight: bold; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+                            DISEÑADO POR JUAN MIGUEL RIOS REDONDO © <span id="year-label-sm"></span> - STROKEMASTER PRO
+                        </div>
                     </div>
                 </div>
             </div>
@@ -544,7 +583,7 @@
                 <div class="control-group">
                     <span class="label">Color Tema</span>
                     <div style="display:flex; gap: 6px;">
-                        <select id="packThemeSelect" onchange="syncPackColor()">
+                        <select id="packThemeSelect" onchange="syncPackColor()" style="flex:1;">
                             <option value="blue">Azul Océano</option>
                             <option value="green">Verde Billar</option>
                             <option value="dark">Carbono / Negro</option>
@@ -568,22 +607,26 @@
                 </div>
                 <button class="btn-action btn-pdf" onclick="downloadPDF('pack-sheet', 'StrokeMaster_Pro_Pack_A4.pdf')">💾 Guardar Hoja A4</button>
             </div>
-            <div id="pack-sheet" class="sheet-container" style="width: 210mm; height: 296mm;">
-                <svg width="210mm" height="296mm" viewBox="0 0 210 296" xmlns="http://www.w3.org/2000/svg">
-                    <defs id="svgDefs">
-                        <radialGradient id="gradPack" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                            <stop offset="25%" style="stop-color:#e0f7fa;stop-opacity:0.2" id="stop1" />
-                            <stop offset="70%" style="stop-color:#29b6f6;stop-opacity:0.6" id="stop2" />
-                            <stop offset="100%" style="stop-color:#0277bd;stop-opacity:0.9" id="stop3" />
-                        </radialGradient>
-                    </defs>
-                    <g transform="translate(15, 15)"><g id="packSightS"></g></g>
-                    <g transform="translate(115, 15)"><g id="packSightM"></g></g>
-                    <g transform="translate(15, 125)"><g id="packSightL"></g></g>
-                    <g transform="translate(115, 130)"><g id="packBaseS"></g></g>
-                    <g transform="translate(15, 235)"><g id="packBaseM"></g></g>
-                    <g transform="translate(115, 235)"><g id="packBaseL"></g></g>
-                </svg>
+            
+            <!-- Wrapper scrollable en móvil -->
+            <div class="responsive-scroll-wrapper">
+                <div id="pack-sheet" class="sheet-container" style="width: 210mm; height: 296mm;">
+                    <svg width="210mm" height="296mm" viewBox="0 0 210 296" xmlns="http://www.w3.org/2000/svg">
+                        <defs id="svgDefs">
+                            <radialGradient id="gradPack" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                                <stop offset="25%" style="stop-color:#e0f7fa;stop-opacity:0.2" id="stop1" />
+                                <stop offset="70%" style="stop-color:#29b6f6;stop-opacity:0.6" id="stop2" />
+                                <stop offset="100%" style="stop-color:#0277bd;stop-opacity:0.9" id="stop3" />
+                            </radialGradient>
+                        </defs>
+                        <g transform="translate(15, 15)"><g id="packSightS"></g></g>
+                        <g transform="translate(115, 15)"><g id="packSightM"></g></g>
+                        <g transform="translate(15, 125)"><g id="packSightL"></g></g>
+                        <g transform="translate(115, 130)"><g id="packBaseS"></g></g>
+                        <g transform="translate(15, 235)"><g id="packBaseM"></g></g>
+                        <g transform="translate(115, 235)"><g id="packBaseL"></g></g>
+                    </svg>
+                </div>
             </div>
         </div>
 
@@ -597,7 +640,7 @@
                 <div class="control-group">
                     <span class="label">Color Tapete</span>
                     <div style="display:flex; gap: 6px;">
-                        <select id="matThemeSelect" onchange="syncMatColor()">
+                        <select id="matThemeSelect" onchange="syncMatColor()" style="flex:1;">
                             <option value="blue">Azul Clásico</option>
                             <option value="green">Verde Billar</option>
                             <option value="dark">Negro Carbón</option>
@@ -608,13 +651,37 @@
                 </div>
                 <button class="btn-action btn-pdf" onclick="downloadPDF('mat-sheet', 'StrokeMaster_Pro_Tapete_60x25.pdf')">💾 Guardar Tapete (PDF)</button>
             </div>
-            <div id="mat-sheet" class="sheet-container" style="width: 250mm; height: 599mm;">
-                <svg width="250mm" height="599mm" viewBox="0 0 250 599" xmlns="http://www.w3.org/2000/svg">
-                    <rect id="matBg" width="250" height="599" fill="#2563eb" rx="5" />
-                    <g transform="translate(125, 520)"><text id="matLogoText" x="0" y="62" font-family="Roboto" font-weight="900" font-size="9" fill="white">STROKEMASTER PRO</text></g>
-                    <g id="matMarkers"></g>
-                    <g id="matRulerTicks"></g>
-                </svg>
+            
+            <div class="responsive-scroll-wrapper">
+                <div id="mat-sheet" class="sheet-container" style="width: 250mm; height: 599mm;">
+                    <svg width="250mm" height="599mm" viewBox="0 0 250 599" xmlns="http://www.w3.org/2000/svg">
+                        <rect id="matBg" width="250" height="599" fill="#2563eb" rx="5" />
+                        <rect x="0" y="450" width="250" height="149" fill="rgba(255,255,255,0.1)" />
+                        <rect x="117.5" y="50" width="15" height="500" fill="#ccff00" opacity="0.9" />
+                        <rect x="117.5" y="550" width="15" height="20" fill="black" /> 
+                        <g transform="translate(125, 520)">
+                            <text x="0" y="0" text-anchor="middle" font-family="Roboto" font-weight="900" font-size="14" fill="white" opacity="0.8">BRIDGE ZONE</text>
+                            <circle cx="0" cy="35" r="12" fill="none" stroke="white" stroke-width="2" opacity="0.6"/>
+                            <circle cx="0" cy="35" r="4" fill="white" opacity="0.8"/>
+                            <text id="matLogoText" x="0" y="62" text-anchor="middle" font-family="Roboto" font-weight="900" font-size="9" fill="white" letter-spacing="1">STROKEMASTER PRO</text>
+                        </g>
+                        <line x1="20" y1="450" x2="230" y2="450" stroke="white" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.4"/>
+                        <text x="50" y="400" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(-90, 50, 400)">SHORT STROKE</text>
+                        <text x="200" y="400" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(90, 200, 400)">SHORT STROKE</text>
+                        <line x1="20" y1="300" x2="230" y2="300" stroke="white" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.4"/>
+                        <text x="50" y="225" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(-90, 50, 225)">MEDIUM STROKE</text>
+                        <text x="200" y="225" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(90, 200, 225)">MEDIUM STROKE</text>
+                        <line x1="20" y1="150" x2="230" y2="150" stroke="white" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.4"/>
+                        <text x="50" y="75" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(-90, 50, 75)">LONG STROKE</text>
+                        <text x="200" y="75" text-anchor="middle" class="zone-label" font-size="18" transform="rotate(90, 200, 75)">LONG STROKE</text>
+                        <g id="matMarkers"></g>
+                        <g stroke="white" stroke-width="0.5" opacity="0.7">
+                            <line x1="25" y1="450" x2="25" y2="50" />
+                            <line x1="225" y1="450" x2="225" y2="50" />
+                        </g>
+                        <g id="matRulerTicks"></g>
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
@@ -624,41 +691,42 @@
          APLICACIÓN 3: POSITION MASTER
          ======================================================== -->
     <div id="app3-wrapper" class="app-container bg-felt text-slate-100 font-sans antialiased flex-col w-full relative" style="padding: 0;">
-        <nav class="bg-slate-950/95 backdrop-blur-md border-b-4 border-yellow-500 shadow-2xl sticky top-[62px] z-40 w-full m-0 p-0">
+        <!-- Top bar is relative in mobile to avoid huge stacking headers -->
+        <nav class="bg-slate-950/95 backdrop-blur-md border-b-4 border-yellow-500 shadow-2xl relative md:sticky top-0 z-40 w-full m-0 p-0">
             <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center space-x-4">
-                    <div class="bg-gradient-to-br from-yellow-300 to-yellow-500 p-2 rounded-full h-14 w-14 flex items-center justify-center border-2 border-yellow-200">
-                        <i class="fa-solid fa-map-location-dot text-3xl text-slate-900"></i>
+                    <div class="bg-gradient-to-br from-yellow-300 to-yellow-500 p-2 rounded-full h-12 w-12 flex items-center justify-center border-2 border-yellow-200 shrink-0">
+                        <i class="fa-solid fa-map-location-dot text-2xl text-slate-900"></i>
                     </div>
-                    <div>
-                        <h1 class="text-2xl font-black tracking-wider text-yellow-400 uppercase drop-shadow-md m-0">POSITION MASTER</h1>
-                        <p class="text-xs text-emerald-400 font-mono tracking-widest m-0">BILLIARDS TRAINING SUITE</p>
+                    <div class="text-center md:text-left">
+                        <h1 class="text-xl md:text-2xl font-black tracking-wider text-yellow-400 uppercase drop-shadow-md m-0">POSITION MASTER</h1>
+                        <p class="text-[10px] md:text-xs text-emerald-400 font-mono tracking-widest m-0">BILLIARDS TRAINING SUITE</p>
                     </div>
                 </div>
-                <button id="btn-descargar" onclick="generarLibroCompleto()" class="bg-gradient-to-r from-yellow-500 to-yellow-400 hover:from-yellow-400 hover:to-yellow-300 text-black font-black py-3 px-8 rounded-full shadow-[0_0_25px_rgba(250,204,21,0.6)] transition-all flex items-center gap-3 transform hover:scale-105 border-2 border-yellow-200 border-none m-0">
-                    <i class="fa-solid fa-file-pdf text-2xl"></i> Generar Manual en PDF
+                <button id="btn-descargar" onclick="generarLibroCompleto()" class="w-full md:w-auto bg-gradient-to-r from-yellow-500 to-yellow-400 hover:from-yellow-400 hover:to-yellow-300 text-black font-black py-3 px-6 rounded-full shadow-[0_0_25px_rgba(250,204,21,0.6)] transition-all flex items-center justify-center gap-3 transform hover:scale-105 border-2 border-yellow-200 border-none m-0 mt-2 md:mt-0">
+                    <i class="fa-solid fa-file-pdf text-xl"></i> Generar Manual PDF
                 </button>
             </div>
         </nav>
 
-        <main class="flex-grow max-w-5xl mx-auto px-4 py-10 w-full block">
-            <div class="bg-slate-900/95 rounded-2xl border-4 border-wood p-6 md:p-10 backdrop-blur-md relative shadow-2xl mb-8 border-solid">
+        <main class="flex-grow max-w-5xl mx-auto px-2 sm:px-4 py-6 md:py-10 w-full block">
+            <div class="bg-slate-900/95 rounded-2xl border-4 border-wood p-4 md:p-10 backdrop-blur-md relative shadow-2xl mb-8 border-solid">
                 <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-yellow-700 via-yellow-400 to-yellow-700"></div>
-                <div class="text-center mb-10 block">
-                    <h2 class="text-3xl md:text-4xl font-black text-white uppercase tracking-wide mb-3 m-0" style="margin:0 0 10px 0;">Constructor Integral de Zonas</h2>
-                    <p class="text-slate-400 max-w-3xl mx-auto m-0">Teoría avanzada, guía de materiales duraderos de impresión y plantillas gráficas optimizadas a escala real 1:1 (Centro 57.2mm).</p>
+                <div class="text-center mb-8 block">
+                    <h2 class="text-2xl md:text-4xl font-black text-white uppercase tracking-wide mb-3 m-0" style="margin:0 0 10px 0;">Constructor Integral de Zonas</h2>
+                    <p class="text-sm md:text-base text-slate-400 max-w-3xl mx-auto m-0">Teoría avanzada, guía de materiales duraderos de impresión y plantillas gráficas optimizadas a escala real 1:1 (Centro 57.2mm).</p>
                 </div>
 
-                <div class="bg-black/40 rounded-xl p-6 border border-solid border-slate-700 mb-8 block">
-                    <h3 class="text-yellow-400 font-bold mb-4 border-b border-solid border-slate-700 pb-2 text-lg m-0 block"><i class="fa-solid fa-pen-nib mr-2"></i> 1. Personalización del Libro</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <div class="bg-black/40 rounded-xl p-4 md:p-6 border border-solid border-slate-700 mb-8 block">
+                    <h3 class="text-yellow-400 font-bold mb-4 border-b border-solid border-slate-700 pb-2 text-base md:text-lg m-0 block"><i class="fa-solid fa-pen-nib mr-2"></i> 1. Personalización del Libro</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pt-4">
                         <div>
                             <label class="block text-sm font-bold text-slate-300 mb-2">Licenciado a (Jugador / Club)</label>
-                            <input type="text" id="playerNamePM" placeholder="Ej: Academia Barranquilla" class="w-full bg-slate-800 border border-solid border-slate-600 text-white text-base rounded-lg p-3 m-0">
+                            <input type="text" id="playerNamePM" placeholder="Ej: Academia Barranquilla" class="w-full bg-slate-800 border border-solid border-slate-600 text-white text-base rounded-lg p-3 m-0 h-12">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-slate-300 mb-2">Modo de Tinta (Plantillas Gráficas)</label>
-                            <div class="flex space-x-4 bg-slate-800 p-3.5 rounded-lg border border-solid border-slate-600 m-0">
+                            <div class="flex flex-wrap space-x-4 bg-slate-800 p-3 rounded-lg border border-solid border-slate-600 m-0 min-h-[48px] items-center">
                                 <label class="flex items-center space-x-2 cursor-pointer m-0">
                                     <input type="radio" name="theme" value="color" checked class="w-5 h-5 m-0">
                                     <span class="text-sm font-bold text-slate-200">A Color (Oficial)</span>
@@ -672,102 +740,113 @@
                     </div>
                 </div>
 
-                <h3 class="text-yellow-400 font-bold mb-4 border-b border-solid border-slate-700 pb-2 text-lg uppercase m-0 block"><i class="fa-solid fa-book mr-2"></i> 2. Módulos y Plantillas</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-4">
+                <h3 class="text-yellow-400 font-bold mb-4 border-b border-solid border-slate-700 pb-2 text-base md:text-lg uppercase m-0 block"><i class="fa-solid fa-book mr-2"></i> 2. Módulos y Plantillas</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 pt-4">
                     
                     <label class="cursor-pointer relative tool-card col-span-1 md:col-span-2 block m-0">
                         <input type="checkbox" id="chk_track" checked class="peer sr-only">
-                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
-                            <h4 class="text-lg font-bold text-cyan-400 m-0"><i class="fa-solid fa-road mr-2"></i> Pista de Golpeo Larga (Stroke Track)</h4>
-                            <p class="text-xs text-cyan-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-ruler"></i> Medidas: 14 cm de ancho x 30 cm de largo (Por cada tramo)</p>
+                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-4 md:p-5 block min-h-[120px]">
+                            <h4 class="text-base md:text-lg font-bold text-cyan-400 m-0"><i class="fa-solid fa-road mr-2"></i> Pista de Golpeo Larga (Stroke Track)</h4>
+                            <p class="text-[10px] md:text-xs text-cyan-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-ruler"></i> Se generan 2 tramos por página A3. La línea central gruesa (12mm) replica el grosor de la flecha del taco real.</p>
                             <br>
-                            <button onclick="event.preventDefault(); window.openPreviewPM('track');" class="mt-3 bg-cyan-900 border-none text-cyan-100 px-4 py-2 rounded-lg text-sm cursor-pointer m-0">Vista Previa</button>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('track');" class="mt-2 bg-cyan-900 border-none text-cyan-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Vista Previa</button>
                         </div>
                     </label>
 
                     <label class="cursor-pointer relative tool-card block m-0">
                         <input type="checkbox" id="chk_foil" checked class="peer sr-only">
-                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
-                            <h4 class="text-lg font-bold text-cyan-400 m-0"><i class="fa-solid fa-ruler-combined mr-2"></i> Láminas de Golpeo (Stroke Foils)</h4>
-                            <p class="text-xs text-cyan-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-layer-group"></i> Sistema Modular de 2 Piezas: Arranque y Llegada (CUE & TARGET)</p>
+                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-4 md:p-5 block min-h-[140px]">
+                            <h4 class="text-base md:text-lg font-bold text-cyan-400 m-0"><i class="fa-solid fa-ruler-combined mr-2"></i> Láminas de Golpeo (Stroke Foils)</h4>
+                            <p class="text-[10px] md:text-xs text-cyan-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-layer-group"></i> Se generan 6 láminas por página A3 (3 de Arranque y 3 de Llegada). Trazos centrales de 12mm de grosor.</p>
                             <br>
-                            <button onclick="event.preventDefault(); window.openPreviewPM('foil');" class="mt-3 bg-cyan-900 border-none text-cyan-100 px-4 py-2 rounded-lg text-sm cursor-pointer m-0">Ver Modelo</button>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('foil');" class="mt-2 bg-cyan-900 border-none text-cyan-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Ver Modelo</button>
                         </div>
                     </label>
-
+                    
                     <label class="cursor-pointer relative tool-card block m-0">
-                        <input type="checkbox" id="chk_center" checked class="peer sr-only">
-                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
-                            <h4 class="text-lg font-bold text-blue-400 m-0"><i class="fa-solid fa-bullseye mr-2"></i> Posicionamiento (Centro)</h4>
-                            <p class="text-xs text-blue-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-ruler"></i> Diámetro total: 27.2 cm | Centro: 57.2mm (Bola Real)</p>
+                        <input type="checkbox" id="chk_ref3090" checked class="peer sr-only">
+                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-4 md:p-5 block min-h-[140px]">
+                            <h4 class="text-base md:text-lg font-bold text-orange-400 m-0"><i class="fa-solid fa-compass mr-2"></i> Referencia 30°/90° (Salida de Blanca)</h4>
+                            <p class="text-[10px] md:text-xs text-orange-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-clone"></i> Se imprimen 6 plantillas por hoja A3. Muestra tangentes de física real.</p>
                             <br>
-                            <label class="flex items-center space-x-2 cursor-pointer mt-3 m-0" onclick="event.stopPropagation()">
-                                <input type="checkbox" id="grid_center" checked class="w-4 h-4 m-0">
-                                <span class="text-xs font-bold text-yellow-200">Añadir Cuadrícula</span>
-                            </label>
-                            <button onclick="event.preventDefault(); window.openPreviewPM('center');" class="mt-3 bg-blue-900 border-none text-blue-100 px-4 py-2 rounded-lg text-sm cursor-pointer m-0">Vista Previa</button>
-                        </div>
-                    </label>
-
-                    <label class="cursor-pointer relative tool-card block m-0">
-                        <input type="checkbox" id="chk_rail" checked class="peer sr-only">
-                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
-                            <h4 class="text-lg font-bold text-red-400 m-0"><i class="fa-solid fa-arrows-left-right-to-line mr-2"></i> Posicionamiento (Banda)</h4>
-                            <p class="text-xs text-red-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-ruler"></i> Medida: 27.2 cm ancho x 13.6 cm alto</p>
-                            <br>
-                            <label class="flex items-center space-x-2 cursor-pointer mt-3 m-0" onclick="event.stopPropagation()">
-                                <input type="checkbox" id="grid_rail" class="w-4 h-4 m-0">
-                                <span class="text-xs font-bold text-yellow-200">Añadir Cuadrícula</span>
-                            </label>
-                            <button onclick="event.preventDefault(); window.openPreviewPM('rail');" class="mt-3 bg-red-900 border-none text-red-100 px-4 py-2 rounded-lg text-sm cursor-pointer m-0">Vista Previa</button>
-                        </div>
-                    </label>
-
-                    <label class="cursor-pointer relative tool-card block m-0">
-                        <input type="checkbox" id="chk_rect" checked class="peer sr-only">
-                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
-                            <h4 class="text-lg font-bold text-emerald-400 m-0"><i class="fa-regular fa-square mr-2"></i> Zonas Rectangulares</h4>
-                            <p class="text-xs text-emerald-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-ruler"></i> Medida: 27.2 cm ancho x 35.4 cm largo</p>
-                            <br>
-                            <label class="flex items-center space-x-2 cursor-pointer mt-3 m-0" onclick="event.stopPropagation()">
-                                <input type="checkbox" id="grid_rect" checked class="w-4 h-4 m-0">
-                                <span class="text-xs font-bold text-yellow-200">Añadir Cuadrícula</span>
-                            </label>
-                            <button onclick="event.preventDefault(); window.openPreviewPM('rect');" class="mt-3 bg-emerald-900 border-none text-emerald-100 px-4 py-2 rounded-lg text-sm cursor-pointer m-0">Vista Previa</button>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('ref3090');" class="mt-2 bg-orange-900 border-none text-orange-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Vista Previa</button>
                         </div>
                     </label>
 
                     <label class="cursor-pointer relative tool-card block m-0">
                         <input type="checkbox" id="chk_ghost" checked class="peer sr-only">
-                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-5 block">
-                            <h4 class="text-lg font-bold text-purple-400 m-0"><i class="fa-solid fa-scissors mr-2"></i> Bola Fantasma</h4>
-                            <p class="text-xs text-purple-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3"><i class="fa-solid fa-ruler"></i> Medidas (Caja): 16 cm de Ancho x 11 cm de Alto</p>
+                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-4 md:p-5 block min-h-[140px]">
+                            <h4 class="text-base md:text-lg font-bold text-purple-400 m-0"><i class="fa-solid fa-scissors mr-2"></i> Calculadora Bola Fantasma</h4>
+                            <p class="text-[10px] md:text-xs text-purple-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-ruler"></i> Simulador avanzado de corte (30° / Impacto Media Bola). 4 por hoja A3.</p>
                             <br>
-                            <button onclick="event.preventDefault(); window.openPreviewPM('ghost');" class="mt-3 bg-purple-900 border-none text-purple-100 px-4 py-2 rounded-lg text-sm cursor-pointer m-0">Vista Previa</button>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('ghost');" class="mt-2 bg-purple-900 border-none text-purple-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Vista Previa</button>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer relative tool-card block m-0">
+                        <input type="checkbox" id="chk_center" checked class="peer sr-only">
+                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-4 md:p-5 block min-h-[140px]">
+                            <h4 class="text-base md:text-lg font-bold text-blue-400 m-0"><i class="fa-solid fa-bullseye mr-2"></i> Posicionamiento (Centro)</h4>
+                            <p class="text-[10px] md:text-xs text-blue-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-ruler"></i> Diámetro total: 27.2 cm | Centro: 57.2mm (Bola Real)</p>
+                            <br>
+                            <label class="flex items-center space-x-2 cursor-pointer mt-2 mb-3 m-0" onclick="event.stopPropagation()">
+                                <input type="checkbox" id="grid_center" checked class="w-5 h-5 m-0">
+                                <span class="text-sm font-bold text-yellow-200">Añadir Cuadrícula</span>
+                            </label>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('center');" class="mt-1 bg-blue-900 border-none text-blue-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Vista Previa</button>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer relative tool-card block m-0">
+                        <input type="checkbox" id="chk_rail" checked class="peer sr-only">
+                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-4 md:p-5 block min-h-[140px]">
+                            <h4 class="text-base md:text-lg font-bold text-red-400 m-0"><i class="fa-solid fa-arrows-left-right-to-line mr-2"></i> Posicionamiento (Banda)</h4>
+                            <p class="text-[10px] md:text-xs text-red-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-ruler"></i> Medida: 27.2 cm ancho x 13.6 cm alto</p>
+                            <br>
+                            <label class="flex items-center space-x-2 cursor-pointer mt-2 mb-3 m-0" onclick="event.stopPropagation()">
+                                <input type="checkbox" id="grid_rail" class="w-5 h-5 m-0">
+                                <span class="text-sm font-bold text-yellow-200">Añadir Cuadrícula</span>
+                            </label>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('rail');" class="mt-1 bg-red-900 border-none text-red-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Vista Previa</button>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer relative tool-card col-span-1 md:col-span-2 block m-0">
+                        <input type="checkbox" id="chk_rect" checked class="peer sr-only">
+                        <div class="bg-slate-800 border-2 border-solid border-slate-600 rounded-xl p-4 md:p-5 block min-h-[140px]">
+                            <h4 class="text-base md:text-lg font-bold text-emerald-400 m-0"><i class="fa-regular fa-square mr-2"></i> Zonas Rectangulares</h4>
+                            <p class="text-[10px] md:text-xs text-emerald-300 font-mono bg-slate-900 px-2 py-1 rounded inline-block mt-2 mb-3 leading-tight"><i class="fa-solid fa-ruler"></i> Medida: 27.2 cm ancho x 35.4 cm largo</p>
+                            <br>
+                            <label class="flex items-center space-x-2 cursor-pointer mt-2 mb-3 m-0" onclick="event.stopPropagation()">
+                                <input type="checkbox" id="grid_rect" checked class="w-5 h-5 m-0">
+                                <span class="text-sm font-bold text-yellow-200">Añadir Cuadrícula</span>
+                            </label>
+                            <button onclick="event.preventDefault(); window.openPreviewPM('rect');" class="mt-1 bg-emerald-900 border-none text-emerald-100 px-4 py-3 rounded-lg text-sm cursor-pointer m-0 w-full md:w-auto font-bold shadow-md">Vista Previa</button>
                         </div>
                     </label>
                 </div>
 
                 <div id="status-box" class="hidden bg-emerald-900 p-5 rounded-xl border-2 border-solid border-emerald-500 mt-8 text-center block m-0">
                     <h3 class="text-xl font-black text-white m-0">¡LIBRO CREADO CON ÉXITO!</h3>
-                    <p class="text-sm text-emerald-100 mt-2">Imprime todo el documento en tamaño <strong>A3 (o Tabloide) a ESCALA 100%</strong> para mantener el centro del tamaño de una bola real (57.2mm).</p>
+                    <p class="text-sm text-emerald-100 mt-2 leading-relaxed">Imprime todo el documento en tamaño <strong>A3 (o Tabloide) a ESCALA 100%</strong> para mantener el centro del tamaño de una bola real (57.2mm).</p>
                 </div>
             </div>
         </main>
         
-        <footer class="text-center py-8 text-slate-400 text-xs font-mono bg-black/60 border-t border-solid border-slate-800 block w-full m-0 mt-auto">
+        <footer class="text-center py-6 md:py-8 text-slate-400 text-xs font-mono bg-black/60 border-t border-solid border-slate-800 block w-full m-0 mt-auto">
             <p class="m-0"><strong>PositionMaster</strong> &copy; <span id="currentYearPM"></span></p>
         </footer>
 
-        <!-- MODAL -->
-        <div id="previewModal" class="hidden fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4">
-            <div id="modalContent" class="bg-slate-900 border-2 border-solid border-yellow-500 rounded-xl p-6 max-w-3xl w-full relative">
-                <button onclick="window.closePreviewPM()" class="absolute top-4 right-4 text-slate-400 border-none bg-transparent text-xl cursor-pointer">X</button>
-                <h3 id="modalTitle" class="text-2xl font-bold m-0 border-b border-solid border-slate-700 pb-2">Vista Previa</h3>
-                <p id="modalDesc" class="text-sm text-slate-300 mt-2 mb-4">Descripción del modelo.</p>
-                <div class="bg-felt p-6 rounded-xl flex justify-center items-center border border-solid border-slate-700 min-h-[300px] mt-4 block">
+        <!-- MODAL APP 3 -->
+        <div id="previewModal" class="hidden fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-2 sm:p-4">
+            <div id="modalContent" class="bg-slate-900 border-2 border-solid border-yellow-500 rounded-xl p-4 sm:p-6 max-w-3xl w-full relative max-h-[90vh] overflow-y-auto -webkit-overflow-scrolling-touch">
+                <button onclick="window.closePreviewPM()" class="absolute top-2 right-2 text-slate-400 border-none bg-transparent text-3xl font-bold cursor-pointer px-4 py-2">&times;</button>
+                <h3 id="modalTitle" class="text-xl sm:text-2xl font-bold m-0 border-b border-solid border-slate-700 pb-2 pr-8">Vista Previa</h3>
+                <p id="modalDesc" class="text-xs sm:text-sm text-slate-300 mt-2 mb-4 leading-relaxed">Descripción del modelo.</p>
+                <div class="bg-felt p-4 sm:p-6 rounded-xl flex justify-center items-center border border-solid border-slate-700 min-h-[250px] sm:min-h-[300px] mt-4 block overflow-hidden">
                     <div id="modalSvgContainer" class="w-full flex justify-center m-0 block"></div>
                 </div>
+                <button onclick="window.closePreviewPM()" class="mt-4 w-full bg-slate-700 text-white font-bold py-3 rounded-lg border-none">Cerrar</button>
             </div>
         </div>
     </div> <!-- FIN APP 3 -->
@@ -897,7 +976,7 @@
             customContainer.style.display = (pt === 'custom_sheet') ? 'block' : 'none';
 
             if (pt === 'letter' || pt === 'legal') {
-                btnTest.style.display = 'inline-block';
+                btnTest.style.display = 'block';
                 setQty(1);
             } else {
                 btnTest.style.display = 'none';
@@ -934,7 +1013,7 @@
             const cam = document.getElementById(camId);
             if (mode === 'custom' || mode === 'transparent') {
                 input.style.display = 'block';
-                if(cam) cam.style.display = 'block';
+                if(cam) cam.style.display = 'flex';
                 return { mode: mode, val: input.value };
             } else {
                 input.style.display = 'none';
@@ -1619,67 +1698,106 @@
         const previewsPM = {
             track: {
                 title: '<i class="fa-solid fa-road mr-2 text-cyan-400"></i> Vista Previa: Stroke Track System',
-                desc: 'Réplica de la pista larga. Módulos perfectamente simétricos para unirse sin dañar la proporción (10cm exactos entre bolas). <br><strong class="text-cyan-300 font-mono text-xs mt-1 block">MEDIDAS: 14 cm de ancho x 30 cm de largo (Por cada tramo)</strong>',
+                desc: 'Se generan 2 tramos por página A3. La línea central (12mm) replica el grosor de la flecha del taco. Módulos perfectamente simétricos para unirse sin dañar la proporción (10cm exactos entre bolas). <br><strong class="text-cyan-300 font-mono text-xs mt-1 block">MEDIDAS: 14 cm de ancho x 30 cm de largo (Por cada tramo)</strong>',
                 color: 'border-cyan-500', titleColor: 'text-cyan-400',
                 svg: `
                 <svg viewBox="0 0 160 400" width="100%" style="max-width: 250px; max-height: 400px;" height="auto">
-                    <!-- TRAMO BASE -->
                     <rect x="40" y="200" width="80" height="180" fill="#334155" rx="2"/>
-                    <line x1="80" y1="200" x2="80" y2="380" stroke="#ffffff" stroke-width="4"/>
+                    <!-- Línea de 12mm (escalada en preview a 12) -->
+                    <line x1="80" y1="200" x2="80" y2="380" stroke="#ffffff" stroke-width="12"/>
                     <line x1="80" y1="200" x2="80" y2="380" stroke="#ef4444" stroke-width="1.5"/>
                     <circle cx="80" cy="350" r="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
                     <circle cx="80" cy="350" r="2" fill="#ef4444"/>
                     <circle cx="80" cy="290" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
                     <circle cx="80" cy="230" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
                     <text x="80" y="375" font-family="sans-serif" font-size="8" font-weight="bold" fill="#94a3b8" text-anchor="middle">TRAMO BASE</text>
-
-                    <!-- TRAMO EXTENSION -->
                     <rect x="40" y="20" width="80" height="180" fill="#334155" rx="2"/>
-                    <line x1="80" y1="20" x2="80" y2="200" stroke="#ffffff" stroke-width="4"/>
+                    <line x1="80" y1="20" x2="80" y2="200" stroke="#ffffff" stroke-width="12"/>
                     <line x1="80" y1="20" x2="80" y2="200" stroke="#ef4444" stroke-width="1.5"/>
                     <circle cx="80" cy="170" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
                     <circle cx="80" cy="110" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
                     <circle cx="80" cy="50" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 4"/>
                     <text x="80" y="195" font-family="sans-serif" font-size="8" font-weight="bold" fill="#94a3b8" text-anchor="middle">EXTENSION</text>
-
-                    <!-- Cinta Adhesiva -->
                     <rect x="30" y="195" width="30" height="10" fill="rgba(255,255,255,0.3)" transform="rotate(-15 45 200)"/>
                     <rect x="100" y="195" width="30" height="10" fill="rgba(255,255,255,0.3)" transform="rotate(15 115 200)"/>
                 </svg>`
             },
             foil: {
                 title: '<i class="fa-solid fa-ruler-combined mr-2 text-cyan-400"></i> Vista Previa: Stroke Foils',
-                desc: 'LAMINA 2 - PRECISION DE IMPACTO: Coloca la bola blanca. Usa las lineas horizontales externas y los rieles paralelos punteados para alinear tu taco al aplicar efectos laterales (English) sin que la bola tape tus referencias.',
+                desc: 'Se generan 6 láminas por página A3 (3 de Arranque y 3 de Llegada). Línea central de 12mm de grosor real.',
                 color: 'border-cyan-500', titleColor: 'text-cyan-400',
                 svg: `
                 <svg viewBox="0 0 240 300" width="100%" style="max-width: 400px; max-height: 400px;" height="auto">
-                    <rect x="10" y="10" width="60" height="280" fill="rgba(255,255,255,0.15)" stroke="#cbd5e1" stroke-dasharray="4 4" stroke-width="1" rx="4"/>
-                    <line x1="40" y1="30" x2="40" y2="270" stroke="#0f172a" stroke-width="1.5"/>
-                    <circle cx="40" cy="240" r="20" fill="none" stroke="#0f172a" stroke-width="1.5"/>
-                    <text x="40" y="244" font-family="sans-serif" font-size="10" font-weight="bold" fill="#0f172a" text-anchor="middle">CUE</text>
-                    <circle cx="40" cy="60" r="20" fill="#ef4444" stroke="#0f172a" stroke-width="1.5"/>
-                    <text x="40" y="64" font-family="sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">OBJ</text>
+                    <!-- FOIL 1: LINEA RECTA Y CUE -->
+                    <rect x="20" y="50" width="70" height="230" fill="rgba(255,255,255,0.15)" stroke="#cbd5e1" stroke-dasharray="4 4" stroke-width="1" rx="4"/>
+                    <line x1="55" y1="70" x2="55" y2="260" stroke="#bae6fd" stroke-width="12"/>
+                    <line x1="55" y1="70" x2="55" y2="260" stroke="#0f172a" stroke-width="0.5"/>
+                    <circle cx="55" cy="230" r="20" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+                    <text x="55" y="234" font-family="sans-serif" font-size="10" font-weight="bold" fill="#0f172a" text-anchor="middle">CUE</text>
                     
-                    <rect x="90" y="10" width="60" height="280" fill="rgba(255,255,255,0.15)" stroke="#cbd5e1" stroke-dasharray="4 4" stroke-width="1" rx="4"/>
-                    <line x1="120" y1="30" x2="120" y2="270" stroke="#0f172a" stroke-width="1.5"/>
-                    <circle cx="120" cy="240" r="20" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+                    <!-- FOIL 2: TARGET ZONE (MODULAR) -->
+                    <rect x="130" y="50" width="70" height="100" fill="rgba(255,255,255,0.15)" stroke="#cbd5e1" stroke-dasharray="4 4" stroke-width="1" rx="4"/>
+                    <line x1="165" y1="130" x2="165" y2="70" stroke="#bae6fd" stroke-width="12"/>
+                    <line x1="165" y1="130" x2="165" y2="70" stroke="#0f172a" stroke-width="0.5"/>
+                    <circle cx="165" cy="100" r="20" fill="#ef4444" stroke="#0f172a" stroke-width="1.5"/>
+                    <text x="165" y="104" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff" text-anchor="middle">TARGET</text>
                     
-                    <!-- Horizontal Crosshair -->
-                    <line x1="95" y1="240" x2="145" y2="240" stroke="#0f172a" stroke-width="1.2"/>
-                    <!-- Parallel English tracks -->
-                    <line x1="108" y1="240" x2="108" y2="280" stroke="#0f172a" stroke-width="0.8" stroke-dasharray="2 2"/>
-                    <line x1="132" y1="240" x2="132" y2="280" stroke="#0f172a" stroke-width="0.8" stroke-dasharray="2 2"/>
+                    <!-- Linea visual conectora (simboliza distancia infinita) -->
+                    <line x1="90" y1="200" x2="130" y2="150" stroke="#ef4444" stroke-width="2" stroke-dasharray="4 4" opacity="0.5"/>
+                    <text x="110" y="190" font-family="sans-serif" font-size="8" fill="#ef4444" text-anchor="middle" transform="rotate(-50 110 190)">Distancia Variable</text>
+                </svg>`
+            },
+            ref3090: {
+                title: '<i class="fa-solid fa-compass mr-2 text-orange-400"></i> Vista Previa: Ref 30°/90°',
+                desc: 'Plantilla en acetato para predecir la salida post-impacto. <br><strong class="text-orange-300 font-mono text-xs mt-1 block">MEDIDAS: 13 cm x 13 cm. Caben 6 por hoja A3.</strong>',
+                color: 'border-orange-500', titleColor: 'text-orange-400',
+                svg: `
+                <svg viewBox="0 0 200 200" width="100%" style="max-width: 300px; max-height: 300px;" height="auto" class="bg-white rounded-lg p-2">
+                    <rect x="10" y="10" width="180" height="180" fill="none" stroke="#cbd5e1" stroke-dasharray="4 4" rx="4"/>
+                    <!-- Target Path -->
+                    <line x1="100" y1="100" x2="100" y2="30" stroke="#3b82f6" stroke-width="4"/>
+                    <text x="100" y="25" font-family="sans-serif" font-size="10" font-weight="bold" fill="#3b82f6" text-anchor="middle">A TRONERA</text>
+                    <!-- 90 Tangent -->
+                    <line x1="30" y1="100" x2="170" y2="100" stroke="#ef4444" stroke-width="3"/>
+                    <text x="175" y="103" font-family="sans-serif" font-size="9" font-weight="bold" fill="#ef4444" text-anchor="start">TANGENTE 90°</text>
+                    <text x="25" y="103" font-family="sans-serif" font-size="9" font-weight="bold" fill="#ef4444" text-anchor="end">TANGENTE 90°</text>
+                    <!-- 30 Natural -->
+                    <line x1="100" y1="100" x2="160.6" y2="65" stroke="#10b981" stroke-width="2"/>
+                    <line x1="100" y1="100" x2="39.4" y2="65" stroke="#10b981" stroke-width="2"/>
+                    <text x="165" y="60" font-family="sans-serif" font-size="8" font-weight="bold" fill="#10b981" text-anchor="start">30° NATURAL</text>
+                    <text x="35" y="60" font-family="sans-serif" font-size="8" font-weight="bold" fill="#10b981" text-anchor="end">30° NATURAL</text>
                     
-                    <circle cx="120" cy="60" r="20" fill="none" stroke="#0f172a" stroke-width="1.5"/>
-                    <text x="120" y="64" font-family="sans-serif" font-size="8" font-weight="bold" fill="#0f172a" text-anchor="middle">TARGET</text>
+                    <circle cx="100" cy="100" r="30" fill="none" stroke="#1e293b" stroke-width="2"/>
+                </svg>`
+            },
+            ghost: {
+                title: '<i class="fa-solid fa-scissors mr-2 text-purple-400"></i> Vista Previa: Bola Fantasma Avanzada',
+                desc: 'Calculadora de corte a 30° / Media Bola. Muestra el contacto exacto y líneas divisorias proporcionales a la escala 1:1. Caben 4 por hoja A3.',
+                color: 'border-purple-500', titleColor: 'text-purple-400',
+                svg: `
+                <svg viewBox="0 0 200 200" width="100%" style="max-width: 350px; max-height: 350px;" height="auto" class="bg-white rounded-lg p-2">
+                    <!-- Linea Punteria Central Gruesa -->
+                    <line x1="100" y1="180" x2="100" y2="100" stroke="#bae6fd" stroke-width="12"/>
+                    <line x1="100" y1="180" x2="100" y2="100" stroke="#1e293b" stroke-width="1.5"/>
                     
-                    <rect x="170" y="10" width="60" height="280" fill="rgba(255,255,255,0.15)" stroke="#cbd5e1" stroke-dasharray="4 4" stroke-width="1" rx="4"/>
-                    <line x1="192" y1="30" x2="192" y2="270" stroke="#0f172a" stroke-width="1.5"/>
-                    <line x1="208" y1="30" x2="208" y2="270" stroke="#0f172a" stroke-width="1.5"/>
-                    <circle cx="200" cy="240" r="20" fill="none" stroke="#0f172a" stroke-width="1.5"/>
-                    <circle cx="200" cy="240" r="1.5" fill="#0f172a"/>
-                    <circle cx="200" cy="60" r="20" fill="none" stroke="#0f172a" stroke-width="1.5"/>
-                    <text x="200" y="64" font-family="sans-serif" font-size="7" font-weight="bold" fill="#0f172a" text-anchor="middle">DELIVERY</text>
+                    <!-- Linea de Centro a Centro -->
+                    <line x1="100" y1="100" x2="130" y2="48" stroke="#1e293b" stroke-width="1" stroke-dasharray="2 2"/>
+                    
+                    <!-- Ghost Ball -->
+                    <circle cx="100" cy="100" r="30" fill="none" stroke="#1e293b" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <circle cx="100" cy="100" r="1.5" fill="#1e293b" />
+                    <text x="100" y="145" font-family="sans-serif" font-size="10" font-weight="bold" fill="#1e293b" text-anchor="middle">GHOST</text>
+                    
+                    <!-- Object Ball -->
+                    <circle cx="130" cy="48" r="30" fill="#ef4444" stroke="#1e293b" stroke-width="1.5"/>
+                    <text x="130" y="25" font-family="sans-serif" font-size="10" font-weight="bold" fill="#ef4444" text-anchor="middle">OBJ</text>
+                    
+                    <!-- Lineas Fraccionales Blancas -->
+                    <line x1="130" y1="18" x2="130" y2="78" stroke="#ffffff" stroke-width="1.5"/>
+                    <line x1="115" y1="22" x2="115" y2="74" stroke="#ffffff" stroke-width="0.8"/>
+                    <line x1="145" y1="22" x2="145" y2="74" stroke="#ffffff" stroke-width="0.8"/>
+                    
+                    <text x="100" y="185" font-family="sans-serif" font-size="8" font-weight="bold" fill="#64748b" text-anchor="middle">CORTE 30° / 1/2 BOLA</text>
                 </svg>`
             },
             center: {
@@ -1729,22 +1847,6 @@
                     <line x1="5" y1="130" x2="195" y2="130" stroke="#1e293b" stroke-width="1.5" stroke-dasharray="4 4"/>
                     <circle cx="100" cy="130" r="2" fill="#1e293b" />
                 </svg>`
-            },
-            ghost: {
-                title: '<i class="fa-solid fa-scissors mr-2 text-purple-400"></i> Vista Previa: Bola Fantasma',
-                desc: 'PAPEL TYVEK MATE REQUERIDO. La bola blanca pasará rozando el dibujo, si el papel es resbaladizo el ángulo del tiro final se alterará.',
-                color: 'border-purple-500', titleColor: 'text-purple-400',
-                svg: `
-                <svg viewBox="0 0 200 150" width="100%" style="max-width: 350px; max-height: 250px;" height="auto" class="bg-white rounded-lg p-2">
-                    <line x1="30" y1="120" x2="70" y2="80" stroke="#1e293b" stroke-width="2"/>
-                    <line x1="120" y1="30" x2="160" y2="-10" stroke="#ef4444" stroke-width="2"/>
-                    <polygon points="160,-10 150,-5 155,5" fill="#ef4444" transform="rotate(45 160 -10)" />
-                    <circle cx="70" cy="80" r="30" fill="none" stroke="#1e293b" stroke-width="1.5" stroke-dasharray="4 4"/>
-                    <circle cx="70" cy="80" r="1.5" fill="#1e293b" />
-                    <text x="70" y="75" font-family="sans-serif" font-size="10" font-weight="bold" fill="#1e293b" text-anchor="middle">GHOST</text>
-                    <circle cx="110" cy="40" r="30" fill="#ef4444" stroke="#1e293b" stroke-width="1.5"/>
-                    <text x="110" y="44" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">OBJ</text>
-                </svg>`
             }
         };
 
@@ -1772,8 +1874,9 @@
             const doGhost = document.getElementById('chk_ghost').checked;
             const doFoil = document.getElementById('chk_foil').checked;
             const doTrack = document.getElementById('chk_track').checked;
+            const doRef = document.getElementById('chk_ref3090').checked;
 
-            if(!doCenter && !doRail && !doRect && !doGhost && !doFoil && !doTrack) {
+            if(!doCenter && !doRail && !doRect && !doGhost && !doFoil && !doTrack && !doRef) {
                 alert("Selecciona al menos una herramienta para armar el libro.");
                 return;
             }
@@ -1798,7 +1901,6 @@
                 const centerY = 420 / 2; 
                 
                 // Nueva escala matemática (Punto central diámetro = 57.2mm)
-                // Esto hace que la diana entera mida 272.4 mm (27.2 cm)
                 const maxRadius = 136.2;   
 
                 let pageNum = 1;
@@ -1833,12 +1935,12 @@
                     return y + 4;
                 }
 
-                function drawTrackSection(doc, type, bw, brandName) {
+                function drawTrackSection(doc, type, bw, brandName, posX) {
                     const trackWidth = 140; 
                     const trackHeight = 300; // Altura modificada para cuadrícula perfecta (30cm)
-                    const trackX = centerX - (trackWidth/2);
-                    const trackY = 40; // Centrado en la página A3
-                    const r = 28.6; // Radio matemático exacto (57.2mm diametro)
+                    const trackX = posX - (trackWidth/2);
+                    const trackY = 65; 
+                    const r = 28.6; 
 
                     if (bw) doc.setFillColor(240, 240, 240);
                     else doc.setFillColor(60, 64, 67); 
@@ -1846,47 +1948,52 @@
                     doc.setDrawColor(0); doc.setLineWidth(0.5);
                     doc.rect(trackX, trackY, trackWidth, trackHeight, 'FD');
 
+                    // FLECHA DEL TACO REAL (12MM GROSOR)
                     doc.setDrawColor(255, 255, 255);
-                    if (bw) doc.setDrawColor(100);
-                    doc.setLineWidth(3);
-                    doc.line(centerX, trackY, centerX, trackY + trackHeight);
+                    if (bw) doc.setDrawColor(150);
+                    doc.setLineWidth(12);
+                    doc.line(posX, trackY, posX, trackY + trackHeight);
                     
                     if (!bw) {
                         doc.setDrawColor(239, 68, 68);
                         doc.setLineWidth(0.8);
-                        doc.line(centerX, trackY, centerX, trackY + trackHeight);
+                        doc.line(posX, trackY, posX, trackY + trackHeight);
+                    } else {
+                        doc.setDrawColor(0);
+                        doc.setLineWidth(0.5);
+                        doc.line(posX, trackY, posX, trackY + trackHeight);
                     }
 
                     if(type === 'base') {
                         doc.setFillColor(255); doc.setDrawColor(0); doc.setLineWidth(0.5);
-                        doc.circle(centerX, trackY + 250, r, 'FD'); // Bola Blanca (5cm desde borde inferior)
-                        doc.setFillColor(239, 68, 68); doc.circle(centerX, trackY + 250, 2.5, 'F'); 
+                        doc.circle(posX, trackY + 250, r, 'FD'); 
+                        doc.setFillColor(239, 68, 68); doc.circle(posX, trackY + 250, 2.5, 'F'); 
                         
                         doc.setDrawColor(255); if(bw) doc.setDrawColor(0);
                         doc.setLineWidth(1.5); doc.setLineDashPattern([4, 4], 0);
                         
-                        doc.circle(centerX, trackY + 150, r, 'S'); // Ghost 1 (10cm de distancia)
-                        doc.circle(centerX, trackY + 50, r, 'S');  // Ghost 2 (10cm de distancia, 5cm del borde superior)
+                        doc.circle(posX, trackY + 150, r, 'S'); 
+                        doc.circle(posX, trackY + 50, r, 'S');  
                         doc.setLineDashPattern([], 0);
 
                         doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(255); if(bw) doc.setTextColor(0);
-                        doc.text(brandName, centerX, trackY + 290, { align: "center" });
+                        doc.text(brandName, posX, trackY + 290, { align: "center" });
 
                         doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(150);
-                        doc.text("↑ UNIR EXTENSIÓN AQUÍ ↑", centerX, trackY - 5, { align: "center" });
+                        doc.text("↑ UNIR EXTENSIÓN AQUÍ ↑", posX, trackY - 5, { align: "center" });
 
                     } else if (type === 'ext') {
                         doc.setDrawColor(255); if(bw) doc.setDrawColor(0);
                         doc.setLineWidth(1.5); doc.setLineDashPattern([4, 4], 0);
                         
-                        doc.circle(centerX, trackY + 250, r, 'S'); // Ghost 1
-                        doc.circle(centerX, trackY + 150, r, 'S'); // Ghost 2
-                        doc.circle(centerX, trackY + 50, r, 'S');  // Ghost 3
+                        doc.circle(posX, trackY + 250, r, 'S'); 
+                        doc.circle(posX, trackY + 150, r, 'S'); 
+                        doc.circle(posX, trackY + 50, r, 'S');  
                         doc.setLineDashPattern([], 0);
 
                         doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(150);
-                        doc.text("↓ ALINEAR CON EL TRAMO ANTERIOR AQUÍ ↓", centerX, trackY + 305, { align: "center" });
-                        doc.text("↑ UNIR SIGUIENTE EXTENSIÓN AQUÍ ↑", centerX, trackY - 5, { align: "center" });
+                        doc.text("↓ ALINEAR CON EL TRAMO ANTERIOR AQUÍ ↓", posX, trackY + 305, { align: "center" });
+                        doc.text("↑ UNIR SIGUIENTE EXTENSIÓN AQUÍ ↑", posX, trackY - 5, { align: "center" });
                     }
                 }
 
@@ -1945,94 +2052,93 @@
                     doc.text(playerNameVal, cx, cy - h/2 - 4, { align: "center" });
                 }
 
-                function drawOptimizedGhostBall(cx, cy, bw) {
-                    const boxW = 160; const boxH = 110; const r = 28.5; 
-                    doc.setLineWidth(0.5); doc.setDrawColor(100); doc.setLineDashPattern([4, 4], 0);
+                function drawAdvancedGhostBall(cx, cy, bw, playerName) {
+                    const boxW = 140; const boxH = 180;
+                    const r = 28.6;
+                    
+                    doc.setLineWidth(0.5); doc.setDrawColor(100); doc.setLineDashPattern([4,4], 0);
                     doc.rect(cx - boxW/2, cy - boxH/2, boxW, boxH, 'S'); doc.setLineDashPattern([], 0);
-                    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(100);
-                    doc.text("✂️ Cortar por esta linea punteada", cx - boxW/2 + 5, cy - boxH/2 + 6);
                     
-                    const objX = cx + 20.15; const objY = cy - 20.15; const ghostX = cx - 20.15; const ghostY = cy + 20.15;
-                    doc.setLineWidth(1); doc.setDrawColor(0); doc.line(ghostX - 35, ghostY + 35, ghostX, ghostY); 
+                    // Ghost Ball
+                    const ghostX = cx; const ghostY = cy + 40;
+                    // Object Ball at 30° cut (half-ball hit): offset X = r, offset Y = r*sqrt(3)
+                    const objX = cx + r; const objY = ghostY - 49.53;
                     
-                    doc.setDrawColor(239, 68, 68); doc.setLineWidth(1.5);
-                    doc.line(objX, objY, objX + 40, objY - 40);
-                    doc.setFillColor(239, 68, 68); doc.triangle(objX + 40, objY - 40, objX + 35, objY - 30, objX + 30, objY - 35, 'F');
-
-                    doc.setDrawColor(0); doc.setLineWidth(0.8); doc.setLineDashPattern([3, 3], 0);
+                    // Cue ball path (Aiming line)
+                    doc.setLineWidth(12);
+                    if(bw) doc.setDrawColor(200); else doc.setDrawColor(180, 220, 255);
+                    doc.line(ghostX, ghostY + 40, ghostX, ghostY); 
+                    
+                    doc.setLineWidth(0.5); doc.setDrawColor(0);
+                    doc.line(ghostX, ghostY + 40, ghostX, ghostY);
+                    
+                    // Ghost Ball Circle
+                    doc.setDrawColor(0); doc.setLineWidth(0.8); doc.setLineDashPattern([3,3], 0);
                     doc.circle(ghostX, ghostY, r, 'S'); doc.setLineDashPattern([], 0);
                     doc.setFillColor(0); doc.circle(ghostX, ghostY, 1, 'F');
-                    doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(0);
-                    doc.text("GHOST", ghostX, ghostY - 5, { align: "center" });
-
-                    doc.setDrawColor(0); doc.setLineWidth(0.8);
-                    if (bw) doc.setFillColor(240); else doc.setFillColor(239, 68, 68);
+                    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.text("GHOST", ghostX, ghostY + r + 8, {align:"center"});
+                    
+                    // Object Ball Circle
+                    if(bw) doc.setFillColor(240); else doc.setFillColor(239, 68, 68);
                     doc.circle(objX, objY, r, 'FD');
-                    doc.setFontSize(12); doc.setTextColor(bw ? 0 : 255); doc.text("OBJ", objX, objY + 4, { align: "center" });
-
-                    doc.setFillColor(255); doc.rect(cx - 30, cy + boxH/2 - 10, 60, 6, 'FD');
-                    doc.setFontSize(6); doc.setTextColor(0); doc.text(playerNameVal, cx, cy + boxH/2 - 6, { align: "center" });
+                    doc.setTextColor(bw ? 0 : 255); doc.text("OBJ", objX, objY - r - 4, {align:"center"});
+                    
+                    // Line of centers
+                    doc.setLineWidth(0.5); doc.setDrawColor(0); doc.setLineDashPattern([2,2], 0);
+                    doc.line(ghostX, ghostY, objX, objY);
+                    
+                    // Fractional lines on Object Ball
+                    doc.setLineDashPattern([], 0); doc.setLineWidth(0.3);
+                    if(!bw) doc.setDrawColor(255,255,255); else doc.setDrawColor(100);
+                    // Center (1/2)
+                    doc.line(objX, objY - r, objX, objY + r);
+                    // Left (3/4 hit)
+                    doc.line(objX - r/2, objY - Math.sqrt(r*r - (r/2)*(r/2)), objX - r/2, objY + Math.sqrt(r*r - (r/2)*(r/2)));
+                    // Right (1/4 hit)
+                    doc.line(objX + r/2, objY - Math.sqrt(r*r - (r/2)*(r/2)), objX + r/2, objY + Math.sqrt(r*r - (r/2)*(r/2)));
+                    
+                    doc.setTextColor(0); doc.setFontSize(7);
+                    doc.text("CORTE 30° / IMPACTO 1/2 BOLA", cx, cy - boxH/2 + 10, {align:"center"});
+                    doc.text(playerName, cx, cy + boxH/2 - 5, {align:"center"});
                 }
 
-                function drawStrokeFoilsPage(bw) {
-                    const w = 55; const h = 250; const r = 28.5; const y = 80;
-                    const x1 = 56; const x2 = x1 + w + 10; const x3 = x2 + w + 10; 
-
-                    doc.setDrawColor(150); doc.setLineWidth(0.5); doc.setLineDashPattern([3, 3], 0);
-                    doc.rect(x1, y, w, h, 'S'); doc.rect(x2, y, w, h, 'S'); doc.rect(x3, y, w, h, 'S');
+                function drawRef3090Tool(cx, cy, bw, playerName) {
+                    const r = 28.6;
+                    const boxSize = 130;
+                    
+                    doc.setLineWidth(0.5); doc.setDrawColor(150); doc.setLineDashPattern([3,3], 0);
+                    doc.rect(cx - boxSize/2, cy - boxSize/2, boxSize, boxSize, 'S');
                     doc.setLineDashPattern([], 0);
                     
-                    doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(150);
-                    doc.text("✂️ Cortar", x1 + 2, y + 4); doc.text("✂️ Cortar", x2 + 2, y + 4); doc.text("✂️ Cortar", x3 + 2, y + 4);
-
-                    doc.setDrawColor(0); doc.setTextColor(0);
-
-                    // FOIL 1: CUE/OBJ Line
-                    const cx1 = x1 + w/2;
-                    doc.setLineWidth(1); doc.line(cx1, y + 20, cx1, y + h - 20); 
-                    doc.setLineWidth(0.5);
-                    doc.circle(cx1, y + h - 50, r, 'S');
-                    doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("CUE", cx1, y + h - 48, { align: "center" });
-                    if(bw) { doc.setDrawColor(0); doc.setFillColor(240); } else { doc.setDrawColor(239, 68, 68); doc.setFillColor(239, 68, 68); }
-                    doc.circle(cx1, y + 60, r, 'FD');
-                    doc.setTextColor(bw ? 0 : 255); doc.text("OBJ", cx1, y + 62, { align: "center" });
-
-                    // FOIL 2: TARGET / IMPACT PRECISION (Updated with external guides)
-                    const cx2 = x2 + w/2;
-                    const cy2 = y + h - 50;
-                    doc.setDrawColor(0); doc.setLineWidth(1); 
-                    doc.line(cx2, y + 20, cx2, y + h - 20); // Central line
+                    doc.setLineWidth(0.8); doc.setDrawColor(0);
+                    doc.circle(cx, cy, r, 'S');
                     
-                    doc.setLineWidth(0.5);
-                    doc.circle(cx2, cy2, r, 'S'); // Cue Ball
-
-                    // Horizontal Crosshair
-                    doc.setLineWidth(0.8);
-                    doc.line(cx2 - w/2 + 5, cy2, cx2 + w/2 - 5, cy2);
-
-                    // Parallel tracks for Left/Right English (Offset by 12mm)
-                    doc.setLineWidth(0.3);
-                    doc.setLineDashPattern([2, 2], 0);
-                    doc.line(cx2 - 12, cy2, cx2 - 12, cy2 + 60);
-                    doc.line(cx2 + 12, cy2, cx2 + 12, cy2 + 60);
-                    doc.setLineDashPattern([], 0);
-
-                    doc.circle(cx2, y + 60, r, 'S'); 
-                    doc.setTextColor(0); doc.text("TARGET", cx2, y + 62, { align: "center" });
-
-                    // FOIL 3: DELIVERY TUNNEL
-                    const cx3 = x3 + w/2;
-                    doc.setDrawColor(0); doc.setLineWidth(1);
-                    doc.line(cx3 - 6.5, y + 20, cx3 - 6.5, y + h - 20);
-                    doc.line(cx3 + 6.5, y + 20, cx3 + 6.5, y + h - 20);
-                    doc.setLineWidth(0.5);
-                    doc.circle(cx3, y + h - 50, r, 'S'); doc.circle(cx3, y + h - 50, 1, 'F');
-                    doc.circle(cx3, y + 60, r, 'S'); doc.text("DELIVERY", cx3, y + 62, { align: "center" });
-
-                    doc.setFontSize(6); doc.setTextColor(0);
-                    doc.text(playerNameVal, cx1, y + h - 5, { align: "center" });
-                    doc.text(playerNameVal, cx2, y + h - 5, { align: "center" });
-                    doc.text(playerNameVal, cx3, y + h - 5, { align: "center" });
+                    // Tronera Line
+                    doc.setLineWidth(2);
+                    if(!bw) doc.setDrawColor(59, 130, 246); else doc.setDrawColor(50);
+                    doc.line(cx, cy, cx, cy - 55);
+                    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(bw ? 0 : 59, 130, 246);
+                    doc.text("A TRONERA", cx, cy - 58, {align:"center"});
+                    
+                    // Tangent 90
+                    doc.setLineWidth(1.5);
+                    if(!bw) doc.setDrawColor(239, 68, 68); else doc.setDrawColor(100);
+                    doc.line(cx - 55, cy, cx + 55, cy);
+                    doc.setTextColor(bw ? 0 : 239, 68, 68);
+                    doc.text("TANGENTE 90°", cx + 55, cy + 4, {align:"right"});
+                    doc.text("TANGENTE 90°", cx - 55, cy + 4, {align:"left"});
+                    
+                    // 30 Natural
+                    doc.setLineWidth(1);
+                    if(!bw) doc.setDrawColor(34, 197, 94); else doc.setDrawColor(150);
+                    doc.line(cx, cy, cx + 47.6, cy - 27.5);
+                    doc.line(cx, cy, cx - 47.6, cy - 27.5);
+                    doc.setTextColor(bw ? 0 : 34, 197, 94);
+                    doc.text("30° NATURAL", cx + 48, cy - 30, {align:"left"});
+                    doc.text("30° NATURAL", cx - 48, cy - 30, {align:"right"});
+                    
+                    doc.setTextColor(0); doc.setFontSize(6);
+                    doc.text(playerName, cx, cy + boxSize/2 - 4, {align:"center"});
                 }
 
                 // PORTADA
@@ -2135,9 +2241,11 @@
                     ]);
                     
                     doc.addPage();
-                    drawTrackSection(doc, 'base', isBw, playerNameVal);
+                    drawTrackSection(doc, 'base', isBw, playerNameVal, 297 * 0.25);
+                    drawTrackSection(doc, 'base', isBw, playerNameVal, 297 * 0.75);
                     doc.addPage();
-                    drawTrackSection(doc, 'ext', isBw, playerNameVal);
+                    drawTrackSection(doc, 'ext', isBw, playerNameVal, 297 * 0.25);
+                    drawTrackSection(doc, 'ext', isBw, playerNameVal, 297 * 0.75);
                 }
 
                 if(doFoil) {
@@ -2145,22 +2253,91 @@
                     y = 65;
                     y = writeParagraphs(y, ["OBLIGATORIO: IMPRIMIR EN ACETATO TRANSPARENTE"], 12, true, [239, 68, 68]);
                     y += 2;
-                    y = writeParagraphs(y, ["Como usar el Set de Laminas de Golpeo:"], 12, true);
+                    y = writeParagraphs(y, ["Como usar el Set Modular de Laminas de Golpeo:"], 12, true);
                     y = writeParagraphs(y, [
+                        "El sistema ha generado 6 laminas independientes en la siguiente pagina para simular cualquier distancia de tiro real en la mesa.",
+                        "",
                         "TRUCO PROFESIONAL (Fijacion):",
-                        "Fija las esquinas de la lamina al paño de la mesa usando pequeños trozos de cinta adhesiva. Como el acetato es liso, esto evitara que la plantilla resbale al apoyar tu puente o golpear la bola.",
+                        "Fija las esquinas de la lamina al paño de la mesa usando pequeños trozos de cinta adhesiva transparente. Como el acetato es liso, esto evitara que la plantilla resbale al apoyar tu puente o golpear la bola.",
                         "",
-                        "LAMINA 1 - LINEA DE GOLPEO:",
-                        "Coloca la bola blanca en el circulo 'CUE'. Haz el limaje (calentamiento) asegurandote de que la flecha siga perfectamente la linea central recta.",
+                        "LAMINA 1 - ZONA DE ARRANQUE (CUE):",
+                        "Coloca la bola blanca aqui. Usa la linea horizontal externa y los rieles paralelos punteados para alinear tu taco de forma impecable al aplicar efectos laterales (English) sin que la bola tape tus referencias.",
                         "",
-                        "LAMINA 2 - PRECISION DE IMPACTO:",
-                        "Coloca la bola blanca. Usa la linea horizontal externa y los rieles paralelos punteados para alinear tu taco de forma impecable al aplicar efectos laterales (English) sin que la bola tape tus referencias.",
-                        "",
-                        "LAMINA 3 - GUIA DE TACO (Delivery):",
-                        "Al hacer tu tiro, la flecha debe viajar por el medio del 'carril' sin tocar las lineas. Si logras pasar limpio, tu golpe es 100% recto."
+                        "LAMINA 2 - ZONA DE LLEGADA (TARGET):",
+                        "Ponla a la distancia que quieras (10cm o 2 metros). Al hacer tu tiro, la flecha debe viajar apuntando a la linea central de este segundo modulo. Si logras alinear ambas laminas visualmente, tu golpe es 100% recto."
                     ]);
                     doc.addPage();
-                    drawStrokeFoilsPage(isBw);
+                    
+                    const boxWidth = 90; const boxHeight = 160; const r = 28.6; const shaftWidth = 12; 
+                    const colCenters = [297/6, 297/2, 297*5/6]; const rowYs = [50, 230];
+
+                    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(150);
+                    doc.text("CORTAR CADA LÁMINA POR LA LÍNEA PUNTEADA", 297/2, 40, { align: "center" });
+
+                    for (let i = 0; i < 3; i++) {
+                        const xCue = colCenters[i] - boxWidth/2; const yCue = rowYs[0];
+                        const cxCue = colCenters[i]; const cyCue = yCue + boxHeight - 40;
+                        doc.setDrawColor(150); doc.setLineWidth(0.5); doc.setLineDashPattern([3, 3], 0); doc.rect(xCue, yCue, boxWidth, boxHeight, 'S'); doc.setLineDashPattern([], 0);
+                        doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(150); doc.text("✂️ CUE", xCue + 2, yCue + 4);
+                        if(isBw) { doc.setDrawColor(200); } else { doc.setDrawColor(180, 220, 255); }
+                        doc.setLineWidth(shaftWidth); doc.line(cxCue, yCue + 10, cxCue, yCue + boxHeight - 10); 
+                        doc.setDrawColor(0); doc.setLineWidth(0.5); doc.line(cxCue, yCue + 10, cxCue, yCue + boxHeight - 10);
+                        doc.setDrawColor(0); doc.setLineWidth(0.5); doc.circle(cxCue, cyCue, r, 'S'); 
+                        doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("CUE", cxCue, cyCue - r - 5, { align: "center" });
+                        doc.setLineWidth(0.3); doc.setLineDashPattern([2, 2], 0); doc.line(cxCue - 12, cyCue, cxCue - 12, yCue + 10); doc.line(cxCue + 12, cyCue, cxCue + 12, yCue + 10);
+                        doc.setLineDashPattern([], 0); doc.setLineWidth(0.8); doc.line(cxCue - r - 10, cyCue, cxCue + r + 10, cyCue);
+                        doc.setFontSize(6); doc.setTextColor(0); doc.text(playerNameVal, cxCue, yCue + boxHeight - 3, { align: "center" });
+                    }
+
+                    for (let i = 0; i < 3; i++) {
+                        const xObj = colCenters[i] - boxWidth/2; const yObj = rowYs[1];
+                        const cxObj = colCenters[i]; const cyObj = yObj + 40;
+                        doc.setDrawColor(150); doc.setLineWidth(0.5); doc.setLineDashPattern([3, 3], 0); doc.rect(xObj, yObj, boxWidth, boxHeight, 'S'); doc.setLineDashPattern([], 0);
+                        doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(150); doc.text("✂️ TARGET", xObj + 2, yObj + 4);
+                        if(isBw) { doc.setDrawColor(200); } else { doc.setDrawColor(180, 220, 255); }
+                        doc.setLineWidth(shaftWidth); doc.line(cxObj, yObj + 10, cxObj, yObj + boxHeight - 10); 
+                        doc.setDrawColor(0); doc.setLineWidth(0.5); doc.line(cxObj, yObj + 10, cxObj, yObj + boxHeight - 10);
+                        if(isBw) { doc.setDrawColor(0); doc.setFillColor(240); } else { doc.setDrawColor(239, 68, 68); doc.setFillColor(239, 68, 68); }
+                        doc.circle(cxObj, cyObj, r, 'FD'); 
+                        doc.setTextColor(isBw ? 0 : 255); doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("TARGET", cxObj, cyObj + r + 5, { align: "center" });
+                        doc.setDrawColor(0); doc.setLineWidth(0.3); doc.setLineDashPattern([2, 2], 0); doc.line(cxObj - 12, cyObj, cxObj - 12, yObj + boxHeight - 10); doc.line(cxObj + 12, cyObj, cxObj + 12, yObj + boxHeight - 10); doc.setLineDashPattern([], 0);
+                        doc.setFontSize(6); doc.setTextColor(0); doc.text(playerNameVal, cxObj, yObj + boxHeight - 3, { align: "center" });
+                    }
+                }
+
+                if(doRef) {
+                    addHeader("Modulo de Entrenamiento: Referencia 30/90 Tangente", "La Fisica de Salida y Deflexion de la Blanca");
+                    y = 65;
+                    y = writeParagraphs(y, ["OBLIGATORIO: IMPRIMIR EN ACETATO TRANSPARENTE"], 12, true, [239, 68, 68]);
+                    y += 2;
+                    y = writeParagraphs(y, ["Como usar las Plantillas 30/90:"], 12, true);
+                    y = writeParagraphs(y, [
+                        "El sistema ha generado 6 laminas de 13x13cm en la siguiente pagina.",
+                        "1. Coloca la Bola Objetivo exactamente en el centro del circulo negro.",
+                        "2. Gira el acetato para que la linea azul (A TRONERA) apunte directamente hacia el bolsillo deseado.",
+                        "3. Acomoda la Bola Blanca para tu tiro.",
+                        "",
+                        "LECTURA FISICA DEL IMPACTO:",
+                        "• TANGENTE 90° (Rojo): Si golpeas la blanca EXACTAMENTE en el centro (Stun Shot), la bola patinara y saldra forzosamente por esta linea roja horizontal tras el impacto.",
+                        "• 30° NATURAL (Verde): Si juegas un tiro rodado (Follow) en un corte medio, la blanca hara una curva y buscara naturalmente viajar por los rieles verdes hacia adelante (Regla del signo de la paz)."
+                    ]);
+                    doc.addPage();
+                    const colCenters3 = [297/4, 297 * 3/4];
+                    const rowYs3 = [420/6, 420/2, 420 * 5/6]; 
+                    for(let i=0; i<3; i++){
+                        for(let j=0; j<2; j++){
+                            const cx = colCenters3[j]; const cy = rowYs3[i]; const boxSize = 130; const r = 28.6;
+                            doc.setLineWidth(0.5); doc.setDrawColor(150); doc.setLineDashPattern([3,3], 0); doc.rect(cx - boxSize/2, cy - boxSize/2, boxSize, boxSize, 'S'); doc.setLineDashPattern([], 0);
+                            doc.setLineWidth(0.8); doc.setDrawColor(0); doc.circle(cx, cy, r, 'S');
+                            doc.setLineWidth(2); if(!isBw) doc.setDrawColor(59, 130, 246); else doc.setDrawColor(50);
+                            doc.line(cx, cy, cx, cy - 55); doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(isBw ? 0 : 59, 130, 246); doc.text("A TRONERA", cx, cy - 58, {align:"center"});
+                            doc.setLineWidth(1.5); if(!isBw) doc.setDrawColor(239, 68, 68); else doc.setDrawColor(100);
+                            doc.line(cx - 55, cy, cx + 55, cy); doc.setTextColor(isBw ? 0 : 239, 68, 68); doc.text("TANGENTE 90°", cx + 55, cy + 4, {align:"right"}); doc.text("TANGENTE 90°", cx - 55, cy + 4, {align:"left"});
+                            doc.setLineWidth(1); if(!isBw) doc.setDrawColor(34, 197, 94); else doc.setDrawColor(150);
+                            doc.line(cx, cy, cx + 47.6, cy - 27.5); doc.line(cx, cy, cx - 47.6, cy - 27.5); doc.setTextColor(isBw ? 0 : 34, 197, 94); doc.text("30° NATURAL", cx + 48, cy - 30, {align:"left"}); doc.text("30° NATURAL", cx - 48, cy - 30, {align:"right"});
+                            doc.setTextColor(0); doc.setFontSize(6); doc.text(playerNameVal, cx, cy + boxSize/2 - 4, {align:"center"});
+                        }
+                    }
                 }
 
                 if(doCenter) {
@@ -2210,23 +2387,41 @@
                 }
 
                 if(doGhost) {
-                    addHeader("Modulo de Entrenamiento: Ghost Ball Target", "Teoria visual de cortes a 45 grados");
+                    addHeader("Modulo de Entrenamiento: Bola Fantasma Avanzada", "Calculadora visual de fracciones a 30 grados");
                     y = 65;
-                    y = writeParagraphs(y, ["MEDIDAS (Caja de Recorte): 16 cm de Ancho x 11 cm de Alto."], 12, true, [168, 85, 247]);
+                    y = writeParagraphs(y, ["MEDIDAS (Caja de Recorte): 14 cm de Ancho x 18 cm de Alto."], 12, true, [168, 85, 247]);
                     y += 3;
-                    y = writeParagraphs(y, ["Como usar la plantilla de Bola Fantasma:"], 12, true);
+                    y = writeParagraphs(y, ["Como usar la Calculadora de Bola Fantasma:"], 12, true);
                     y = writeParagraphs(y, [
-                        "1. Corta por las lineas punteadas.",
-                        "2. Coloca la bola REAL sobre el circulo 'OBJ'.",
-                        "3. Alinea la flecha roja hacia el centro de la tronera.",
-                        "4. El circulo punteado 'GHOST' representara el espacio vacio.",
+                        "El sistema ha generado 4 plantillas en la pagina siguiente.",
+                        "1. Corta por las lineas punteadas grises.",
+                        "2. Coloca la bola REAL sobre el circulo ROJO (OBJ).",
+                        "3. Este diseño simula el corte mas famoso del billar: El corte a 30° / Impacto Media Bola.",
                         "",
-                        "EL TRUCO PSICOLOGICO:",
-                        "Agachate. OLVIDA la existencia de la bola real. Tu unica mision es golpear la bola blanca para que TAPE EXACTAMENTE el circulo punteado 'GHOST'. El corte ocurrira por magia matematica."
+                        "MECANICA VISUAL AVANZADA:",
+                        "• La Linea de Centros: Mira la linea diagonal que une el centro imaginario (Ghost) con el centro rojo. Esa NO es tu linea de tiro.",
+                        "• Las Fracciones: Sobre el circulo rojo hay lineas divisorias. Nota como el borde derecho de la bola blanca (tu linea gruesa de tiro) pasa EXACTAMENTE por el centro de la bola roja. Por eso se llama 'Media Bola'.",
+                        "• Tu Objetivo Físico: Olvida la bola roja. Golpea la blanca viajando exclusivamente a traves de la gruesa linea central para que estacione milimetricamente sobre el circulo punteado."
                     ]);
                     doc.addPage();
-                    drawOptimizedGhostBall(centerX, 110, isBw);
-                    drawOptimizedGhostBall(centerX, 280, isBw);
+                    const colCenters2 = [297/4, 297 * 3/4];
+                    const rowYs2 = [420/4, 420 * 3/4]; 
+                    for(let i=0; i<2; i++){
+                        for(let j=0; j<2; j++){
+                            const cx = colCenters2[j]; const cy = rowYs2[i]; const boxW = 140; const boxH = 180; const r = 28.6;
+                            doc.setLineWidth(0.5); doc.setDrawColor(100); doc.setLineDashPattern([4,4], 0); doc.rect(cx - boxW/2, cy - boxH/2, boxW, boxH, 'S'); doc.setLineDashPattern([], 0);
+                            const ghostX = cx; const ghostY = cy + 40; const objX = cx + r; const objY = ghostY - 49.53;
+                            doc.setLineWidth(12); if(isBw) doc.setDrawColor(200); else doc.setDrawColor(180, 220, 255);
+                            doc.line(ghostX, ghostY + 40, ghostX, ghostY); doc.setLineWidth(0.5); doc.setDrawColor(0); doc.line(ghostX, ghostY + 40, ghostX, ghostY);
+                            doc.setDrawColor(0); doc.setLineWidth(0.8); doc.setLineDashPattern([3,3], 0); doc.circle(ghostX, ghostY, r, 'S'); doc.setLineDashPattern([], 0);
+                            doc.setFillColor(0); doc.circle(ghostX, ghostY, 1, 'F'); doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.text("GHOST", ghostX, ghostY + r + 8, {align:"center"});
+                            if(isBw) doc.setFillColor(240); else doc.setFillColor(239, 68, 68); doc.circle(objX, objY, r, 'FD'); doc.setTextColor(isBw ? 0 : 255); doc.text("OBJ", objX, objY - r - 4, {align:"center"});
+                            doc.setLineWidth(0.5); doc.setDrawColor(0); doc.setLineDashPattern([2,2], 0); doc.line(ghostX, ghostY, objX, objY);
+                            doc.setLineDashPattern([], 0); doc.setLineWidth(0.3); if(!isBw) doc.setDrawColor(255,255,255); else doc.setDrawColor(100);
+                            doc.line(objX, objY - r, objX, objY + r); doc.line(objX - r/2, objY - Math.sqrt(r*r - (r/2)*(r/2)), objX - r/2, objY + Math.sqrt(r*r - (r/2)*(r/2))); doc.line(objX + r/2, objY - Math.sqrt(r*r - (r/2)*(r/2)), objX + r/2, objY + Math.sqrt(r*r - (r/2)*(r/2)));
+                            doc.setTextColor(0); doc.setFontSize(7); doc.text("CORTE 30° / IMPACTO 1/2 BOLA", cx, cy - boxH/2 + 10, {align:"center"}); doc.text(playerNameVal, cx, cy + boxH/2 - 5, {align:"center"});
+                        }
+                    }
                 }
 
                 let safeName = playerNameInput ? playerNameInput.replace(/[^a-z0-9]/gi, '_').toLowerCase() : "pro";
@@ -2244,4 +2439,4 @@
         syncMatColor();
     </script>
 </body>
-</html>
+                            </html>
