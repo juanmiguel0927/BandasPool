@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Herramientas Para El Billar</title>
     
     <!-- Librerías de las herramientas -->
@@ -170,6 +170,7 @@
         #app1-wrapper .btn-action { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); color: white; border: none; padding: 20px; width: 100%; font-size: 18px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
         #app1-wrapper .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
         #app1-wrapper .btn-guide { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none; padding: 15px; width: 100%; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px; }
+        #app1-wrapper .btn-guide:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(52, 152, 219, 0.4); }
         #app1-wrapper .info-box { background: #fadbd8; color: #922b21; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 4px solid #c0392b; font-weight: 600; }
         #app1-wrapper .footer-cr { text-align: center; margin-top: 30px; font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.5; padding-bottom: 20px; }
         #app1-wrapper .custom-strip-input, #app1-wrapper .custom-sheet-container { display: none; margin-top:10px; padding:10px; border-radius:6px; box-sizing: border-box; width: 100%; }
@@ -211,17 +212,19 @@
         #app2-wrapper .btn-pdf { background: #ef4444; color: white; }
         #app2-wrapper .btn-info { background: #0ea5e9; color: white; margin-bottom: 15px; width: auto; }
         
-        #app2-wrapper .sheet-container { background: white; margin: 0 auto; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.08); border: 1px solid #eee; display: inline-block; }
+        #app2-wrapper .sheet-container { background: white; margin: 0 auto; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.08); border: 1px solid #eee; display: inline-block; /* Fixed alignment in scroll */ }
         #app2-wrapper .hairline { fill: none; stroke: #000; stroke-width: 0.12mm; }
         #app2-wrapper .cut-line { fill: none; stroke: #ff0000; stroke-width: 0.25mm; stroke-dasharray: 4 2; }
         #app2-wrapper .reg-mark { stroke: #333; stroke-width: 0.1mm; }
         #app2-wrapper .zone-label { font-family: 'Roboto', sans-serif; font-weight: 900; fill: rgba(255,255,255,0.15); text-transform: uppercase; }
         
+        /* Modales App 2 */
         #app2-wrapper .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); z-index: 10000; display: none; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 20px; box-sizing: border-box; backdrop-filter: blur(4px); -webkit-overflow-scrolling: touch; }
         #app2-wrapper .modal-overlay.active { display: flex; }
         #app2-wrapper .modal-content-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; margin: auto; width: 100%; max-width: 794px; }
         #app2-wrapper .modal-toolbar { display: flex; gap: 10px; width: 100%; justify-content: flex-end; position: sticky; top: 0px; z-index: 100; flex-wrap: wrap; }
         
+        /* Contenedor del documento para scroll horizontal */
         #app2-wrapper .doc-scroll-area { width: 100%; overflow-x: auto; background: transparent; -webkit-overflow-scrolling: touch; padding-bottom: 10px; }
         #app2-wrapper #tutorial-sheet { width: 794px; height: 1123px; background: white; padding: 85px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border-radius: 4px; margin: 0 auto; }
         #app2-wrapper .tut-card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 20px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box; margin-bottom: 12px; width: 100%; word-wrap: break-word; }
@@ -476,7 +479,7 @@
                                 <option value="custom" selected>Personalizado</option>
                             </select>
                             <input type="color" id="colorMix8" value="#3498db" onchange="updateCalc()" style="width: 100%;">
-                            <button class="btn-action" id="btnCamMix8" onclick="openExtractor('colorMix8', () => { if(document.getElementById('bgMix8').value !== 'transparent') document.getElementById('bgMix8').value='custom'; updateCalc(); })" style="display:flex; padding: 0 15px; margin: 0; background: #475569; width: auto;" title="Extraer Color">📸</button>
+                            <button class="btn-action" id="btnCamMix8" onclick="openExtractor('colorMix8', () => { if(document.getElementById('bgMix8').value !== 'transparent') document.getElementById('bgMix8').value='custom'; updateCalc(); })" style="display:block; padding: 0 15px; margin: 0; background: #475569; width: auto;" title="Extraer Color">📸</button>
                         </div>
                     </div>
 
@@ -1937,7 +1940,7 @@
 
                 function drawTrackSection(doc, type, bw, brandName, posX) {
                     const trackWidth = 140; 
-                    const trackHeight = 300; // Altura modificada para cuadrícula perfecta (30cm)
+                    const trackHeight = 300; 
                     const trackX = posX - (trackWidth/2);
                     const trackY = 65; 
                     const r = 28.6; 
@@ -2264,7 +2267,7 @@
                         "Coloca la bola blanca aqui. Usa la linea horizontal externa y los rieles paralelos punteados para alinear tu taco de forma impecable al aplicar efectos laterales (English) sin que la bola tape tus referencias.",
                         "",
                         "LAMINA 2 - ZONA DE LLEGADA (TARGET):",
-                        "Ponla a la distancia que quieras (10cm o 2 metros). Al hacer tu tiro, la flecha debe viajar apuntando a la linea central de este segundo modulo. Si logras alinear ambas laminas visualmente, tu golpe es 100% recto."
+                        "Ponla a la distancia que quieras (10cm o 2 metros). Al hacer tu tiro, la flecha debe viajar apuntando a la gruesa linea central de este segundo modulo (12mm de grosor, igual a tu flecha). Si logras alinear ambas laminas visualmente, tu golpe es 100% recto."
                     ]);
                     doc.addPage();
                     
@@ -2408,18 +2411,7 @@
                     const rowYs2 = [420/4, 420 * 3/4]; 
                     for(let i=0; i<2; i++){
                         for(let j=0; j<2; j++){
-                            const cx = colCenters2[j]; const cy = rowYs2[i]; const boxW = 140; const boxH = 180; const r = 28.6;
-                            doc.setLineWidth(0.5); doc.setDrawColor(100); doc.setLineDashPattern([4,4], 0); doc.rect(cx - boxW/2, cy - boxH/2, boxW, boxH, 'S'); doc.setLineDashPattern([], 0);
-                            const ghostX = cx; const ghostY = cy + 40; const objX = cx + r; const objY = ghostY - 49.53;
-                            doc.setLineWidth(12); if(isBw) doc.setDrawColor(200); else doc.setDrawColor(180, 220, 255);
-                            doc.line(ghostX, ghostY + 40, ghostX, ghostY); doc.setLineWidth(0.5); doc.setDrawColor(0); doc.line(ghostX, ghostY + 40, ghostX, ghostY);
-                            doc.setDrawColor(0); doc.setLineWidth(0.8); doc.setLineDashPattern([3,3], 0); doc.circle(ghostX, ghostY, r, 'S'); doc.setLineDashPattern([], 0);
-                            doc.setFillColor(0); doc.circle(ghostX, ghostY, 1, 'F'); doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.text("GHOST", ghostX, ghostY + r + 8, {align:"center"});
-                            if(isBw) doc.setFillColor(240); else doc.setFillColor(239, 68, 68); doc.circle(objX, objY, r, 'FD'); doc.setTextColor(isBw ? 0 : 255); doc.text("OBJ", objX, objY - r - 4, {align:"center"});
-                            doc.setLineWidth(0.5); doc.setDrawColor(0); doc.setLineDashPattern([2,2], 0); doc.line(ghostX, ghostY, objX, objY);
-                            doc.setLineDashPattern([], 0); doc.setLineWidth(0.3); if(!isBw) doc.setDrawColor(255,255,255); else doc.setDrawColor(100);
-                            doc.line(objX, objY - r, objX, objY + r); doc.line(objX - r/2, objY - Math.sqrt(r*r - (r/2)*(r/2)), objX - r/2, objY + Math.sqrt(r*r - (r/2)*(r/2))); doc.line(objX + r/2, objY - Math.sqrt(r*r - (r/2)*(r/2)), objX + r/2, objY + Math.sqrt(r*r - (r/2)*(r/2)));
-                            doc.setTextColor(0); doc.setFontSize(7); doc.text("CORTE 30° / IMPACTO 1/2 BOLA", cx, cy - boxH/2 + 10, {align:"center"}); doc.text(playerNameVal, cx, cy + boxH/2 - 5, {align:"center"});
+                            drawAdvancedGhostBall(colCenters2[j], rowYs2[i], isBw, playerNameVal);
                         }
                     }
                 }
@@ -2439,4 +2431,4 @@
         syncMatColor();
     </script>
 </body>
-                            </html>
+    </html>
