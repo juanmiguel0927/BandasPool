@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- ZOOM DESBLOQUEADO: Se removió user-scalable=no y maximum-scale=1.0 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Herramientas Para El Billar</title>
     
     <!-- Librerías de las herramientas -->
@@ -1958,7 +1959,7 @@
                     <circle cx="165" cy="100" r="20" fill="#ef4444" stroke="#0f172a" stroke-width="1.5"/>
                     <text x="165" y="104" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff" text-anchor="middle">TARGET</text>
                     
-                    <!-- Linea visual conectora (simboliza distancia infinita) -->
+                    <!-- Linea visual conectora -->
                     <line x1="90" y1="200" x2="130" y2="150" stroke="#ef4444" stroke-width="2" stroke-dasharray="4 4" opacity="0.5"/>
                     <text x="110" y="190" font-family="sans-serif" font-size="8" fill="#ef4444" text-anchor="middle" transform="rotate(-50 110 190)">Distancia Variable</text>
                 </svg>`
@@ -2561,54 +2562,6 @@
                 doc.setFont("helvetica", "bold");
                 doc.text("Lee la Guia de Materiales en la pagina 2 para la diferencia de la fisica de deslizamiento.", centerX, titleY + 165, { align: "center" });
 
-                // GUÍA GENERAL (En ambos PDF para contexto)
-                addHeader("Regla de Oro: La Fisica de los Materiales", "Evita que tus plantillas alteren el rodamiento de la bola");
-                let yMat = 65;
-                yMat = writeParagraphs(yMat, ["El Peligro del Deslizamiento (Skid)"], 14, true);
-                yMat = writeParagraphs(yMat, ["La friccion es todo en el billar. Si imprimes una herramienta de posicion en un material liso o muy grueso, cuando la bola ruede perdera el agarre del paño, patinara, saltara y alterara tu tiro."]);
-                yMat += 5;
-                yMat = writeParagraphs(yMat, ["Material Recomendado (Pidelos en tu litografia local):"], 13, true, [239, 68, 68]);
-                yMat += 3;
-
-                yMat = writeParagraphs(yMat, ["1. Papel Sintetico (Polipropileno) Mate o Papel Tyvek oscuro"], 12, true, [34, 197, 94]);
-                yMat = writeParagraphs(yMat, ["Es el santo grial de estas plantillas. Ideal para todas las Dianas, Bola Fantasma Avanzada y Pistas (Track). Es virtualmente imposible de rasgar, es sumamente delgado y mate. La bola pasara por encima sin patinar."]);
-                yMat += 3;
-
-                yMat = writeParagraphs(yMat, ["2. Acetato Transparente Rígido"], 12, true, [59, 130, 246]);
-                yMat = writeParagraphs(yMat, ["Uso estricto para las Láminas de Golpeo (Foils), Guías de Sistema y Referencia 30/90. Te permite ver el paño de la mesa a traves del material."]);
-
-                addHeader("1. El Triangulo del Caos", "Comprendiendo la Deflexion (Squirt, Swerve, Throw)");
-                let y = 65;
-                y = writeParagraphs(y, ["La Fisica del Efecto Lateral"], 14, true);
-                y = writeParagraphs(y, ["Cuando golpeas la bola blanca en el centro, viaja en linea recta. Pero al aplicar efecto lateral (English), entran en juego tres fuerzas fisicas que arruinaran tu tiro si no las comprendes a detalle."]);
-                y += 5;
-                y = writeParagraphs(y, ["A. Deflexion Inicial (Squirt)"], 12, true);
-                y = writeParagraphs(y, ["Es el desvio inmediato de la bola blanca al separarse de la suela del taco. La regla de oro: La bola blanca siempre 'salta' en la direccion OPUESTA al lado donde la golpeaste."]);
-                y += 5;
-                y = writeParagraphs(y, ["B. Curva del Paño (Swerve)"], 12, true);
-                y = writeParagraphs(y, ["La regla: El paño agarra el efecto y curva la bola DE REGRESO hacia la direccion original del efecto."]);
-                y += 5;
-                y = writeParagraphs(y, ["C. Desvio por Friccion en el Impacto (Throw)"], 12, true);
-                y = writeParagraphs(y, ["La regla: El giro de la blanca empuja (Lanza/Throws) la bola objetivo hacia el lado opuesto al efecto."]);
-
-                addHeader("2. Calibracion de Taco (Punto de Pivote)", "Como compensar matematicamente el error usando BHE");
-                y = 65;
-                y = writeParagraphs(y, ["El Metodo BHE (Backhand English)"], 14, true);
-                y = writeParagraphs(y, [
-                    "Dado que la deflexion empuja la bola a un lado, tu trabajo es 'apuntar mal a proposito' para que la fisica corrija el tiro automaticamente.",
-                    "",
-                    "EJERCICIO DE CALIBRACION:",
-                    "1. Coloca la Diana Central en un extremo de la mesa. Pon la bola blanca en el otro extremo.",
-                    "2. Planta tu mano de puente a 20 cm de la bola blanca. Dejala CONGELADA sobre el paño.",
-                    "3. Pivota: Mueve SOLO tu mano trasera hacia la derecha para aplicar efecto derecho. Tu taco apuntara chueco hacia la izquierda.",
-                    "4. Dispara con fuerza media.",
-                    "",
-                    "EVALUACION:",
-                    "- Blanca a la IZQUIERDA: Puente muy cerca. Alejalo a 25 cm.",
-                    "- Blanca a la DERECHA: Puente muy lejos. Acercalo a 15 cm.",
-                    "- En el CENTRO (5 Pts): ¡Encontraste el Punto de Pivote exacto de tu taco!"
-                ]);
-
                 // --- GENERACION ESPECIFICA POR FORMATO ---
 
                 if (isA3) {
@@ -2838,4 +2791,4 @@
         syncMatColor();
     </script>
 </body>
-                            </html>
+                                </html>
